@@ -2,6 +2,11 @@ package com.esgi;
 
 public class Main {
     public static void main(String[] args) {
-        System.out.println("Hello world!");
+        if(args != null && args.length > 0) {
+            // TODO: CLI
+            return;
+        }
+
+        // TODO: MENU
     }
 }

@@ -5,13 +5,54 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="4f0d7009-6221-4e0f-9895-ae32abb4794d" name="Changes" comment="">
-      <change beforePath="$PROJECT_DIR$/bibliotheque/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/bibliotheque/src/main/java/com/esgi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/esgi/Main.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/All_Tests.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/App__Menu_.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/runConfigurations/clean_install.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/sqldialects.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/core/exceptions/NotFoundException.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/DataConfig.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/Model.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/Repository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/users/UserModel.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/users/UserRepository.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/users/UserRepositoryFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/data/users/impl/UserRepositoryImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/Entity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/users/UserEntity.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/users/UserMapper.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/users/UserService.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/users/UserServiceFactory.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/esgi/domain/users/impl/UserServiceImpl.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/scripts/create_db.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/scripts/create_test_db.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/resources/scripts/insert_test_data.sql" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/esgi/domain/users/UserMapperTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/test/java/com/esgi/domain/users/UserServiceTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/compiler.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/bookDB.sqlite" beforeDir="false" afterPath="$PROJECT_DIR$/bookDB.sqlite" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/esgi/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/esgi/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="ChangesViewManager">
+    <option name="groupingKeys">
+      <option value="directory" />
+      <option value="module" />
+    </option>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Interface" />
+        <option value="Record" />
+        <option value="Class" />
+      </list>
+    </option>
   </component>
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
@@ -26,11 +67,19 @@
   </component>
   <component name="PropertiesComponent"><![CDATA[{
   "keyToString": {
+    "Application.App.executor": "Run",
     "Application.Main.executor": "Run",
+    "JUnit.Run All Tests.executor": "Run",
+    "JUnit.UserMapperTest.userModel_to_UserEntity.executor": "Run",
+    "JUnit.UserRepositoryTest.executor": "Coverage",
+    "JUnit.UserRepositoryTest.getUserByIdShouldReturnUser.executor": "Run",
+    "JUnit.UserServiceTest.get_User_By_Id_Should_Return_User.executor": "Run",
     "Maven. [clean,install].executor": "Run",
     "Maven. [clean].executor": "Run",
+    "Maven.clean install.executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
     "RunOnceActivity.git.unshallow": "true",
+    "SHARE_PROJECT_CONFIGURATION_FILES": "true",
     "git-widget-placeholder": "main",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
@@ -49,12 +98,21 @@
   "keyToStringList": {
     "DatabaseDriversLRU": [
       "sqlite"
+    ],
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/Change SQL Dialect": [
+      "H2"
+    ],
+    "com.intellij.ide.scratch.LRUPopupBuilder$1/SQL Dialect": [
+      "SQLite"
     ]
   }
 }]]></component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
       <recent name="C:\dev\java\JavaESGIBibliotheque" />
+    </key>
+    <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
+      <recent name="com.esgi.data.users.impl" />
     </key>
   </component>
   <component name="RunAnythingCache">
@@ -63,7 +121,55 @@
       <command value="mvn clean install" />
     </option>
   </component>
-  <component name="RunManager">
+  <component name="RunManager" selected="Maven.clean install">
+    <configuration name="UserMapperTest.userModel_to_UserEntity" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibliothequeEsgi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.esgi.domain.users.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.esgi.domain.users" />
+      <option name="MAIN_CLASS_NAME" value="com.esgi.domain.users.UserMapperTest" />
+      <option name="METHOD_NAME" value="userModel_to_UserEntity" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserRepositoryTest.getUserByIdShouldReturnUser" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibliothequeEsgi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="data.users.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="data.users" />
+      <option name="MAIN_CLASS_NAME" value="data.users.UserRepositoryTest" />
+      <option name="METHOD_NAME" value="getUserByIdShouldReturnUser" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="UserServiceTest.get_User_By_Id_Should_Return_User" type="JUnit" factoryName="JUnit" temporary="true" nameIsGenerated="true">
+      <module name="bibliothequeEsgi" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.esgi.domain.users.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <option name="PACKAGE_NAME" value="com.esgi.domain.users" />
+      <option name="MAIN_CLASS_NAME" value="com.esgi.domain.users.UserServiceTest" />
+      <option name="METHOD_NAME" value="get_User_By_Id_Should_Return_User" />
+      <option name="TEST_OBJECT" value="method" />
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
     <configuration default="true" type="JetRunConfigurationType">
       <module name="JavaESGIBibliotheque" />
       <method v="2">
@@ -125,6 +231,22 @@
       <EXTENSION ID="PythonCoverageRunConfigurationExtension" runner="coverage.py" />
       <method v="2" />
     </configuration>
+    <list>
+      <item itemvalue="Application.App (Menu)" />
+      <item itemvalue="JUnit.All Tests" />
+      <item itemvalue="JUnit.UserMapperTest.userModel_to_UserEntity" />
+      <item itemvalue="JUnit.UserServiceTest.get_User_By_Id_Should_Return_User" />
+      <item itemvalue="JUnit.UserRepositoryTest.getUserByIdShouldReturnUser" />
+      <item itemvalue="Maven.clean install" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="JUnit.All Tests" />
+        <item itemvalue="JUnit.UserMapperTest.userModel_to_UserEntity" />
+        <item itemvalue="JUnit.UserServiceTest.get_User_By_Id_Should_Return_User" />
+        <item itemvalue="JUnit.UserRepositoryTest.getUserByIdShouldReturnUser" />
+      </list>
+    </recent_temporary>
   </component>
   <component name="SharedIndexes">
     <attachedChunks>
@@ -143,11 +265,20 @@
       <option name="presentableId" value="Default" />
       <updated>1737704635820</updated>
       <workItem from="1737704637571" duration="334000" />
-      <workItem from="1737705004627" duration="735000" />
+      <workItem from="1737705004627" duration="5710000" />
+      <workItem from="1737719169600" duration="18221000" />
     </task>
     <servers />
   </component>
   <component name="TypeScriptGeneratedFilesManager">
     <option name="version" value="3" />
+  </component>
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/JavaESGIBibliotheque$UserRepositoryTest.ic" NAME="UserRepositoryTest Coverage Results" MODIFIED="1737752046649" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>data.users.*</FILTER>
+    </SUITE>
+    <SUITE FILE_PATH="coverage/JavaESGIBibliotheque$Run_All_Tests.ic" NAME="Run All Tests Coverage Results" MODIFIED="1737754180616" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>*</FILTER>
+    </SUITE>
   </component>
 </project>
