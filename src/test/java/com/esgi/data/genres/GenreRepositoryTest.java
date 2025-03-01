@@ -1,35 +1,31 @@
-package com.esgi.data.authors;
-
+package com.esgi.data.genres;
 
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.data.authors.impl.AuthorRepositoryImpl;
+import com.esgi.data.genres.impl.GenreRepositoryImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-
-public class AuthorRepositoryTest {
-    private AuthorRepository authorRepository;
+public class GenreRepositoryTest {
+    private GenreRepository genreRepository;
 
     @BeforeAll
     public static void setUpBeforeAll() {
         com.esgi.users.helpers.DatabaseTestHelper.initTestDb();
     }
-
     @BeforeEach
     public void setUp() {
-        authorRepository = new AuthorRepositoryImpl();
+        genreRepository = new GenreRepositoryImpl();
     }
 
     @Test
-    public void get_Author_By_Id_Should_Return_Author() throws Exception{
+    public void get_Genre_By_Id_Should_Return_Author() throws Exception{
 
         //Arrange
-        Integer authorId = 1;
-
+        Integer genreId = 1;
         //Act
-        AuthorModel actual = authorRepository.getById(authorId);
+        GenreModel actual = genreRepository.getById(genreId);
 
         //Assert
         Assertions.assertThat(actual)
@@ -38,16 +34,13 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void get_Author_By_Id_When_Not_Found_Should_Throw() {
+    public void get_Genre_By_Id_When_Not_Found_Should_Throw() {
         // Arrange
-        Integer authorId = 0;
+        Integer genreId = 0;
 
         // Act - Assert
-        Assertions.assertThatThrownBy(() -> authorRepository.getById(authorId))
+        Assertions.assertThatThrownBy(() -> genreRepository.getById(genreId))
                 .isInstanceOf(NotFoundException.class);
     }
 
 }
-
-
-
