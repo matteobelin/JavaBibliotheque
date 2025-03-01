@@ -10,11 +10,11 @@ INSERT INTO authors (name) VALUES
 ('Agatha Christie'),
 ('Walter Isaacson');
 
-INSERT INTO books (title) VALUES
-('Foundation'),
-('Harry Potter and the Philosopher s Stone'),
-('Murder on the Orient Express'),
-('Steve Jobs');
+INSERT INTO books (title, author_id) VALUES
+('Foundation', 1),
+('Harry Potter and the Philosopher s Stone', 2),
+('Murder on the Orient Express', 3),
+('Steve Jobs', 4);
 
 INSERT INTO users (email, name, isAdmin, password) VALUES
 ('admin@example.com', 'Admin User', TRUE, 'test'),
