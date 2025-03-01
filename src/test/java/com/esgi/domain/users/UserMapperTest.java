@@ -31,10 +31,10 @@ public class UserMapperTest {
     }
 
     private UserModel makeUserModel() {
-        return new UserModel(1, "email", true, "name");
+        return new UserModel(1, "email", true, "name", "test");
     }
 
     private UserEntity makeUserEntity() {
-        return new UserEntity(1, "email", true, "name");
+        return new UserEntity(1, "email", true, "name", "test");
     }
 }

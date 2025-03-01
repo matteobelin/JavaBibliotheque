@@ -27,7 +27,8 @@ CREATE TABLE users (
                        id INTEGER PRIMARY KEY AUTOINCREMENT,
                        email TEXT NOT NULL UNIQUE,
                        name TEXT NOT NULL,
-                       isAdmin BOOLEAN NOT NULL DEFAULT 0
+                       isAdmin BOOLEAN NOT NULL DEFAULT 0,
+                       password TEXT NOT NULL
 );
 
 CREATE TABLE loans (

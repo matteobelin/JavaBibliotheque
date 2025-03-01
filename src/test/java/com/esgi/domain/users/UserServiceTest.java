@@ -27,8 +27,8 @@ public class UserServiceTest {
     public void get_User_By_Id_Should_Return_User() throws NotFoundException {
         // Arrange
         Integer userId = 1;
-        UserEntity expectedUser = new UserEntity(userId, "email", true, "name");
-        UserModel returnedUser = new UserModel(userId, "email", true, "name");
+        UserEntity expectedUser = new UserEntity(userId, "email", true, "name", "test");
+        UserModel returnedUser = new UserModel(userId, "email", true, "name", "test");
 
         Mockito.when(userRepository.getById(userId)).thenReturn(returnedUser);
         Mockito.when(userMapper.modelToEntity(Mockito.any())).thenReturn(expectedUser);

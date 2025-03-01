@@ -8,7 +8,8 @@ public class UserMapper {
             userModel.getId(),
             userModel.getEmail(),
             userModel.isAdmin(),
-            userModel.getName()
+            userModel.getName(),
+            userModel.getPassword()
         );
     }
 }

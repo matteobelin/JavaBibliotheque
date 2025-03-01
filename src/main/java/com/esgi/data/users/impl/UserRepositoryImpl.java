@@ -16,16 +16,12 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
 
     @Override
     protected UserModel parseSQLResult(ResultSet resultSet) throws SQLException {
-        int idColumn = resultSet.findColumn("id");
-        int emailColumn = resultSet.findColumn("email");
-        int passwordColumn = resultSet.findColumn("isAdmin");
-        int nameColumn = resultSet.findColumn("name");
-
         return new UserModel(
-                resultSet.getInt(idColumn),
-                resultSet.getString(emailColumn),
-                resultSet.getBoolean(passwordColumn),
-                resultSet.getString(nameColumn)
+                resultSet.getInt("id"),
+                resultSet.getString("email"),
+                resultSet.getBoolean("isAdmin"),
+                resultSet.getString("name"),
+                resultSet.getString("password")
         );
     }
 }
