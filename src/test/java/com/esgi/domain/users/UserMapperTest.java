@@ -30,6 +30,18 @@ public class UserMapperTest {
                 .isEqualTo(expectedUserEntity);
     }
 
+    @Test
+    public void userEntity_to_UserModel() {
+        UserEntity userEntity = makeUserEntity();
+        UserModel expectedUserModel = makeUserModel();
+
+        UserModel result = userMapper.entityToModel(userEntity);
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(expectedUserModel);
+    }
+
     private UserModel makeUserModel() {
         return new UserModel(1, "email", true, "name", "test");
     }

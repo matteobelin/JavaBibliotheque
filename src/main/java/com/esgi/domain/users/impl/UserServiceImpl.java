@@ -26,4 +26,10 @@ public class UserServiceImpl implements UserService {
     public UserEntity getUserByEmail(String email) {
         throw new RuntimeException("Not implemented yet");
     }
+
+    @Override
+    public void createUser(UserEntity user) {
+        UserModel userModel = userMapper.entityToModel(user);
+        userRepository.create(userModel);
+    }
 }

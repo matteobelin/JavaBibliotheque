@@ -35,4 +35,6 @@ public abstract class Repository<T extends Model> {
             throw new RuntimeException(e);
         }
     }
+
+    public abstract void create(T model);
 }

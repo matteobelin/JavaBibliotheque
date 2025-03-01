@@ -12,7 +12,7 @@ public class GenreRepositoryTest {
 
     @BeforeAll
     public static void setUpBeforeAll() {
-        com.esgi.users.helpers.DatabaseTestHelper.initTestDb();
+        com.esgi.helpers.DatabaseTestHelper.initTestDb();
     }
     @BeforeEach
     public void setUp() {

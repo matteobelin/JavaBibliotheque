@@ -41,4 +41,16 @@ public class UserServiceTest {
                 .isNotNull()
                 .isEqualTo(expectedUser);
     }
+
+    @Test
+    public void create_User_Should_Not_Throw() {
+        //Arrange
+        UserEntity user = new UserEntity(0, "email", true, "name", "test");
+        UserModel expectedUser = new UserModel(0, "email", true, "name", "test");
+        Mockito.when(userMapper.entityToModel(user)).thenReturn(expectedUser);
+        Mockito.doNothing().when(userRepository).create(expectedUser);
+
+        //Act
+        userService.createUser(user);
+    }
 }
