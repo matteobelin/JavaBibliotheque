@@ -2,7 +2,7 @@ package com.esgi.data.users;
 
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.impl.UserRepositoryImpl;
-import com.esgi.users.helpers.DatabaseTestHelper;
+import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -18,6 +18,7 @@ public class UserRepositoryTest {
 
     @BeforeEach
     public void setUp() {
+        DatabaseTestHelper.resetTestDb();
         userRepository = new UserRepositoryImpl();
     }
 
@@ -43,5 +44,53 @@ public class UserRepositoryTest {
         // Act - Assert
         Assertions.assertThatThrownBy(() -> userRepository.getById(userId))
                 .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void create_User_Should_Save_User() {
+        //Arrange
+        UserModel user = new UserModel(
+            null,
+            "test@email.com",
+            false,
+            "name",
+            "password"
+        );
+
+        //Act - Assert
+        userRepository.create(user);
+    }
+
+    @Test
+    void create_User_With_Existing_Email_Should_Throw() {
+        //Arrange
+        UserModel user = new UserModel(
+                null,
+                "test@email.com",
+                false,
+                "name",
+                "password"
+        );
+
+        //Act
+        userRepository.create(user);
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> userRepository.create(user));
+    }
+
+    @Test
+    void create_User_With_Missing_Mandatory_Data_Should_Throw() {
+        //Arrange
+        UserModel user = new UserModel(
+                null,
+                "test@email.com",
+                false,
+                "name",
+                null
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> userRepository.create(user));
     }
 }
