@@ -4,6 +4,7 @@ import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.Repository;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
+import jdk.jshell.spi.ExecutionControl;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -21,6 +22,11 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
                 resultSet.getString("name")
         );
 
+    }
+
+    @Override
+    public void create(AuthorModel model) {
+        throw new RuntimeException("Not implemented yet");
     }
 
 }
