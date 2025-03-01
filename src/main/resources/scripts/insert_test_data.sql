@@ -16,10 +16,10 @@ INSERT INTO books (id, title) VALUES
 (3, 'Murder on the Orient Express'),
 (4, 'Steve Jobs');
 
-INSERT INTO users (id, email, name, isAdmin) VALUES
-(1, 'admin@example.com', 'Admin User', TRUE),
-(2, 'user1@example.com', 'User One', FALSE),
-(3, 'user2@example.com', 'User Two', FALSE);
+INSERT INTO users (id, email, name, isAdmin, password) VALUES
+(1, 'admin@example.com', 'Admin User', TRUE, 'test'),
+(2, 'user1@example.com', 'User One', FALSE, 'test'),
+(3, 'user2@example.com', 'User Two', FALSE, 'test');
 
 INSERT INTO loans (id, user_id, book_id, start_date, end_date) VALUES
 (1, 1, 1, '2025-01-01', '2025-01-15'),
