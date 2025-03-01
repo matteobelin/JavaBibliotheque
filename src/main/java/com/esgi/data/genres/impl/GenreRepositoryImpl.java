@@ -18,4 +18,9 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
             resultSet.getString("name")
     );
     }
+
+    @Override
+    public void create(GenreModel model) {
+        throw new RuntimeException("Not implemented yet");
+    }
 }
