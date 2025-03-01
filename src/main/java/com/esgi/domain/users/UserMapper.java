@@ -12,4 +12,14 @@ public class UserMapper {
             userModel.getPassword()
         );
     }
+
+    public UserModel entityToModel(UserEntity userEntity) {
+        return new UserModel(
+            userEntity.getId(),
+            userEntity.getEmail(),
+            userEntity.isAdmin(),
+            userEntity.getName(),
+            userEntity.getPassword()
+        );
+    }
 }

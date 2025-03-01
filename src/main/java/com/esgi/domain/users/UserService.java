@@ -5,4 +5,5 @@ import com.esgi.core.exceptions.NotFoundException;
 public interface UserService {
     UserEntity getUserById(int id) throws NotFoundException;
     UserEntity getUserByEmail(String email);
+    void createUser(UserEntity user);
 }

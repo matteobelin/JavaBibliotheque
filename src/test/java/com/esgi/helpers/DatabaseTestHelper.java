@@ -1,4 +1,4 @@
-package com.esgi.users.helpers;
+package com.esgi.helpers;
 
 import com.esgi.data.DataConfig;
 
@@ -17,6 +17,7 @@ public class DatabaseTestHelper {
 
     private static final String createTestDbScript = "scripts/create_test_db.sql";
     private static final String insertTestDataScript = "scripts/insert_test_data.sql";
+    private static final String truncateTestDataScript = "scripts/truncate_test_db.sql";
 
     private static boolean isDbInitialized = false;
 
@@ -36,6 +37,21 @@ public class DatabaseTestHelper {
         executeSqlScript(insertTestDataScript);
 
         isDbInitialized = true;
+    }
+
+    public static void resetTestDb() {
+        if (!isDbInitialized) {
+            initTestDb();
+            return;
+        }
+
+        DataConfig.useTestDb();
+
+        logger.info("Truncating test database...");
+        executeSqlScript(truncateTestDataScript);
+
+        logger.info("Inserting test data...");
+        executeSqlScript(insertTestDataScript);
     }
 
     private static void executeSqlScript(String file) {
