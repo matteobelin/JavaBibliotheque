@@ -11,14 +11,14 @@ public final class AppLogger {
     }
 
     public static void success(String message) {
-        AppLogger.write(AppLoggerColorEnum.GREEN, message);
+        AppLogger.write(AppLoggerColorEnum.GREEN, "✅ " + message);
     }
 
     public static void error(String message) {
-        AppLogger.write(AppLoggerColorEnum.RED, message);
+        AppLogger.write(AppLoggerColorEnum.RED, "❌ " + message);
     }
 
     public static void warn(String message) {
-        AppLogger.write(AppLoggerColorEnum.ORANGE, message);
+        AppLogger.write(AppLoggerColorEnum.ORANGE, "⚠️ " + message);
     }
 }

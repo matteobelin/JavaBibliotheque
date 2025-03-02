@@ -1,5 +1,7 @@
 package com.esgi.domain.users;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
@@ -43,10 +45,10 @@ public class UserServiceTest {
     }
 
     @Test
-    public void create_User_Should_Not_Throw() {
+    public void create_User_Should_Not_Throw() throws ConstraintViolationException, InvalidArgumentException {
         //Arrange
-        UserEntity user = new UserEntity(0, "email", true, "name", "test");
-        UserModel expectedUser = new UserModel(0, "email", true, "name", "test");
+        UserEntity user = new UserEntity(0, "email@gmail.com", true, "name", "test");
+        UserModel expectedUser = new UserModel(0, "email@gmail.com", true, "name", "test");
         Mockito.when(userMapper.entityToModel(user)).thenReturn(expectedUser);
         Mockito.doNothing().when(userRepository).create(expectedUser);
 

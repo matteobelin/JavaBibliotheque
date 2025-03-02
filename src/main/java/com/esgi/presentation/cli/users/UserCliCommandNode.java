@@ -15,6 +15,8 @@ public class UserCliCommandNode extends CliCommandNode {
 
     public UserCliCommandNode(AddUserCliCommandNode addUserCliCommandNode) {
         childrenCommands = new ArrayList<>();
+
+        // TODO : check if user has the rights to use admin only commands
         childrenCommands.add(addUserCliCommandNode);
 
         childrenCommands.add(new HelpCliCommand(List.copyOf(childrenCommands)));

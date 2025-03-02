@@ -42,7 +42,7 @@ public abstract class CliCommandNode {
         return ExitCode.COMMAND_NOT_FOUND;
     }
 
-    protected List<String> getValuesFromArgs(String[] args) {
+    protected List<String> extractValuesFromArgs(String[] args) {
         List<String> values = new ArrayList<>();
 
         for (String arg : args) {
@@ -57,7 +57,7 @@ public abstract class CliCommandNode {
         return values;
     }
 
-    protected List<CliCommandNodeOption> getOptionsFromArgs(String[] args) {
+    protected List<CliCommandNodeOption> extractOptionsFromArgs(String[] args) {
         List<CliCommandNodeOption> options = new ArrayList<>();
 
         for (String arg : args) {
@@ -66,7 +66,7 @@ public abstract class CliCommandNode {
                 continue;
             }
 
-            String optionName = arg.replaceFirst("-", "");
+            String optionName = arg.replaceAll("-", "");
             var option = this.findOptionByName(optionName);
             if (option.isPresent()) {
                 options.add(option.get());

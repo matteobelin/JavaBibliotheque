@@ -79,7 +79,7 @@ public class HelpCliCommand extends CliCommandNode {
         String optionShortName = commandOption.getShortName();
         String optionDescription = commandOption.getDescription();
 
-        String optionHelpMessage = String.format("--%s ou -%s : %s", optionName, optionShortName, optionDescription);
+        String optionHelpMessage = String.format("--%s or -%s : %s", optionName, optionShortName, optionDescription);
         this.writeWithIndent(optionHelpMessage);
     }
 
