@@ -1,6 +1,8 @@
 package com.esgi.data;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
+import org.sqlite.SQLiteException;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -36,5 +38,5 @@ public abstract class Repository<T extends Model> {
         }
     }
 
-    public abstract void create(T model);
+    public abstract void create(T model) throws ConstraintViolationException;
 }
