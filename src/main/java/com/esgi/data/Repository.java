@@ -1,6 +1,8 @@
 package com.esgi.data;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
+import org.sqlite.SQLiteException;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
@@ -38,6 +40,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+
     public <T> List<T> getListById(Integer id, String searchElement, String columnName, Class<T> clazz) throws SQLException {
         List<T> listIds = new ArrayList<>();
 
@@ -61,7 +64,6 @@ public abstract class Repository<T extends Model> {
         return listIds;
     }
 
+    public abstract void create(T model) throws ConstraintViolationException;
 
-
-    public abstract void create(T model);
 }

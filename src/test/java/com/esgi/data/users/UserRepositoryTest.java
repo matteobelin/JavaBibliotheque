@@ -1,5 +1,6 @@
 package com.esgi.data.users;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.impl.UserRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
@@ -47,7 +48,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void create_User_Should_Save_User() {
+    void create_User_Should_Save_User() throws ConstraintViolationException {
         //Arrange
         UserModel user = new UserModel(
             null,
@@ -62,7 +63,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void create_User_With_Existing_Email_Should_Throw() {
+    void create_User_With_Existing_Email_Should_Throw() throws ConstraintViolationException {
         //Arrange
         UserModel user = new UserModel(
                 null,

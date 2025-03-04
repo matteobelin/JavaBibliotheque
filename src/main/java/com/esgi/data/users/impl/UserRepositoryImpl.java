@@ -1,5 +1,8 @@
 package com.esgi.data.users.impl;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
+import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
@@ -7,6 +10,7 @@ import com.esgi.data.users.UserRepository;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Optional;
 
 public class UserRepositoryImpl extends Repository<UserModel> implements UserRepository {
     @Override
@@ -26,7 +30,7 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
     }
 
     @Override
-    public void create(UserModel user) {
+    public void create(UserModel user) throws ConstraintViolationException {
         try (var conn = DriverManager.getConnection(connectionString)) {
             String sql = "INSERT INTO " + getTableName() + " (email, name, password, isAdmin) VALUES (?, ?, ?, ?)";
             var statement = conn.prepareStatement(sql);
@@ -38,7 +42,20 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
+
+            boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
+            if (exceptionTypeNotFound) {
+                throw new RuntimeException(e);
+            }
+
+            switch (optionalExceptionType.get()) {
+                case CONSTRAINT_UNIQUE:
+                    String exceptionMessage = String.format("A user with this email (%s) already exists.", user.getEmail());
+                    throw new ConstraintViolationException(exceptionMessage);
+                case CONSTRAINT_NOTNULL:
+                    throw new ConstraintViolationException("A required field of the user is missing.");
+            }
         }
     }
 }

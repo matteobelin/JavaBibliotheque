@@ -2,7 +2,6 @@ package com.esgi.domain.users;
 
 import com.esgi.data.users.UserModel;
 import org.assertj.core.api.Assertions;
-import org.h2.engine.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
