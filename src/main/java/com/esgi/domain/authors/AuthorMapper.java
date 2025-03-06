@@ -8,4 +8,10 @@ public class AuthorMapper {
                 authorModel.getName()
         );
     }
+    public AuthorModel entityToModel(AuthorEntity authorEntity){
+        return new AuthorModel(
+                authorEntity.getId(),
+                authorEntity.getName()
+        );
+    }
 }
