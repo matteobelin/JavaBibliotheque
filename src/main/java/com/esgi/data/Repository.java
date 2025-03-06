@@ -41,21 +41,17 @@ public abstract class Repository<T extends Model> {
     }
 
 
-    public <T> List<T> getListById(Integer id, String searchElement, String columnName, String tableName,Class<T> clazz) throws SQLException {
+    public <T> List<T> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName) throws SQLException {
         List<T> listIds = new ArrayList<>();
 
         try (var conn = DriverManager.getConnection(connectionString)){
-            String sql = "SELECT " + columnName + " FROM "+ tableName +" WHERE " + searchElement + " = ?";
+            String sql = "SELECT " + relatedIdColumn + " FROM "+ joinTableName +" WHERE " + entityIdColumn + " = ?";
             var statement = conn.prepareStatement(sql);
-                statement.setInt(1, id);
+                statement.setInt(1, entityId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    if (clazz == Integer.class) {
-                        listIds.add(clazz.cast(resultSet.getInt(columnName)));
-                    } else if (clazz == String.class) {
-                        listIds.add(clazz.cast(resultSet.getString(columnName)));
-                    }
+                    resultSet.getInt(relatedIdColumn);
                 }
             }
         } catch (SQLException e) {

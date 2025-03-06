@@ -25,21 +25,21 @@ public class BookMapper {
         return new BookEntity(
                 bookModel.getId(),
                 bookModel.getTitle(),
-                authorService.getAuthorById(bookModel.getAuthor_id()),
-                mapGenreIdsToEntities(bookModel.getGenre_ids())
+                authorService.getAuthorById(bookModel.getAuthorId()),
+                mapGenreIdsToEntities(bookModel.getGenreIds())
         );
     }
 
+    private GenreEntity getGenreEntityById(int id) {
+        try {
+            return genreService.getGenreById(id);
+        } catch (NotFoundException e) {
+            throw new RuntimeException("Genre not found for ID: " + id, e);
+        }
+    }
 
     private List<GenreEntity> mapGenreIdsToEntities(List<Integer> genreIds) {
         return genreIds.stream()
-                .map(id -> {
-                    try {
-                        return genreService.getGenreById(id);
-                    } catch (NotFoundException e) {
-                        throw new RuntimeException("Genre not found for ID: " + id, e);
-                    }
-                })
-                .collect(Collectors.toList());
+                .map(this::getGenreEntityById).collect(Collectors.toList());
     }
 }

@@ -46,7 +46,7 @@ public class BookRepositoryTest {
         BookModel actual = bookRepository.getById(bookId);
 
         // Assert
-        Assertions.assertThat(actual.getGenre_ids()).isNotNull().isNotEmpty();
+        Assertions.assertThat(actual.getGenreIds()).isNotNull().isNotEmpty();
     }
 
     @Test
@@ -58,7 +58,7 @@ public class BookRepositoryTest {
         BookModel actual = bookRepository.getById(bookId);
 
         // Assert
-        Assertions.assertThat(actual.getAuthor_id()).isNotNull();
+        Assertions.assertThat(actual.getAuthorId()).isNotNull();
     }
 
     @Test
