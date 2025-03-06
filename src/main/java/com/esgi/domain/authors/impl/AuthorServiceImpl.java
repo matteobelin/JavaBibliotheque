@@ -1,5 +1,6 @@
 package com.esgi.domain.authors.impl;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
@@ -20,6 +21,12 @@ public class AuthorServiceImpl implements AuthorService {
     public AuthorEntity getAuthorById(int id) throws NotFoundException{
         AuthorModel authorModel = authorRepository.getById(id);
         return authorMapper.modelToEntity(authorModel);
+    }
+
+    @Override
+    public void createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
+        AuthorModel authorModel = authorMapper.entityToModel(authorEntity);
+        authorRepository.create(authorModel);
     }
 
 

@@ -28,6 +28,22 @@ public class AuthorMapperTest {
 
     }
 
+    @Test
+    public void authorEntity_to_AuthorModel(){
+        //Arrange
+        AuthorModel expectedModel = makeAuthorModel();
+        AuthorEntity authorEntity = makeAuthorEntity();
+
+        //Act
+        AuthorModel result = authorMapper.entityToModel(authorEntity);
+
+        //Assert
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(expectedModel);
+
+    }
+
 
     private AuthorModel makeAuthorModel() {
         return new AuthorModel(2, "J.K. Rowling");
