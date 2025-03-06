@@ -2,7 +2,6 @@ package com.esgi.domain.authors;
 
 import com.esgi.data.authors.AuthorModel;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
