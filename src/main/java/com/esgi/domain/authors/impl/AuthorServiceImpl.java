@@ -17,7 +17,6 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorMapper = authorMapper;
     }
 
-    @Override
     public AuthorEntity getAuthorById(int id) throws NotFoundException{
         AuthorModel authorModel = authorRepository.getById(id);
         return authorMapper.modelToEntity(authorModel);

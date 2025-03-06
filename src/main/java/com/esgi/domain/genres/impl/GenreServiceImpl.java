@@ -18,10 +18,8 @@ public class GenreServiceImpl implements GenreService {
         this.genreMapper = new GenreMapper();
     }
 
-    @Override
     public GenreEntity getGenreById(int id) throws NotFoundException {
         GenreModel genreModel = genreRepository.getById(id);
         return genreMapper.modelToEntity(genreModel);
     }
-
 }
