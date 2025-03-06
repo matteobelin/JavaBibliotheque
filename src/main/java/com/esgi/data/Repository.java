@@ -41,11 +41,11 @@ public abstract class Repository<T extends Model> {
     }
 
 
-    public <T> List<T> getListById(Integer id, String searchElement, String columnName, Class<T> clazz) throws SQLException {
+    public <T> List<T> getListById(Integer id, String searchElement, String columnName, String tableName,Class<T> clazz) throws SQLException {
         List<T> listIds = new ArrayList<>();
 
         try (var conn = DriverManager.getConnection(connectionString)){
-            String sql = "SELECT " + columnName + " FROM genre_book WHERE " + searchElement + " = ?";
+            String sql = "SELECT " + columnName + " FROM "+ tableName +" WHERE " + searchElement + " = ?";
             var statement = conn.prepareStatement(sql);
                 statement.setInt(1, id);
 
