@@ -22,7 +22,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         BookModel book = super.getById(id);
         List<Integer> genreIds = new ArrayList<>();
         try {
-            genreIds = getListById(id, "book_id", "genre_id", Integer.class);
+            genreIds = getListById(id, "book_id", "genre_id", "genre_book",Integer.class);
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
