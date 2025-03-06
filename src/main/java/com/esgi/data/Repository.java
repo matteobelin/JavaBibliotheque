@@ -27,7 +27,7 @@ public abstract class Repository<T extends Model> {
 
             try (var result = statement.executeQuery()) {
                 if(!result.next()) {
-                  throw new NotFoundException(String.format("Record with id '%d' not found in table '%s'", id, getTableName()));
+                    throw new NotFoundException(String.format("Record with id '%d' not found in table '%s'", id, getTableName()));
                 }
 
                 return parseSQLResult(result);

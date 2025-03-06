@@ -11,6 +11,7 @@ import com.esgi.data.authors.AuthorRepository;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.Optional;
 
 public class AuthorRepositoryImpl extends Repository<AuthorModel> implements AuthorRepository {
@@ -32,9 +33,17 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
     public void create(AuthorModel author) throws ConstraintViolationException {
         try (var conn = DriverManager.getConnection(connectionString)){
             String sql = "INSERT INTO " + getTableName() + " (name) VALUES (?)";
-            var statement = conn.prepareStatement(sql);
+            var statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+
             statement.setString(1, author.getName());
             statement.execute();
+
+            try (var generatedKeys = statement.getGeneratedKeys()) {
+                if (generatedKeys.next()) {
+                    long generatedId = generatedKeys.getLong(1);
+                    author.setId((int) generatedId);
+                }
+            }
         } catch (SQLException e) {
             Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 

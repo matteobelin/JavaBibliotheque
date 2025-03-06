@@ -2,7 +2,6 @@ package com.esgi.domain.authors;
 
 import com.esgi.data.authors.AuthorModel;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -26,6 +25,22 @@ public class AuthorMapperTest {
         Assertions.assertThat(result)
                 .isNotNull()
                 .isEqualTo(expectedEntity);
+
+    }
+
+    @Test
+    public void authorEntity_to_AuthorModel(){
+        //Arrange
+        AuthorModel expectedModel = makeAuthorModel();
+        AuthorEntity authorEntity = makeAuthorEntity();
+
+        //Act
+        AuthorModel result = authorMapper.entityToModel(authorEntity);
+
+        //Assert
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(expectedModel);
 
     }
 
