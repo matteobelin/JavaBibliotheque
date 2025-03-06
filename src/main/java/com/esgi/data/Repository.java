@@ -7,6 +7,8 @@ import org.sqlite.SQLiteException;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
@@ -38,5 +40,26 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+
+    public <T> List<Integer> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName) throws SQLException {
+        List<Integer> listIds = new ArrayList<>();
+
+        try (var conn = DriverManager.getConnection(connectionString)){
+            String sql = "SELECT " + relatedIdColumn + " FROM "+ joinTableName +" WHERE " + entityIdColumn + " = ?";
+            var statement = conn.prepareStatement(sql);
+                statement.setInt(1, entityId);
+
+            try (ResultSet resultSet = statement.executeQuery()) {
+                while (resultSet.next()) {
+                    listIds.add(resultSet.getInt(relatedIdColumn));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return listIds;
+    }
+
     public abstract void create(T model) throws ConstraintViolationException;
+
 }
