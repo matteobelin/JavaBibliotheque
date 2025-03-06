@@ -33,8 +33,8 @@ public class BookRepositoryTest {
                 .isNotNull()
                 .hasFieldOrPropertyWithValue("id", bookId)
                 .hasFieldOrProperty("title")
-                .hasFieldOrProperty("author_id")
-                .hasFieldOrProperty("genre_ids");
+                .hasFieldOrProperty("authorId")
+                .hasFieldOrProperty("genreIds");
     }
 
     @Test

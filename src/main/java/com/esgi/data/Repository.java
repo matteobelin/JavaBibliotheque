@@ -41,8 +41,8 @@ public abstract class Repository<T extends Model> {
     }
 
 
-    public <T> List<T> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName) throws SQLException {
-        List<T> listIds = new ArrayList<>();
+    public <T> List<Integer> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName) throws SQLException {
+        List<Integer> listIds = new ArrayList<>();
 
         try (var conn = DriverManager.getConnection(connectionString)){
             String sql = "SELECT " + relatedIdColumn + " FROM "+ joinTableName +" WHERE " + entityIdColumn + " = ?";
@@ -51,7 +51,7 @@ public abstract class Repository<T extends Model> {
 
             try (ResultSet resultSet = statement.executeQuery()) {
                 while (resultSet.next()) {
-                    resultSet.getInt(relatedIdColumn);
+                    listIds.add(resultSet.getInt(relatedIdColumn));
                 }
             }
         } catch (SQLException e) {
