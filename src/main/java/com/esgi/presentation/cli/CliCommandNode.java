@@ -1,17 +1,27 @@
 package com.esgi.presentation.cli;
 
+import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.presentation.AppLogger;
+import com.esgi.presentation.CommandAccessLevel;
+import com.esgi.presentation.cli.utils.ArgsParserUtils;
+import lombok.Getter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
+@Getter
 public abstract class CliCommandNode {
+    private final String name;
+    private final String description;
+    private final CommandAccessLevel accessLevel;
 
-    public abstract String getName();
-
-    public abstract String getDescription();
+    protected CliCommandNode(String name, String description, CommandAccessLevel accessLevel) {
+        this.name = name;
+        this.description = description;
+        this.accessLevel = accessLevel;
+    }
 
     public abstract List<CliCommandNode> getChildrenCommands();
 
@@ -42,47 +52,36 @@ public abstract class CliCommandNode {
         return ExitCode.COMMAND_NOT_FOUND;
     }
 
-    protected List<String> extractValuesFromArgs(String[] args) {
-        List<String> values = new ArrayList<>();
-
-        for (String arg : args) {
-            boolean isAnOption = arg.startsWith("-");
-            if (isAnOption) {
-                continue;
-            }
-
-            values.add(arg);
-        }
-
-        return values;
-    }
-
-    protected List<CliCommandNodeOption> extractOptionsFromArgs(String[] args) {
+    protected List<CliCommandNodeOption> extractOptionsFromArgs(String[] args) throws OptionRequiresValueException {
         List<CliCommandNodeOption> options = new ArrayList<>();
 
-        for (String arg : args) {
-            boolean isNotAnOption = !arg.startsWith("-");
-            if (isNotAnOption) {
+        for (int i = 0; i < args.length; i++) {
+            String arg = args[i];
+
+            if (ArgsParserUtils.isNotAnOption(arg)) {
                 continue;
             }
 
-            String optionName = arg.replaceAll("-", "");
-            var option = this.findOptionByName(optionName);
-            if (option.isPresent()) {
-                options.add(option.get());
-            } else {
-                String warnMessage = String.format("The option `%s` does not exist for this command.", optionName);
+            var option = ArgsParserUtils.findOptionByName(this.getCommandOptions(), arg);
+
+            if (option.isEmpty()) {
+                String warnMessage = String.format("The option `%s` does not exist for this command.", arg);
                 AppLogger.warn(warnMessage);
+                continue;
             }
+
+            if (option.get().requiresValue()) {
+                if (i + 1 >= args.length || ArgsParserUtils.isAnOption(args[i + 1])) {
+                    throw new OptionRequiresValueException(arg);
+                }
+
+                option.get().setValue(args[i + 1]);
+                i++;
+            }
+
+            options.add(option.get());
         }
 
         return options;
-    }
-
-    protected Optional<CliCommandNodeOption> findOptionByName(String optionName) {
-        return this.getCommandOptions().stream()
-                .filter(option ->
-                        option.getName().equals(optionName) || option.getShortName().equals(optionName)
-                ).findFirst();
     }
 }

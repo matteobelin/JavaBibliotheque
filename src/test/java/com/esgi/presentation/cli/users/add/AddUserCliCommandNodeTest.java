@@ -1,5 +1,8 @@
 package com.esgi.presentation.cli.users.add;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InvalidArgumentException;
+import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.impl.UserServiceImpl;
 import com.esgi.presentation.cli.ExitCode;
 import org.assertj.core.api.Assertions;
@@ -7,7 +10,10 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+
+import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class AddUserCliCommandNodeTest {
@@ -26,7 +32,6 @@ public class AddUserCliCommandNodeTest {
     public void should_create_user() {
         // Arrange
         String[] args = {"email", "password"};
-        // Mockito.when(userService.create(any())).thenReturn(new UserEntity());
 
         // Act
         ExitCode exitCode = this.addUserCliCommandNode.run(args);
@@ -39,7 +44,6 @@ public class AddUserCliCommandNodeTest {
     public void with_valid_option_should_create_user() {
         // Arrange
         String[] args = {"-a", "email", "password"};
-        // Mockito.when(userService.create(any())).thenReturn(new UserEntity());
 
         // Act
         ExitCode exitCode = this.addUserCliCommandNode.run(args);
@@ -64,7 +68,6 @@ public class AddUserCliCommandNodeTest {
     public void with_unknown_option_should_create_user() {
         // Arrange
         String[] args = {"-option", "email", "password"};
-        // Mockito.when(userService.create(any())).thenReturn(new UserEntity());
 
         // Act
         ExitCode exitCode = this.addUserCliCommandNode.run(args);
