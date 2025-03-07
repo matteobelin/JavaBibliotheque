@@ -8,15 +8,21 @@ import java.util.Optional;
 
 public final class ArgsParserUtils {
 
-    public static List<String> extractValuesFromArgs(String[] args) {
+    public static List<String> extractValuesFromArgs(String[] args, List<CliCommandNodeOption> options) {
         List<String> values = new ArrayList<>();
 
-        for (String arg : args) {
-            if (isAnOption(arg)) {
-                continue;
-            }
+        for (int i = 0; i < args.length; ++i) {
+            String arg = args[i];
 
-            values.add(arg);
+            if (isNotAnOption(arg)) {
+                values.add(arg);
+            } else {
+                var foundOption = findOptionByName(options, arg);
+
+                if (foundOption.isPresent() && foundOption.get().requiresValue()) {
+                    i++; // skip the value of the option
+                }
+            }
         }
 
         return values;

@@ -16,10 +16,23 @@ public class ArgsParserutilsTest {
         String[] args = new String[] {"biblio", "users", "add", "--admin", "email", "password"};
 
         // Act
-        List<String> values = ArgsParserUtils.extractValuesFromArgs(args);
+        List<String> values = ArgsParserUtils.extractValuesFromArgs(args, List.of());
 
         // Assert
         Assertions.assertThat(values).containsExactly("biblio", "users", "add", "email", "password");
+    }
+
+    @Test
+    public void extractValuesFromArgsShouldNotExtractValueOfOption() {
+        // Arrange
+        String[] args = new String[] {"biblio", "users", "add", "--admin", "email", "password"};
+        var optionWithValue = new CliCommandNodeOption("admin", "a", "", true) {};
+
+        // Act
+        List<String> values = ArgsParserUtils.extractValuesFromArgs(args, List.of(optionWithValue));
+
+        // Assert
+        Assertions.assertThat(values).containsExactly("biblio", "users", "add", "password");
     }
 
     @Test

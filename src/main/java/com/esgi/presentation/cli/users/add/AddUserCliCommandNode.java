@@ -43,7 +43,7 @@ public class AddUserCliCommandNode extends CliCommandNode {
 
     @Override
     public ExitCode run(String[] args) {
-        List<String> values = ArgsParserUtils.extractValuesFromArgs(args);
+        List<String> values = ArgsParserUtils.extractValuesFromArgs(args, this.getCommandOptions());
         if (values.size() < 2) {
             AppLogger.error("The email and password are required : users add [OPTIONS] EMAIL PASSWORD");
             return ExitCode.ARGUMENT_MISSING;
