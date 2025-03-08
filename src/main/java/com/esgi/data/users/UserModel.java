@@ -13,7 +13,6 @@ public class UserModel extends Model {
     private String name;
     private String password;
 
-    public UserModel() {}
     public UserModel(Integer id, String email, boolean isAdmin, String name, String password) {
         super(id);
         this.email = email;

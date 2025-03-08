@@ -31,6 +31,11 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     @Override
+    protected String exceptionMessage(BookModel model) {
+        return "";
+    }
+
+    @Override
     protected BookModel parseSQLResult(ResultSet resultSet) throws SQLException {
         int bookId = resultSet.getInt("id");
         String title = resultSet.getString("title");
@@ -39,9 +44,5 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return new BookModel(bookId, title, authorId, new ArrayList<>());
     }
 
-    @Override
-    public void create(BookModel model) {
-        throw new RuntimeException("Not implemented yet");
-    }
 
 }

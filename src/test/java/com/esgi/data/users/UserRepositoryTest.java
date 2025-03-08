@@ -2,12 +2,14 @@ package com.esgi.data.users;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
+import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.users.impl.UserRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
 
 public class UserRepositoryTest {
     private UserRepository userRepository;
@@ -48,7 +50,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void create_User_Should_Save_User() throws ConstraintViolationException {
+    void create_User_Should_Save_User() throws ConstraintViolationException, NotFoundException {
         //Arrange
         UserModel user = new UserModel(
             null,
@@ -58,8 +60,17 @@ public class UserRepositoryTest {
             "password"
         );
 
-        //Act - Assert
+        //Act
         userRepository.create(user);
+        Integer userId = user.getId();
+        UserModel actual = userRepository.getById(userId);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .extracting(UserModel::getEmail)
+                .isEqualTo(user.getEmail());
+
     }
 
     @Test
