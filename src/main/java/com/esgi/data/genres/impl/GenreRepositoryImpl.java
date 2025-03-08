@@ -20,8 +20,8 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
     }
 
     @Override
-    protected String exceptionMessage(GenreModel model) {
-        return "";
+    protected String exceptionMessage(GenreModel genre) {
+        return String.format("An author with this name (%s) already exists.", genre.getName());
     }
 
 
