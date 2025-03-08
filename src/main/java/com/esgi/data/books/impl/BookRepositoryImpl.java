@@ -31,6 +31,11 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
 
 
     @Override
+    protected String exceptionMessage(BookModel model) {
+        return "";
+    }
+
+    @Override
     protected BookModel parseSQLResult(ResultSet resultSet) throws SQLException {
         int bookId = resultSet.getInt("id");
         String title = resultSet.getString("title");
