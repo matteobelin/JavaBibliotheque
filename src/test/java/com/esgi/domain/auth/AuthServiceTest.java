@@ -131,9 +131,11 @@ public class AuthServiceTest {
         when(this.userService.getUserByEmail(any())).thenReturn(user);
 
         // Act
-        this.authService.tryToLoginWithSavedCredentials();
+        boolean result = this.authService.tryToLoginWithSavedCredentials();
 
         // Assert
+        Assertions.assertThat(result).isTrue();
+
         Assertions.assertThat(this.authService.getLoggedInUser())
                 .isNotNull()
                 .isEqualTo(user);
@@ -144,11 +146,10 @@ public class AuthServiceTest {
         // Arrange
         when(this.serializer.deserialize()).thenThrow(new IOException());
 
-        // Act - Assert
-       Assertions.assertThatThrownBy(() -> this.authService.tryToLoginWithSavedCredentials())
-               .isInstanceOf(InternalErrorException.class);
+        // Act
+       boolean isLoggedIn = this.authService.tryToLoginWithSavedCredentials();
 
-        Assertions.assertThat(this.authService.getLoggedInUser())
-                .isNull();
+        // Assert
+        Assertions.assertThat(isLoggedIn).isFalse();
     }
 }

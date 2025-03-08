@@ -13,7 +13,7 @@ public interface AuthService {
 
     UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException, InternalErrorException;
 
-    void tryToLoginWithSavedCredentials() throws IncorrectCredentialsException, InternalErrorException;
+    boolean tryToLoginWithSavedCredentials() throws IncorrectCredentialsException;
 
     void logout() throws InternalErrorException;
 }

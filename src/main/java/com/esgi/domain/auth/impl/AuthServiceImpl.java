@@ -3,9 +3,9 @@ package com.esgi.domain.auth.impl;
 import com.esgi.core.exceptions.IncorrectCredentialsException;
 import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.domain.serialization.Serializer;
 import com.esgi.domain.auth.AuthCredentials;
 import com.esgi.domain.auth.AuthService;
+import com.esgi.domain.serialization.Serializer;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserService;
 
@@ -70,15 +70,16 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    public void tryToLoginWithSavedCredentials() throws IncorrectCredentialsException, InternalErrorException {
+    public boolean tryToLoginWithSavedCredentials() throws IncorrectCredentialsException {
         try {
             var credentials = this.serializer.deserialize();
             var credentialsWithoutStayLoggedIn = new AuthCredentials(
                     credentials.email(), credentials.password(), false);
 
             this.login(credentialsWithoutStayLoggedIn);
-        } catch (IOException e) {
-            throw new InternalErrorException(e);
+            return true;
+        } catch (IOException | InternalErrorException e) {
+            return false;
         }
     }
 }
