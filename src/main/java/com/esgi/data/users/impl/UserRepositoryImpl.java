@@ -38,6 +38,9 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
     }
 
     @Override
+    protected String exceptionMessage(UserModel user) {
+        return String.format("A user with this email (%s) already exists.", user.getEmail());
+    }
     public void create(UserModel user) throws ConstraintViolationException {
         try (var conn = DriverManager.getConnection(connectionString)) {
             String sql = "INSERT INTO " + getTableName() + " (email, name, password, isAdmin) VALUES (?, ?, ?, ?)";

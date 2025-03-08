@@ -4,7 +4,6 @@ package com.esgi.data.authors;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.impl.AuthorRepositoryImpl;
-import com.esgi.data.users.UserModel;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;

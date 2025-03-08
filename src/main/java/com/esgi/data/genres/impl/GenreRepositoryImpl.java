@@ -20,7 +20,9 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
     }
 
     @Override
-    public void create(GenreModel model) {
-        throw new RuntimeException("Not implemented yet");
+    protected String exceptionMessage(GenreModel model) {
+        return "";
     }
+
+
 }
