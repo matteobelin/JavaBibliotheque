@@ -1,16 +1,12 @@
 package com.esgi.presentation.cli.auth.login;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
-import com.esgi.core.exceptions.InternalErrorException;
-import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.domain.auth.AuthCredentials;
-import com.esgi.domain.auth.AuthServiceFactory;
+import com.esgi.domain.auth.AuthService;
 import com.esgi.presentation.AppLogger;
-import com.esgi.presentation.CommandAccessLevel;
 import com.esgi.presentation.cli.CliCommandNode;
 import com.esgi.presentation.cli.CliCommandNodeOption;
 import com.esgi.presentation.cli.ExitCode;
-import com.esgi.presentation.cli.utils.ArgsParserUtils;
 
 import java.util.List;
 
@@ -18,10 +14,13 @@ public class LoginCliCommandNode extends CliCommandNode {
     public static final String NAME = "login";
     public static final String DESCRIPTION =
             "Login into the system using email and password (biblio auth login EMAIL PASSWORD [OPTIONS])";
-    public static final CommandAccessLevel ACCESS_LEVEL = CommandAccessLevel.USER;
 
-    public LoginCliCommandNode() {
-        super(NAME, DESCRIPTION, ACCESS_LEVEL);
+    private final AuthService authService;
+
+    public LoginCliCommandNode(AuthService authService) {
+        super(NAME, DESCRIPTION);
+
+        this.authService = authService;
 
         var saveCredentialsOptions = new SaveCredentialsCommandOption();
         commandOptions.add(saveCredentialsOptions);
@@ -29,7 +28,7 @@ public class LoginCliCommandNode extends CliCommandNode {
 
     @Override
     public ExitCode run(String[] args) {
-        var values = ArgsParserUtils.extractValuesFromArgs(args, this.getCommandOptions());
+        var values = this.extractValuesFromArgs(args);
         if (values.size() < 2) {
             var errorMessage = String.format("The '%s' command requires at least two arguments : EMAIL and PASSWORD", NAME);
             AppLogger.error(errorMessage);
@@ -40,10 +39,9 @@ public class LoginCliCommandNode extends CliCommandNode {
             var options = this.extractOptionsFromArgs(args);
             var credentials = makeCredentials(values, options);
 
-            var authService = AuthServiceFactory.getAuthService();
-            var connectedUser = authService.login(credentials);
+            var connectedUser = this.authService.login(credentials);
 
-            AppLogger.success("Welcome %s !".formatted(connectedUser.getName()));
+            AppLogger.success("Welcome back %s !".formatted(connectedUser.getName()));
         } catch (Exception e) {
             AppLogger.error(e.getMessage());
             return mapExceptionToExitCode(e);
@@ -66,9 +64,7 @@ public class LoginCliCommandNode extends CliCommandNode {
     }
 
     private ExitCode mapExceptionToExitCode(Exception e) {
-        if (e instanceof OptionRequiresValueException) {
-            return ExitCode.ARGUMENT_MISSING;
-        } else if (e instanceof IncorrectCredentialsException) {
+        if (e instanceof IncorrectCredentialsException) {
             return ExitCode.ARGUMENT_INVALID;
         }
 

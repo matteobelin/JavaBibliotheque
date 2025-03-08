@@ -8,7 +8,7 @@ import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPoint;
 import com.esgi.presentation.cli.ExitCode;
-import com.esgi.presentation.cli.auth.AuthCliCommandNode;
+import com.esgi.presentation.cli.auth.AuthCliCommandNodeFactory;
 import com.esgi.presentation.cli.users.UserCliCommandFactory;
 import com.esgi.presentation.utils.StringUtils;
 
@@ -44,7 +44,7 @@ public class Main {
 
     private static void runCLICommand(String[] args) {
         var userCliCommandNode = UserCliCommandFactory.makeUserCliCommandNode();
-        var authCliCommandNode = new AuthCliCommandNode();
+        var authCliCommandNode = AuthCliCommandNodeFactory.makeAuthCliCommandNode();
 
         var cliEntryPoint = new CliEntryPoint(authCliCommandNode, userCliCommandNode);
         ExitCode exitCode = cliEntryPoint.run(args);

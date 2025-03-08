@@ -6,7 +6,6 @@ import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserService;
 import com.esgi.presentation.AppLogger;
-import com.esgi.presentation.CommandAccessLevel;
 import com.esgi.presentation.cli.CliCommandNode;
 import com.esgi.presentation.cli.CliCommandNodeOption;
 import com.esgi.presentation.cli.ExitCode;
@@ -18,14 +17,13 @@ import java.util.List;
 public class AddUserCliCommandNode extends CliCommandNode {
     public static final String NAME = "add";
     public static final String DESCRIPTION = "add";
-    public static final CommandAccessLevel ACCESS_LEVEL = CommandAccessLevel.ADMIN;
 
     public static final String ADMIN_OPTION_DESCRIPTION = "Create the user with the admin role.";
 
     private final UserService userService;
 
     public AddUserCliCommandNode(UserService userService) {
-        super(NAME, DESCRIPTION, ACCESS_LEVEL);
+        super(NAME, DESCRIPTION);
 
         this.userService = userService;
 

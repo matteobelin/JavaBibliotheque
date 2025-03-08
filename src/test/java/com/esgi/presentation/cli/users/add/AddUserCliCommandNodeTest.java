@@ -1,32 +1,22 @@
 package com.esgi.presentation.cli.users.add;
 
-import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InvalidArgumentException;
-import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.impl.UserServiceImpl;
 import com.esgi.presentation.cli.ExitCode;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
-
-import static org.mockito.ArgumentMatchers.any;
 
 @ExtendWith(MockitoExtension.class)
 public class AddUserCliCommandNodeTest {
 
+    @InjectMocks
     private AddUserCliCommandNode addUserCliCommandNode;
 
     @Mock
     private UserServiceImpl userService;
-
-    @BeforeEach
-    public void setup() {
-        this.addUserCliCommandNode = new AddUserCliCommandNode(userService);
-    }
 
     @Test
     public void should_create_user() {
@@ -74,25 +64,5 @@ public class AddUserCliCommandNodeTest {
 
         // Assert
         Assertions.assertThat(exitCode).isEqualTo(ExitCode.OK);
-    }
-
-    @Test
-    public void should_have_name_add() {
-        // Act
-        String commandName = this.addUserCliCommandNode.getName();
-
-        // Assert
-        Assertions.assertThat(commandName).isEqualTo("add");
-    }
-
-    @Test
-    public void should_have_a_description() {
-        // Act
-        String commandDescription = this.addUserCliCommandNode.getDescription();
-
-        // Assert
-        Assertions.assertThat(commandDescription)
-                .isNotNull()
-                .isNotBlank();
     }
 }

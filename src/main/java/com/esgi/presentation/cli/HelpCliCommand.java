@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli;
 
 import com.esgi.presentation.AppLogger;
-import com.esgi.presentation.CommandAccessLevel;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,14 +8,13 @@ import java.util.Optional;
 public class HelpCliCommand extends CliCommandNode {
     public static final String NAME = "help";
     public static final String DESCRIPTION = "Provide help for the available commands";
-    public static final CommandAccessLevel ACCESS_LEVEL = CommandAccessLevel.USER;
 
     private final List<CliCommandNode> availableCommands;
 
     private int currentIndentLevel = 0;
 
     public HelpCliCommand(List<CliCommandNode> availableCommands) {
-        super(NAME, DESCRIPTION, ACCESS_LEVEL);
+        super(NAME, DESCRIPTION);
 
         this.availableCommands = availableCommands;
     }
