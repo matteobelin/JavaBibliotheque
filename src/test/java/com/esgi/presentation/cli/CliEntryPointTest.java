@@ -1,11 +1,8 @@
 package com.esgi.presentation.cli;
 
-import com.esgi.domain.users.UserService;
-import com.esgi.domain.users.impl.UserServiceImpl;
-import com.esgi.presentation.AppLogger;
+import com.esgi.presentation.cli.auth.AuthCliCommandNode;
 import com.esgi.presentation.cli.users.UserCliCommandNode;
 import org.assertj.core.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
@@ -18,18 +15,14 @@ import static org.mockito.ArgumentMatchers.any;
 @ExtendWith(MockitoExtension.class)
 public class CliEntryPointTest {
 
+    @InjectMocks
     private CliEntryPoint entryPoint;
 
     @Mock
     private UserCliCommandNode userCliCommandNode;
 
-    @InjectMocks
-    private UserServiceImpl userService;
-
-    @BeforeEach
-    public void setUp() {
-        entryPoint = new CliEntryPoint(userCliCommandNode);
-    }
+    @Mock
+    private AuthCliCommandNode authCliCommandNode;
 
     @Test
     public void should_find_user_command() {
@@ -37,6 +30,7 @@ public class CliEntryPointTest {
         String[] args = {"users", "add"};
         Mockito.when(userCliCommandNode.getName()).thenReturn("users");
         Mockito.when(userCliCommandNode.run(any())).thenReturn(ExitCode.OK);
+        Mockito.when(authCliCommandNode.getName()).thenReturn("auth");
 
         // Act
         ExitCode exitCode = this.entryPoint.run(args);
@@ -50,6 +44,7 @@ public class CliEntryPointTest {
         // Arrange
         String[] args = {"command"};
         Mockito.when(userCliCommandNode.getName()).thenReturn("users");
+        Mockito.when(authCliCommandNode.getName()).thenReturn("auth");
 
         // Act
         ExitCode exitCode = this.entryPoint.run(args);

@@ -1,6 +1,7 @@
 package com.esgi.domain.auth.impl;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.serialization.Serializer;
 import com.esgi.domain.auth.AuthCredentials;
@@ -9,6 +10,8 @@ import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserService;
 
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
 
 public class AuthServiceImpl implements AuthService {
     private final UserService userService;
@@ -25,11 +28,15 @@ public class AuthServiceImpl implements AuthService {
         return connectedUser != null;
     }
 
+    public boolean isConnectedUserAdmin() {
+        return this.isLoggedIn() && this.connectedUser.isAdmin();
+    }
+
     public UserEntity getLoggedInUser() {
         return connectedUser;
     }
 
-    public UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException {
+    public UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException, InternalErrorException {
         try {
             UserEntity foundUser = userService.getUserByEmail(credentials.email());
 
@@ -49,25 +56,29 @@ public class AuthServiceImpl implements AuthService {
         } catch (NotFoundException e) {
             throw new IncorrectCredentialsException();
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            throw new InternalErrorException(e);
         }
     }
 
-    public void logout() {
+    public void logout() throws InternalErrorException {
         connectedUser = null;
+
+        try {
+            Files.deleteIfExists(Path.of(serializer.getDestFilePath()));
+        } catch (IOException e) {
+            throw new InternalErrorException(e);
+        }
     }
 
-    public boolean tryToLoginWithSavedCredentials() throws IncorrectCredentialsException {
+    public void tryToLoginWithSavedCredentials() throws IncorrectCredentialsException, InternalErrorException {
         try {
             var credentials = this.serializer.deserialize();
             var credentialsWithoutStayLoggedIn = new AuthCredentials(
                     credentials.email(), credentials.password(), false);
 
             this.login(credentialsWithoutStayLoggedIn);
-
-            return true;
-        } catch (IOException ignored) {
-            return false;
+        } catch (IOException e) {
+            throw new InternalErrorException(e);
         }
     }
 }

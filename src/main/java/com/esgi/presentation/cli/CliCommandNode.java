@@ -17,16 +17,16 @@ public abstract class CliCommandNode {
     private final String description;
     private final CommandAccessLevel accessLevel;
 
+    @Getter
+    protected final List<CliCommandNode> childrenCommands = new ArrayList<>();
+
+    @Getter
+    protected final List<CliCommandNodeOption> commandOptions = new ArrayList<>();
+
     protected CliCommandNode(String name, String description, CommandAccessLevel accessLevel) {
         this.name = name;
         this.description = description;
         this.accessLevel = accessLevel;
-    }
-
-    public abstract List<CliCommandNode> getChildrenCommands();
-
-    public List<CliCommandNodeOption> getCommandOptions() {
-        return List.of();
     }
 
     public ExitCode run(String[] args) {

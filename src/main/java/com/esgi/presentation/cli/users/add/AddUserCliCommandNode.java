@@ -20,8 +20,7 @@ public class AddUserCliCommandNode extends CliCommandNode {
     public static final String DESCRIPTION = "add";
     public static final CommandAccessLevel ACCESS_LEVEL = CommandAccessLevel.ADMIN;
 
-    private static final CliCommandNodeOption AdminOption =
-            new AdminCommandOption("Create the user with the admin role.");
+    public static final String ADMIN_OPTION_DESCRIPTION = "Create the user with the admin role.";
 
     private final UserService userService;
 
@@ -29,16 +28,9 @@ public class AddUserCliCommandNode extends CliCommandNode {
         super(NAME, DESCRIPTION, ACCESS_LEVEL);
 
         this.userService = userService;
-    }
 
-    @Override
-    public List<CliCommandNode> getChildrenCommands() {
-        return List.of();
-    }
-
-    @Override
-    public List<CliCommandNodeOption> getCommandOptions() {
-        return List.of(AdminOption);
+        var adminOption = new AdminCommandOption(ADMIN_OPTION_DESCRIPTION);
+        commandOptions.add(adminOption);
     }
 
     @Override
@@ -72,7 +64,14 @@ public class AddUserCliCommandNode extends CliCommandNode {
         UserEntity user = new UserEntity();
         user.setEmail(values.get(0));
         user.setPassword(values.get(1));
-        user.setAdmin(options.contains(AdminOption));
+
+        boolean isAdminOptionUsed = options.stream().anyMatch(this::isAdminOption);
+        user.setAdmin(isAdminOptionUsed);
+
         return user;
+    }
+
+    private boolean isAdminOption(CliCommandNodeOption option) {
+        return AdminCommandOption.NAME.equals(option.getName());
     }
 }

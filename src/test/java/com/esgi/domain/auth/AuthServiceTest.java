@@ -1,6 +1,7 @@
 package com.esgi.domain.auth;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.impl.AuthServiceImpl;
 import com.esgi.domain.serialization.Serializer;
@@ -33,7 +34,7 @@ public class AuthServiceTest {
     private Serializer<AuthCredentials> serializer;
 
     @Test
-    public void login_should_connect_user() throws NotFoundException, IncorrectCredentialsException, IOException {
+    public void login_should_connect_user() throws NotFoundException, IncorrectCredentialsException, IOException, InternalErrorException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -62,7 +63,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_email_not_found() throws NotFoundException, IncorrectCredentialsException, IOException {
+    public void login_should_throw_when_email_not_found() throws NotFoundException {
         // Arrange
         AuthCredentials credentials = new AuthCredentials("test@test.com", "password", true);
 
@@ -74,7 +75,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_password_dont_match() throws NotFoundException, IncorrectCredentialsException, IOException {
+    public void login_should_throw_when_password_dont_match() throws NotFoundException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -91,7 +92,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void logout_should_remove_connected_user() throws NoSuchFieldException, IllegalAccessException {
+    public void logout_should_remove_connected_user() throws NoSuchFieldException, IllegalAccessException, InternalErrorException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -102,6 +103,8 @@ public class AuthServiceTest {
         Field connectedUserField = AuthServiceImpl.class.getDeclaredField("connectedUser");
         connectedUserField.setAccessible(true);
         connectedUserField.set(this.authService, user);
+
+        when(serializer.getDestFilePath()).thenReturn("destFilePath");
 
         // Act
         this.authService.logout();
@@ -115,7 +118,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void loginWithSavedCredentials_should_connect_user() throws IncorrectCredentialsException, IOException, NotFoundException {
+    public void loginWithSavedCredentials_should_connect_user() throws IncorrectCredentialsException, IOException, NotFoundException, InternalErrorException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -128,26 +131,22 @@ public class AuthServiceTest {
         when(this.userService.getUserByEmail(any())).thenReturn(user);
 
         // Act
-        boolean result = this.authService.tryToLoginWithSavedCredentials();
+        this.authService.tryToLoginWithSavedCredentials();
 
         // Assert
-        Assertions.assertThat(result).isTrue();
-
         Assertions.assertThat(this.authService.getLoggedInUser())
                 .isNotNull()
                 .isEqualTo(user);
     }
 
     @Test
-    public void loginWithSavedCredentials_should_not_login_when_no_credentials_saved() throws IncorrectCredentialsException, IOException, NotFoundException {
+    public void loginWithSavedCredentials_should_not_login_when_no_credentials_saved() throws IncorrectCredentialsException, IOException, InternalErrorException {
         // Arrange
         when(this.serializer.deserialize()).thenThrow(new IOException());
 
-        // Act
-        boolean result = this.authService.tryToLoginWithSavedCredentials();
-
-        // Assert
-        Assertions.assertThat(result).isFalse();
+        // Act - Assert
+       Assertions.assertThatThrownBy(() -> this.authService.tryToLoginWithSavedCredentials())
+               .isInstanceOf(InternalErrorException.class);
 
         Assertions.assertThat(this.authService.getLoggedInUser())
                 .isNull();

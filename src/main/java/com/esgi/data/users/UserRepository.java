@@ -5,5 +5,6 @@ import com.esgi.core.exceptions.NotFoundException;
 
 public interface UserRepository {
    UserModel getById(Integer id) throws NotFoundException;
+   UserModel getByEmail(String email) throws NotFoundException;
    void create(UserModel user) throws ConstraintViolationException;
 }

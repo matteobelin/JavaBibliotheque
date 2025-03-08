@@ -6,4 +6,5 @@ public enum ExitCode {
     ARGUMENT_MISSING,
     ARGUMENT_INVALID,
 
+    INTERNAL_ERROR,
 }
