@@ -24,7 +24,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    public void get_Genre_By_Id_Should_Return_Author() throws Exception{
+    public void get_Genre_By_Id_Should_Return_Genre() throws Exception{
 
         //Arrange
         Integer genreId = 1;
@@ -47,6 +47,30 @@ public class GenreRepositoryTest {
                 .isInstanceOf(NotFoundException.class);
     }
 
+    @Test
+    public void get_Genre_By_Name_Should_Return_Genre() throws Exception{
+
+        //Arrange
+        String genreName = "Mystery";
+        //Act
+        GenreModel actual = genreRepository.getByName(genreName);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("name", actual.getName());
+    }
+
+
+    @Test
+    public void get_Genre_By_Name_When_Not_Found_Should_Throw() {
+        // Arrange
+        String genreName = "test";
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> genreRepository.getByName(genreName))
+                .isInstanceOf(NotFoundException.class);
+    }
 
     @Test
     public void create_Genre_Should_Save_Genre() throws ConstraintViolationException, NotFoundException {
