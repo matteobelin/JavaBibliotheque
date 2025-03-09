@@ -5,10 +5,10 @@ import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
-import com.esgi.data.users.usecase.UserUseCase;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserMapper;
 import com.esgi.domain.users.UserService;
+import com.esgi.domain.users.usecase.UserUseCase;
 
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
@@ -33,9 +33,16 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException {
-        UserUseCase.validateUserIsValidForCreation(user);
+        UserUseCase.validateUserInformationIsValid(user);
 
         UserModel userModel = userMapper.entityToModel(user);
         userRepository.create(userModel);
+    }
+
+    public void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException {
+        UserUseCase.validateUserInformationIsValid(user);
+
+        UserModel userModel = userMapper.entityToModel(user);
+        userRepository.update(userModel);
     }
 }

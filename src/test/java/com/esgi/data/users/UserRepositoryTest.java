@@ -94,4 +94,81 @@ public class UserRepositoryTest {
         //Assert
         Assertions.assertThatThrownBy(() -> userRepository.create(user));
     }
+
+    @Test
+    void update_should_update_the_user() throws NotFoundException, ConstraintViolationException {
+        //Arrange
+        UserModel editedUser = new UserModel(
+            2,
+            "email.notindb@example.com",
+            true,
+            "name",
+            null
+        );
+
+        // Act
+        this.userRepository.update(editedUser);
+
+        // Assert
+        UserModel userFromDb = userRepository.getById(editedUser.getId());
+        Assertions.assertThat(userFromDb)
+                .hasFieldOrPropertyWithValue("email", editedUser.getEmail())
+                .hasFieldOrPropertyWithValue("name", editedUser.getName())
+                .hasFieldOrPropertyWithValue("isAdmin", editedUser.isAdmin())
+                .hasFieldOrPropertyWithValue("id", 2);
+    }
+
+    @Test
+    void update_should_not_change_password() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        String existingUserPassword = "test";
+
+        UserModel editedUser = new UserModel(2,
+        "new.email@example.com",
+        true,
+        "New Name",
+    "new password"
+        );
+
+        // Act
+        userRepository.update(editedUser);
+
+        // Assert
+        UserModel userFromDb = userRepository.getById(editedUser.getId());
+        Assertions.assertThat(userFromDb)
+                .hasFieldOrPropertyWithValue("password", existingUserPassword);
+    }
+
+
+    @Test
+    void update_should_throw_NotFoundException_when_user_id_doesnt_exist() {
+        //Arrange
+        UserModel user = new UserModel(
+                20000,
+                "user1@example.com",
+                false,
+                "name",
+                null
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.userRepository.update(user))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void update_should_throw_ConstraintViolationException_when_user_email_taken() {
+        //Arrange
+        UserModel user = new UserModel(
+                2,
+                "user2@example.com",
+                false,
+                "name",
+                null
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.userRepository.update(user))
+                .isInstanceOf(ConstraintViolationException.class);
+    }
 }

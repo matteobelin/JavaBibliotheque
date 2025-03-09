@@ -7,7 +7,10 @@ import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
@@ -28,7 +31,7 @@ public abstract class Repository<T extends Model> {
 
             try (var result = statement.executeQuery()) {
                 if(!result.next()) {
-                    throw new NotFoundException(String.format("Record with %s '%s' not found in table '%s'", columnName, value, getTableName()));
+                    throw new NotFoundException(this.notFoundErrorMessage(columnName, value));
                 }
 
                 return parseSQLResult(result);
@@ -65,4 +68,37 @@ public abstract class Repository<T extends Model> {
 
     public abstract void create(T model) throws ConstraintViolationException;
 
+
+    protected void executeUpdate(Map<String, SQLColumnValueBinder> columnValueBinders, Integer whereId) throws NotFoundException, SQLException {
+
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String updateSQL = "UPDATE " + getTableName();
+            String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
+            String whereSQL = " WHERE id = ?;";
+
+            String sql = updateSQL + setValuesSQL + whereSQL;
+
+            try (var statement = conn.prepareStatement(sql)) {
+                int index = 1;
+                for (Map.Entry<String, SQLColumnValueBinder> entry : columnValueBinders.entrySet()) {
+                    entry.getValue().bind(statement, index);
+                    index++;
+                }
+                statement.setInt(index, whereId);
+
+                int rowsUpdated = statement.executeUpdate();
+                if (rowsUpdated == 0) {
+                    throw new NotFoundException(this.notFoundErrorMessage("id", whereId));
+                }
+            }
+        }
+    }
+
+    protected String notFoundErrorMessage(String columnName, Object value) {
+        return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, getTableName());
+    }
+
+    private String buildSetClause(Collection<String> columns) {
+        return columns.stream().map(column -> column + " = ?").collect(Collectors.joining(","));
+    }
 }
