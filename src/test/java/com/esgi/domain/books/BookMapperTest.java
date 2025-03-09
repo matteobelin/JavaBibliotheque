@@ -1,9 +1,12 @@
 package com.esgi.domain.books;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
+import com.esgi.data.books.BookRepository;
 import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorService;
+import com.esgi.domain.books.impl.BookServiceImpl;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import org.assertj.core.api.Assertions;
@@ -17,8 +20,8 @@ import java.util.List;
 public class BookMapperTest {
 
     private BookMapper bookMapper;
-    private AuthorService authorService;
     private GenreService genreService;
+    private AuthorService authorService;
 
     @BeforeEach
     public void setUp() {
@@ -51,6 +54,23 @@ public class BookMapperTest {
                 .isNotNull()
                 .isEqualTo(makeBookEntity());
     }
+
+    @Test
+    public void bookEntity_to_bookModel() throws NotFoundException {
+        //Arrange
+        BookEntity bookEntity = makeBookEntity();
+
+        //Act
+        BookModel result = bookMapper.entityToModel(bookEntity);
+
+        //Assert
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(makeBookModel());
+    }
+
+
+
 
     private BookModel makeBookModel() {
         List<Integer> genreIds = Arrays.asList(1);
