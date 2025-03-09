@@ -2,10 +2,8 @@ package com.esgi.domain.genres;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
-import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.genres.impl.GenreServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
