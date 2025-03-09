@@ -19,7 +19,7 @@ import java.util.List;
 
 public class EditUserCliCommandNode extends CliCommandNode {
     public static final String NAME = "edit";
-    public static final String DESCRIPTION = "Updates user information.\nThe email argument is only available for ADMINS, in other case, the current logged user's email will be used for the command";
+    public static final String DESCRIPTION = "Updates a user information. The email argument is only available for ADMINS, in other case, the logged user's email will be used for the command";
 
     public static final String EMAIL_OPTION_NAME = "email";
     public static final String EMAIL_OPTION_SHORT_NAME = "e";

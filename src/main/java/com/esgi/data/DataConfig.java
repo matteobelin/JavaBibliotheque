@@ -11,8 +11,11 @@ import java.util.logging.Logger;
 public final class DataConfig {
     private static final Logger logger = Logger.getLogger(DataConfig.class.getName());
 
+    private static final String DB_CONNECTION_STRING = "jdbc:sqlite:bookDB.sqlite";
+    private static final String TEST_DB_CONNECTION_STRING = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
+
     @Getter
-    private static String dbConnectionString = "jdbc:sqlite:bookDB.sqlite";
+    private static String dbConnectionString = DB_CONNECTION_STRING;
 
     private static boolean isDbInitialized = false;
 
@@ -28,7 +31,7 @@ public final class DataConfig {
     }
 
     public void initDb() {
-        if (isDbInitialized()) {
+        if (isDbInitialized() || TEST_DB_CONNECTION_STRING.equals(getDbConnectionString())) {
             return;
         }
 
@@ -38,7 +41,7 @@ public final class DataConfig {
     }
 
     public static void useTestDb() {
-        DataConfig.dbConnectionString = "jdbc:h2:mem:testdb;DB_CLOSE_DELAY=-1";
+        DataConfig.dbConnectionString = TEST_DB_CONNECTION_STRING;
     }
 
     private boolean isDbInitialized() {
