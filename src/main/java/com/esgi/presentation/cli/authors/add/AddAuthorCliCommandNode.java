@@ -34,6 +34,8 @@ public class AddAuthorCliCommandNode extends CliCommandNode {
 
         try {
             authorService.createAuthor(author);
+
+            AppLogger.success("The author '%s' has been created !".formatted(author.getName()));
         } catch (ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
