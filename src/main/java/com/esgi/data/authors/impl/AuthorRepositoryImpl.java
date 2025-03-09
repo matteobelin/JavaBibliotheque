@@ -7,9 +7,7 @@ import com.esgi.data.Repository;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
 
-
 import java.sql.DriverManager;
-
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
@@ -55,6 +53,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
 
             switch (optionalExceptionType.get()) {
                 case CONSTRAINT_UNIQUE:
+                case CONSTRAINT_INDEX:
                     String exceptionMessage = String.format("An author with this name (%s) already exists.", author.getName());
                     throw new ConstraintViolationException(exceptionMessage);
                 case CONSTRAINT_NOTNULL:

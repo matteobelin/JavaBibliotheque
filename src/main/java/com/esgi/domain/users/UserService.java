@@ -8,4 +8,5 @@ public interface UserService {
     UserEntity getUserById(int id) throws NotFoundException;
     UserEntity getUserByEmail(String email) throws NotFoundException;
     void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException;
+    void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException;
 }

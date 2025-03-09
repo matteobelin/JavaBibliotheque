@@ -5,12 +5,14 @@ import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
+import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
 
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.Map;
 import java.util.Optional;
 
 public class UserRepositoryImpl extends Repository<UserModel> implements UserRepository {
@@ -48,20 +50,43 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
             statement.executeUpdate();
 
         } catch (SQLException e) {
-            Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
+            handleSQLException(e, user.getEmail());
+        }
+    }
 
-            boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
-            if (exceptionTypeNotFound) {
-                throw new RuntimeException(e);
-            }
+    public void update(UserModel user) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(user);
 
-            switch (optionalExceptionType.get()) {
-                case CONSTRAINT_UNIQUE:
-                    String exceptionMessage = String.format("A user with this email (%s) already exists.", user.getEmail());
-                    throw new ConstraintViolationException(exceptionMessage);
-                case CONSTRAINT_NOTNULL:
-                    throw new ConstraintViolationException("A required field of the user is missing.");
-            }
+        try {
+            super.executeUpdate(columnValueBinders, user.getId());
+        } catch (SQLException e) {
+            handleSQLException(e, user.getEmail());
+        }
+    }
+
+    private Map<String, SQLColumnValueBinder> getColumnValueBinders(UserModel user) {
+        return Map.of(
+        "email", (statement, index) -> statement.setString(index, user.getEmail()),
+        "name", (statement, index) -> statement.setString(index, user.getName()),
+        "isAdmin", (statement, index) -> statement.setBoolean(index, user.isAdmin())
+        );
+    }
+
+    private void handleSQLException(SQLException e, String email) throws ConstraintViolationException {
+        Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
+
+        boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
+        if (exceptionTypeNotFound) {
+            throw new RuntimeException(e);
+        }
+
+        switch (optionalExceptionType.get()) {
+            case CONSTRAINT_UNIQUE:
+            case CONSTRAINT_INDEX:
+                String exceptionMessage = String.format("A user with this email (%s) already exists.", email);
+                throw new ConstraintViolationException(exceptionMessage);
+            case CONSTRAINT_NOTNULL:
+                throw new ConstraintViolationException("A required field of the user is missing.");
         }
     }
 }

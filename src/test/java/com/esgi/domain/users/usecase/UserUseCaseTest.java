@@ -1,7 +1,6 @@
 package com.esgi.domain.users.usecase;
 
 import com.esgi.core.exceptions.InvalidArgumentException;
-import com.esgi.data.users.usecase.UserUseCase;
 import com.esgi.domain.users.UserEntity;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,7 +14,7 @@ public class UserUseCaseTest {
         user.setPassword("password");
 
         Assertions.assertThatNoException()
-                    .isThrownBy(() -> UserUseCase.validateUserIsValidForCreation(user));
+                    .isThrownBy(() -> UserUseCase.validateUserInformationIsValid(user));
     }
 
     @Test
@@ -24,7 +23,7 @@ public class UserUseCaseTest {
         user.setEmail("user.name@gmail.com");
         user.setPassword("password");
 
-        UserUseCase.validateUserIsValidForCreation(user);
+        UserUseCase.validateUserInformationIsValid(user);
 
         Assertions.assertThat(user).hasFieldOrPropertyWithValue("name", "user name");
     }
@@ -33,7 +32,7 @@ public class UserUseCaseTest {
     public void should_throw_when_user_has_no_email() {
         UserEntity user = new UserEntity();
 
-        Assertions.assertThatThrownBy(() -> UserUseCase.validateUserIsValidForCreation(user))
+        Assertions.assertThatThrownBy(() -> UserUseCase.validateUserInformationIsValid(user))
                 .isInstanceOf(InvalidArgumentException.class);
     }
 
@@ -42,7 +41,7 @@ public class UserUseCaseTest {
         UserEntity user = new UserEntity();
         user.setEmail("user.com");
 
-        Assertions.assertThatThrownBy(() -> UserUseCase.validateUserIsValidForCreation(user))
+        Assertions.assertThatThrownBy(() -> UserUseCase.validateUserInformationIsValid(user))
                 .isInstanceOf(InvalidArgumentException.class);
     }
 
