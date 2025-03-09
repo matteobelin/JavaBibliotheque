@@ -1,11 +1,17 @@
 package com.esgi.data.books;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
+import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.books.impl.BookRepositoryImpl;
+import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 
 public class BookRepositoryTest {
     private BookRepository bookRepository;
@@ -17,6 +23,7 @@ public class BookRepositoryTest {
 
     @BeforeEach
     public void setUp(){
+        DatabaseTestHelper.resetTestDb();
         bookRepository = new BookRepositoryImpl();
     }
 
@@ -69,6 +76,81 @@ public class BookRepositoryTest {
         //Act & Assert
         Assertions.assertThatThrownBy(() -> bookRepository.getById(bookId))
                 .isInstanceOf(NotFoundException.class);
+    }
+
+
+
+    @Test
+    public void create_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException {
+        //Arrange
+        BookModel book = new BookModel(
+                null,
+                "test",
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Act
+        bookRepository.create(book);
+        Integer bookId = book.getId();
+        BookModel actual = bookRepository.getById(bookId);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .extracting(BookModel::getTitle)
+                .isEqualTo(book.getTitle());
+    }
+
+
+    @Test
+    public void create_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException {
+        //Arrange
+        BookModel book = new BookModel(
+                null,
+                "test",
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Act
+        bookRepository.create(book);
+        Integer bookId = book.getId();
+        BookModel actual = bookRepository.getById(bookId);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .extracting(BookModel::getGenreIds)
+                .isEqualTo(book.getGenreIds());
+    }
+
+    @Test
+    void book_With_Missing_Mandatory_Data_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                null,
+                null,
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.create(book));
+    }
+
+    @Test
+    void book_With_Missing_Genre_Mandatory_Data_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                null,
+                "test",
+                1,
+                null
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.create(book));
     }
 
 
