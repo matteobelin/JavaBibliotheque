@@ -1,31 +1,29 @@
 package com.esgi.presentation.cli;
 
 import com.esgi.core.exceptions.OptionRequiresValueException;
-import com.esgi.presentation.CommandAccessLevel;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
-import java.util.ArrayList;
-import java.util.List;
-
 public class CliCommandNodeTest {
     private static class CliCommandNodeTestImpl extends CliCommandNode {
-        private final List<CliCommandNodeOption> options = new ArrayList<>();
-
         public CliCommandNodeTestImpl() {
-            super("NAME", "DESCRIPTION", CommandAccessLevel.PUBLIC);
-            this.options.add(CliCommandNodeTest.createDummyCommandOption());
+            super("NAME", "DESCRIPTION");
+
+            this.childrenCommands.add(new ChildCliCommandNodeTest());
+
+            this.commandOptions.add(CliCommandNodeTest.createDummyCommandOption());
+        }
+    }
+
+    private static class ChildCliCommandNodeTest extends CliCommandNode {
+        public ChildCliCommandNodeTest() {
+            super("CHILD_NAME", "CHILD_DESCRIPTION");
         }
 
         @Override
-        public List<CliCommandNode> getChildrenCommands() {
-            return List.of();
-        }
-
-        @Override
-        public List<CliCommandNodeOption> getCommandOptions() {
-            return options;
+        public ExitCode run(String[] args) {
+            return ExitCode.OK;
         }
     }
 
@@ -37,7 +35,31 @@ public class CliCommandNodeTest {
     }
 
     @Test
-    public void shouldExtractOptionsFromArgs() throws OptionRequiresValueException {
+    public void should_find_child_command() {
+        // Arrange
+        String[] args = new String[] {"CHILD_NAME"};
+
+        // Act
+        ExitCode exitCode = this.commandNode.run(args);
+
+        // Assert
+        Assertions.assertThat(exitCode).isEqualTo(ExitCode.OK);
+    }
+
+    @Test
+    public void should_not_find_unknown_command() {
+        // Arrange
+        String[] args = new String[] {"command"};
+
+        // Act
+        ExitCode exitCode = this.commandNode.run(args);
+
+        // Assert
+        Assertions.assertThat(exitCode).isEqualTo(ExitCode.COMMAND_NOT_FOUND);
+    }
+
+    @Test
+    public void extractOptionsFromArgs_should_only_extract_options() throws OptionRequiresValueException {
         // Arrange
         String[] args = new String[] { "biblio", "users", "add", "--OPTION_NAME", "VALUE", "email", "password" };
 
@@ -56,7 +78,7 @@ public class CliCommandNodeTest {
     }
 
     @Test
-    public void extractOptionsFromArgsShouldThrowWhenValueIsMissing() {
+    public void extractOptionsFromArgs_should_throw_when_value_is_missing() {
         // Arrange
         String[] args = new String[] { "biblio", "users", "add", "--OPTION_NAME"};
 

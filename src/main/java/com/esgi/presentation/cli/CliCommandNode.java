@@ -2,7 +2,6 @@ package com.esgi.presentation.cli;
 
 import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.presentation.AppLogger;
-import com.esgi.presentation.CommandAccessLevel;
 import com.esgi.presentation.cli.utils.ArgsParserUtils;
 import lombok.Getter;
 
@@ -15,21 +14,24 @@ import java.util.Optional;
 public abstract class CliCommandNode {
     private final String name;
     private final String description;
-    private final CommandAccessLevel accessLevel;
 
-    protected CliCommandNode(String name, String description, CommandAccessLevel accessLevel) {
+    @Getter
+    protected final List<CliCommandNode> childrenCommands = new ArrayList<>();
+
+    @Getter
+    protected final List<CliCommandNodeOption> commandOptions = new ArrayList<>();
+
+    protected CliCommandNode(String name, String description) {
         this.name = name;
         this.description = description;
-        this.accessLevel = accessLevel;
-    }
-
-    public abstract List<CliCommandNode> getChildrenCommands();
-
-    public List<CliCommandNodeOption> getCommandOptions() {
-        return List.of();
     }
 
     public ExitCode run(String[] args) {
+        if (args.length == 0) {
+            AppLogger.error("The command '%s' requires an argument".formatted(this.getName()));
+            return ExitCode.ARGUMENT_MISSING;
+        }
+
         String childCommandName = args[0];
         String[] childCommandArgs = Arrays.copyOfRange(args, 1, args.length);
 
@@ -50,6 +52,10 @@ public abstract class CliCommandNode {
         String message = String.format("Command '%s' not found", childCommandName);
         AppLogger.error(message);
         return ExitCode.COMMAND_NOT_FOUND;
+    }
+
+    protected List<String> extractValuesFromArgs(String[] args) {
+        return ArgsParserUtils.extractValuesFromArgs(args, this.getCommandOptions());
     }
 
     protected List<CliCommandNodeOption> extractOptionsFromArgs(String[] args) throws OptionRequiresValueException {
