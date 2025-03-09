@@ -95,6 +95,51 @@ public class AuthorRepositoryTest {
         Assertions.assertThatThrownBy(() -> authorRepository.create(author));
     }
 
+    @Test
+    void update_should_update_the_author() throws NotFoundException, ConstraintViolationException {
+        //Arrange
+        AuthorModel editedAuthor = new AuthorModel(
+                2,
+                "test"
+        );
+
+        // Act
+        this.authorRepository.update(editedAuthor);
+
+        // Assert
+        AuthorModel authorFromDb = authorRepository.getById(editedAuthor.getId());
+        Assertions.assertThat(authorFromDb)
+                .hasFieldOrPropertyWithValue("name", editedAuthor.getName())
+                .hasFieldOrPropertyWithValue("id", 2);
+    }
+
+
+    @Test
+    void update_should_throw_NotFoundException_when_author_id_doesnt_exist() {
+        //Arrange
+        AuthorModel author = new AuthorModel(
+                20000,
+                "Albert Camus"
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.authorRepository.update(author))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void update_should_throw_ConstraintViolationException_when_author_name_taken() {
+        //Arrange
+        AuthorModel author = new AuthorModel(
+                2,
+                "Isaac Asimov"
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.authorRepository.update(author))
+                .isInstanceOf(ConstraintViolationException.class);
+    }
+
 }
 
 

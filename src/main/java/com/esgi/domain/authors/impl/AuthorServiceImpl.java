@@ -8,6 +8,7 @@ import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorMapper;
 import com.esgi.domain.authors.AuthorService;
 
+
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
@@ -26,6 +27,12 @@ public class AuthorServiceImpl implements AuthorService {
     public void createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
         AuthorModel authorModel = authorMapper.entityToModel(authorEntity);
         authorRepository.create(authorModel);
+    }
+
+    public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException {
+
+        AuthorModel authorModel = authorMapper.entityToModel(author);
+        authorRepository.update(authorModel);
     }
 
 

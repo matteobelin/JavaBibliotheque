@@ -1,6 +1,7 @@
 package com.esgi.data.authors.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
@@ -38,6 +39,16 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
 
         try{
             super.executeCreate(columnValueBinders,author);
+        } catch (SQLException e) {
+            handleSQLException(e, author.getName());
+        }
+    }
+
+    public void update(AuthorModel author) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(author);
+
+        try {
+            super.executeUpdate(columnValueBinders, author.getId());
         } catch (SQLException e) {
             handleSQLException(e, author.getName());
         }
