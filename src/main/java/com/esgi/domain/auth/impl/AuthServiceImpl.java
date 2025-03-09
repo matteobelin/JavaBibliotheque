@@ -28,7 +28,7 @@ public class AuthServiceImpl implements AuthService {
         return connectedUser != null;
     }
 
-    public boolean isConnectedUserAdmin() {
+    public boolean isLoggedInUserAdmin() {
         return this.isLoggedIn() && this.connectedUser.isAdmin();
     }
 
