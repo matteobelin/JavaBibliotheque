@@ -16,7 +16,7 @@ import java.util.List;
 
 public class AddUserCliCommandNode extends CliCommandNode {
     public static final String NAME = "add";
-    public static final String DESCRIPTION = "add";
+    public static final String DESCRIPTION = "Registers a new user in the system.";
 
     public static final String ADMIN_OPTION_DESCRIPTION = "Create the user with the admin role.";
 

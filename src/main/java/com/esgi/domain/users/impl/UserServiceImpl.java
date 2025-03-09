@@ -46,4 +46,8 @@ public class UserServiceImpl implements UserService {
         UserModel userModel = userMapper.entityToModel(user);
         userRepository.update(userModel);
     }
+
+    public void deleteUser(int id) throws NotFoundException {
+        this.userRepository.delete(id);
+    }
 }

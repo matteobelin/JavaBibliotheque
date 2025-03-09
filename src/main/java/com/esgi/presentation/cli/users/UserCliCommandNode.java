@@ -4,6 +4,7 @@ import com.esgi.domain.auth.AuthService;
 import com.esgi.presentation.cli.CliCommandNode;
 import com.esgi.presentation.cli.HelpCliCommand;
 import com.esgi.presentation.cli.users.add.AddUserCliCommandNode;
+import com.esgi.presentation.cli.users.delete.DeleteUserCliCommandNode;
 import com.esgi.presentation.cli.users.edit.EditUserCliCommandNode;
 
 import java.util.List;
@@ -14,7 +15,8 @@ public class UserCliCommandNode extends CliCommandNode {
 
     public UserCliCommandNode(AuthService authService,
           AddUserCliCommandNode addUserCommand,
-          EditUserCliCommandNode editUserCommand
+          EditUserCliCommandNode editUserCommand,
+          DeleteUserCliCommandNode deleteUserCommand
     ) {
         super(NAME, DESCRIPTION);
 
@@ -24,6 +26,7 @@ public class UserCliCommandNode extends CliCommandNode {
 
         if (authService.isLoggedIn()) {
             childrenCommands.add(editUserCommand);
+            childrenCommands.add(deleteUserCommand);
         }
 
         childrenCommands.add(new HelpCliCommand(List.copyOf(childrenCommands)));

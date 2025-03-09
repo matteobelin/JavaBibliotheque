@@ -27,7 +27,10 @@ public class HelpCliCommand extends CliCommandNode {
     @Override
     public ExitCode run(String[] args) {
         if(List.of(args).isEmpty()) {
-            this.availableCommands.forEach(this::writeHelpMessageForCliCommand);
+            this.availableCommands.forEach((command) -> {
+                this.currentIndentLevel = 0;
+                this.writeHelpMessageForCliCommand(command);
+            });
             return ExitCode.OK;
         }
 
