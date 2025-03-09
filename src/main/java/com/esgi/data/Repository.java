@@ -34,9 +34,10 @@ public abstract class Repository<T extends Model> {
     protected abstract T parseSQLResult(ResultSet result) throws SQLException;
 
     protected T getFirstByColumn(String columnName, Object value) throws NotFoundException {
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
-            var statement = conn.prepareStatement(sql);
+        String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
+
+        try (var conn = DriverManager.getConnection(connectionString);
+             var statement = conn.prepareStatement(sql)) {
             statement.setObject(1, value);
 
             try (var result = statement.executeQuery()) {
@@ -91,13 +92,30 @@ public abstract class Repository<T extends Model> {
         return this.getFirstByColumn("id", id);
     }
 
+    public List<T> getAll() {
+        String sql = "SELECT * FROM " + getTableName();
+        try (var conn = DriverManager.getConnection(connectionString);
+             var statement = conn.prepareStatement(sql);
+             var result = statement.executeQuery()) {
+
+            List<T> entities = new ArrayList<>();
+            while(result.next()) {
+                entities.add(parseSQLResult(result));
+            }
+            return entities;
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public List<Integer> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName) throws SQLException {
         List<Integer> listIds = new ArrayList<>();
 
-        try (var conn = DriverManager.getConnection(connectionString)){
-            String sql = "SELECT " + relatedIdColumn + " FROM "+ joinTableName +" WHERE " + entityIdColumn + " = ?";
-            var statement = conn.prepareStatement(sql);
+        String sql = "SELECT " + relatedIdColumn + " FROM "+ joinTableName +" WHERE " + entityIdColumn + " = ?";
+
+        try (var conn = DriverManager.getConnection(connectionString);
+             var statement = conn.prepareStatement(sql)) {
             statement.setInt(1, entityId);
 
             try (ResultSet resultSet = statement.executeQuery()) {
@@ -127,44 +145,44 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void executeCreate(Map<String, SQLColumnValueBinder> columnValueBinders,T model) throws  SQLException, ConstraintViolationException {
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String insertSQL = "INSERT INTO " + getTableName();
-            String setValuesSQL = " ( " + String.join(", ", columnValueBinders.keySet())+") VALUES ( " + this.generatePlaceholders(columnValueBinders.keySet()) + " )";
+        String insertSQL = "INSERT INTO " + getTableName();
+        String setValuesSQL = " ( " + String.join(", ", columnValueBinders.keySet())+") VALUES ( " + this.generatePlaceholders(columnValueBinders.keySet()) + " )";
 
-            String sql = insertSQL + setValuesSQL;
+        String sql = insertSQL + setValuesSQL;
 
-            try (var statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-                int index = 1;
-                for (Map.Entry<String, SQLColumnValueBinder> entry : columnValueBinders.entrySet()) {
-                    entry.getValue().bind(statement, index);
-                    index++;
-                }
-                statement.execute();
-                retrieveGeneratedKey(statement, model);
+        try (var conn = DriverManager.getConnection(connectionString);
+             var statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+
+            int index = 1;
+            for (Map.Entry<String, SQLColumnValueBinder> entry : columnValueBinders.entrySet()) {
+                entry.getValue().bind(statement, index);
+                index++;
             }
+            statement.execute();
+            retrieveGeneratedKey(statement, model);
         }
     }
 
     protected void executeUpdate(Map<String, SQLColumnValueBinder> columnValueBinders, Integer whereId) throws NotFoundException, SQLException {
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String updateSQL = "UPDATE " + getTableName();
-            String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
-            String whereSQL = " WHERE id = ?;";
+        String updateSQL = "UPDATE " + getTableName();
+        String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
+        String whereSQL = " WHERE id = ?;";
 
-            String sql = updateSQL + setValuesSQL + whereSQL;
+        String sql = updateSQL + setValuesSQL + whereSQL;
 
-            try (var statement = conn.prepareStatement(sql)) {
-                int index = 1;
-                for (Map.Entry<String, SQLColumnValueBinder> entry : columnValueBinders.entrySet()) {
-                    entry.getValue().bind(statement, index);
-                    index++;
-                }
-                statement.setInt(index, whereId);
+        try (var conn = DriverManager.getConnection(connectionString);
+             var statement = conn.prepareStatement(sql)) {
 
-                int rowsUpdated = statement.executeUpdate();
-                if (rowsUpdated == 0) {
-                    throw new NotFoundException(this.notFoundErrorMessage("id", whereId));
-                }
+            int index = 1;
+            for (Map.Entry<String, SQLColumnValueBinder> entry : columnValueBinders.entrySet()) {
+                entry.getValue().bind(statement, index);
+                index++;
+            }
+            statement.setInt(index, whereId);
+
+            int rowsUpdated = statement.executeUpdate();
+            if (rowsUpdated == 0) {
+                throw new NotFoundException(this.notFoundErrorMessage("id", whereId));
             }
         }
     }
@@ -175,9 +193,10 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void deleteByColumn(String columnName, Object value) throws NotFoundException {
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "DELETE FROM " + getTableName() + " WHERE " + columnName + " = ?";
-            var statement = conn.prepareStatement(sql);
+        String sql = "DELETE FROM " + getTableName() + " WHERE " + columnName + " = ?";
+
+        try (var conn = DriverManager.getConnection(connectionString);
+            var statement = conn.prepareStatement(sql)) {
             statement.setObject(1, value);
 
             int rowsDeleted = statement.executeUpdate();

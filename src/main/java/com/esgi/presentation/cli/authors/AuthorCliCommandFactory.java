@@ -4,6 +4,7 @@ import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.domain.authors.AuthorServiceFactory;
 import com.esgi.presentation.cli.authors.add.AddAuthorCliCommandNode;
 import com.esgi.presentation.cli.authors.delete.DeleteAuthorCliCommandNode;
+import com.esgi.presentation.cli.authors.list.ListAuthorsCliCommandNode;
 
 public final class AuthorCliCommandFactory {
 
@@ -14,9 +15,10 @@ public final class AuthorCliCommandFactory {
 
         var addAuthorCommand = new AddAuthorCliCommandNode(authorService);
         var deleteAuthorCommand = new DeleteAuthorCliCommandNode(authorService);
+        var listAuthorCommand = new ListAuthorsCliCommandNode(authorService);
 
 
-        return new AuthorCliCommandNode(authService, addAuthorCommand, deleteAuthorCommand);
+        return new AuthorCliCommandNode(authService, addAuthorCommand, deleteAuthorCommand, listAuthorCommand);
     }
 
 }
