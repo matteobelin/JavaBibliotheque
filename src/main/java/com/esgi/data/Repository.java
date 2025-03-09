@@ -3,9 +3,14 @@ package com.esgi.data;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 
-import java.sql.*;
-import java.util.*;
-
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 
@@ -17,6 +22,7 @@ public abstract class Repository<T extends Model> {
         this.connectionString = DataConfig.getDbConnectionString();
         this.currentTableName = getTableName();
 
+        DataConfig.getInstance().initDb();
     }
     protected void setTableName(String tableName) {
         this.currentTableName = tableName;
@@ -165,20 +171,21 @@ public abstract class Repository<T extends Model> {
 
 
     public void delete(Integer id) throws NotFoundException {
+        this.deleteByColumn("id", id);
+    }
+
+    protected void deleteByColumn(String columnName, Object value) throws NotFoundException {
         try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
+            String sql = "DELETE FROM " + getTableName() + " WHERE " + columnName + " = ?";
             var statement = conn.prepareStatement(sql);
-            statement.setObject(1, id);
+            statement.setObject(1, value);
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
-                throw new NotFoundException(this.notFoundErrorMessage("id", id));
+                throw new NotFoundException(this.notFoundErrorMessage(columnName, value));
             }
 
-        } catch (SQLIntegrityConstraintViolationException e) {
-            throw new IllegalStateException("Impossible to delete the element " + id + " because it is referenced elsewhere.", e);
-        }
-        catch (SQLException e) {
+        } catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
@@ -191,5 +198,4 @@ public abstract class Repository<T extends Model> {
     private String buildSetClause(Collection<String> columns) {
         return columns.stream().map(column -> column + " = ?").collect(Collectors.joining(","));
     }
-
 }

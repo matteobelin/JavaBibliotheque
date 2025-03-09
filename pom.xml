@@ -16,6 +16,7 @@
     </properties>
 
     <build>
+        <finalName>biblio</finalName>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -39,6 +40,51 @@
                         </manifest>
                     </archive>
                 </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-shade-plugin</artifactId>
+                <version>3.2.4</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>shade</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!--
+                Maven plugin to generate a Windows batch script during the build.
+                The script lets you run the JAR with `biblio` instead of `java -jar biblio.jar`.
+                -> Thanks to ChatGPT
+            -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <version>3.1.0</version>
+                <executions>
+                    <execution>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <target>
+                                <echo message="Generating Windows batch script..." />
+                                <property name="jar.name" value="biblio.jar" />
+                                <property name="bat.file" value="${project.build.directory}/biblio.bat" />
+
+                                <echo file="${bat.file}">
+                                    @echo off
+                                    java -jar "%~dp0${jar.name}" %*
+                                </echo>
+                            </target>
+                        </configuration>
+                    </execution>
+                </executions>
             </plugin>
         </plugins>
     </build>

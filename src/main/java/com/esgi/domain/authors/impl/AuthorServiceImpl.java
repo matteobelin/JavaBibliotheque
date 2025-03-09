@@ -8,7 +8,6 @@ import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorMapper;
 import com.esgi.domain.authors.AuthorService;
 
-
 public class AuthorServiceImpl implements AuthorService {
     private final AuthorRepository authorRepository;
     private final AuthorMapper authorMapper;
@@ -35,10 +34,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.update(authorModel);
     }
 
-    public void deleteAuthor(int id) throws NotFoundException,IllegalStateException {
-        authorRepository.delete(id);
+    public void deleteAuthor(String name) throws NotFoundException {
+        this.authorRepository.delete(name);
     }
-
-
-
 }
