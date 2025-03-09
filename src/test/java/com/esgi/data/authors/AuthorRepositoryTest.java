@@ -51,6 +51,31 @@ public class AuthorRepositoryTest {
     }
 
     @Test
+    public void get_Author_By_Name_Should_Return_Author() throws Exception{
+
+        //Arrange
+        String authorName = "Isaac Asimov";
+
+        //Act
+        AuthorModel actual = authorRepository.getByName(authorName);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .hasFieldOrPropertyWithValue("name", actual.getName());
+    }
+
+    @Test
+    public void get_Author_By_Name_When_Not_Found_Should_Throw() {
+        // Arrange
+        String authorName = "test";
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> authorRepository.getByName(authorName))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
     public void create_Author_Should_Save_Author() throws ConstraintViolationException, NotFoundException {
         //Arrange
         AuthorModel author = new AuthorModel(

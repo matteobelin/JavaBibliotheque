@@ -2,11 +2,6 @@ package com.esgi.data;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
-import com.esgi.core.exceptions.helpers.SQLExceptionParser;
-import com.esgi.data.books.BookModel;
-import com.esgi.data.users.UserModel;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,12 +13,19 @@ import java.util.stream.Collectors;
 
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
+    private String currentTableName;
 
     public Repository() {
         this.connectionString = DataConfig.getDbConnectionString();
-    }
+        this.currentTableName = getTableName();
 
-    protected abstract String getTableName();
+    }
+    protected void setTableName(String tableName) {
+        this.currentTableName = tableName;
+    }
+    protected String getTableName(){
+        return this.currentTableName;
+    };
 
     protected abstract T parseSQLResult(ResultSet result) throws SQLException;
 

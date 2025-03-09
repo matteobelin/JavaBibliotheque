@@ -1,5 +1,9 @@
 package com.esgi.data.authors.impl;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.NotFoundException;
+import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
+import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.authors.AuthorModel;
@@ -54,10 +58,13 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
                 String exceptionMessage = String.format("An author with this name (%s) already exists.", name);
                 throw new ConstraintViolationException(exceptionMessage);
             case CONSTRAINT_NOTNULL:
-                throw new ConstraintViolationException("A required field of the user is missing.");
+                throw new ConstraintViolationException("A required field of the author is missing.");
         }
     }
 
+    public AuthorModel getByName(String name) throws NotFoundException {
+        return this.getFirstByColumn("name",name);
+    }
 }
 
-}
+
