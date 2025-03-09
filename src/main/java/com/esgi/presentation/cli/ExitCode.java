@@ -5,7 +5,6 @@ public enum ExitCode {
     COMMAND_NOT_FOUND,
     ARGUMENT_MISSING,
     ARGUMENT_INVALID,
-
     ACCESS_DENIED,
 
     INTERNAL_ERROR,

@@ -182,4 +182,27 @@ public class UserRepositoryTest {
         Assertions.assertThatThrownBy(() -> this.userRepository.update(user))
                 .isInstanceOf(ConstraintViolationException.class);
     }
+
+    @Test
+    void delete_should_delete_user() throws NotFoundException {
+        // Arrange
+        int id = 1;
+
+        // Act
+        this.userRepository.delete(id);
+
+        // Assert
+        Assertions.assertThatThrownBy(() -> this.userRepository.getById(id))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void delete_should_throw_NotFoundException_when_id_not_in_db() throws NotFoundException {
+        // Arrange
+        int id = 100000;
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.userRepository.delete(id))
+                .isInstanceOf(NotFoundException.class);
+    }
 }

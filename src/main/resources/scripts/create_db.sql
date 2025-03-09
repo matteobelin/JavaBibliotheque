@@ -37,6 +37,6 @@ CREATE TABLE loans (
                        book_id INTEGER NOT NULL,
                        start_date DATE NOT NULL,
                        end_date DATE,
-                       FOREIGN KEY (user_id) REFERENCES users (id),
+                       FOREIGN KEY (user_id) REFERENCES users (id) ON DELETE CASCADE,
                        FOREIGN KEY (book_id) REFERENCES books (id)
 );
