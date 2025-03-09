@@ -7,7 +7,5 @@ public enum ExitCode {
     ARGUMENT_INVALID,
     ACCESS_DENIED,
 
-    ACCESS_DENIED,
-
     INTERNAL_ERROR,
 }

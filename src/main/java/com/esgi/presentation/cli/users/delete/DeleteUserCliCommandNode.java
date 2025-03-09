@@ -31,7 +31,7 @@ public class DeleteUserCliCommandNode extends CliCommandNode {
         var values = this.extractValuesFromArgs(args);
 
         boolean valuesIsNotEmpty = !values.isEmpty();
-        boolean isNotAdmin = !this.authService.isConnectedUserAdmin();
+        boolean isNotAdmin = !this.authService.isLoggedInUserAdmin();
         if (valuesIsNotEmpty && isNotAdmin) {
             AppLogger.error("Only admins can delete other users");
             return ExitCode.ACCESS_DENIED;

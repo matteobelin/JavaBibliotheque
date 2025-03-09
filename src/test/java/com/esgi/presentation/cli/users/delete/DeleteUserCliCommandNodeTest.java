@@ -39,7 +39,7 @@ public class DeleteUserCliCommandNodeTest {
         user.setEmail(email);
 
         when(this.authService.isLoggedIn()).thenReturn(true);
-        when(this.authService.isConnectedUserAdmin()).thenReturn(false);
+        when(this.authService.isLoggedInUserAdmin()).thenReturn(false);
         when(this.authService.getLoggedInUser()).thenReturn(user);
         when(this.userService.getUserByEmail(any())).thenReturn(user);
         doNothing().when(this.userService).deleteUser(1);
@@ -62,7 +62,7 @@ public class DeleteUserCliCommandNodeTest {
         user.setEmail(email);
 
         when(this.authService.isLoggedIn()).thenReturn(true);
-        when(this.authService.isConnectedUserAdmin()).thenReturn(true);
+        when(this.authService.isLoggedInUserAdmin()).thenReturn(true);
         when(this.userService.getUserByEmail(any())).thenReturn(user);
         doNothing().when(this.userService).deleteUser(1);
 
@@ -94,7 +94,7 @@ public class DeleteUserCliCommandNodeTest {
         String[] args = new String[]{email};
 
         when(this.authService.isLoggedIn()).thenReturn(true);
-        when(this.authService.isConnectedUserAdmin()).thenReturn(false);
+        when(this.authService.isLoggedInUserAdmin()).thenReturn(false);
 
         // Act
         var exitCode = this.deleteUserCliCommandNode.run(args);
