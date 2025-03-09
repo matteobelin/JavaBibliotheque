@@ -4,13 +4,12 @@ import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
+import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
-
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.sql.Statement;
+import java.util.Map;
 import java.util.Optional;
 
 public class AuthorRepositoryImpl extends Repository<AuthorModel> implements AuthorRepository {
@@ -28,40 +27,40 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
 
     }
 
-    @Override
+    private Map<String, SQLColumnValueBinder> getColumnValueBinders(AuthorModel author) {
+        return Map.of(
+                "name", (statement, index) -> statement.setString(index, author.getName())
+        );
+    }
+
     public void create(AuthorModel author) throws ConstraintViolationException {
-        try (var conn = DriverManager.getConnection(connectionString)){
-            String sql = "INSERT INTO " + getTableName() + " (name) VALUES (?)";
-            var statement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS);
+        var columnValueBinders = getColumnValueBinders(author);
 
-            statement.setString(1, author.getName());
-            statement.execute();
-
-            try (var generatedKeys = statement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    long generatedId = generatedKeys.getLong(1);
-                    author.setId((int) generatedId);
-                }
-            }
+        try{
+            super.executeCreate(columnValueBinders,author);
         } catch (SQLException e) {
-            Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
+            handleSQLException(e, author.getName());
+        }
+    }
 
-            boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
-            if (exceptionTypeNotFound) {
-                throw new RuntimeException(e);
-            }
+    private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
+        Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
-            switch (optionalExceptionType.get()) {
-                case CONSTRAINT_UNIQUE:
-                case CONSTRAINT_INDEX:
-                    String exceptionMessage = String.format("An author with this name (%s) already exists.", author.getName());
-                    throw new ConstraintViolationException(exceptionMessage);
-                case CONSTRAINT_NOTNULL:
-                    throw new ConstraintViolationException("A required field of the author is missing.");
-            }
+        boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
+        if (exceptionTypeNotFound) {
+            throw new RuntimeException(e);
         }
 
-
+        switch (optionalExceptionType.get()) {
+            case CONSTRAINT_UNIQUE:
+            case CONSTRAINT_INDEX:
+                String exceptionMessage = String.format("An author with this name (%s) already exists.", name);
+                throw new ConstraintViolationException(exceptionMessage);
+            case CONSTRAINT_NOTNULL:
+                throw new ConstraintViolationException("A required field of the user is missing.");
+        }
     }
 
 }
+
+

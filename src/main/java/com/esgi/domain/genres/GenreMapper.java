@@ -9,4 +9,11 @@ public class GenreMapper {
                 genreModel.getName()
         );
     }
+
+    public GenreModel entityToModel(GenreEntity genreEntity) {
+        return new GenreModel(
+                genreEntity.getId(),
+                genreEntity.getName()
+        );
+    }
 }

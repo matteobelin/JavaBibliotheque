@@ -6,6 +6,7 @@ import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
+import com.esgi.data.books.BookModel;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
 
@@ -32,26 +33,10 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
         );
     }
 
+
     @Override
     public UserModel getByEmail(String email) throws NotFoundException {
-       return super.getFirstByColumn("email", email);
-    }
-
-    @Override
-    public void create(UserModel user) throws ConstraintViolationException {
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "INSERT INTO " + getTableName() + " (email, name, password, isAdmin) VALUES (?, ?, ?, ?)";
-            var statement = conn.prepareStatement(sql);
-            statement.setString(1, user.getEmail());
-            statement.setString(2, user.getName());
-            statement.setString(3, user.getPassword());
-            statement.setBoolean(4, user.isAdmin());
-
-            statement.executeUpdate();
-
-        } catch (SQLException e) {
-            handleSQLException(e, user.getEmail());
-        }
+        return super.getFirstByColumn("email", email);
     }
 
     public void update(UserModel user) throws ConstraintViolationException, NotFoundException {
@@ -64,6 +49,16 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
         }
     }
 
+    public void create(UserModel user) throws ConstraintViolationException {
+        var columnValueBinders = getColumnValueBindersCreation(user);
+
+        try{
+            super.executeCreate(columnValueBinders,user);
+        } catch (SQLException e) {
+            handleSQLException(e, user.getEmail());
+        }
+    }
+
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(UserModel user) {
         return Map.of(
         "email", (statement, index) -> statement.setString(index, user.getEmail()),
@@ -71,6 +66,17 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
         "isAdmin", (statement, index) -> statement.setBoolean(index, user.isAdmin())
         );
     }
+
+
+    private Map<String, SQLColumnValueBinder> getColumnValueBindersCreation(UserModel user) {
+        return Map.of(
+                "email", (statement, index) -> statement.setString(index, user.getEmail()),
+                "name", (statement, index) -> statement.setString(index, user.getName()),
+                "isAdmin", (statement, index) -> statement.setBoolean(index, user.isAdmin()),
+                "password",(statement, index) -> statement.setString(index, user.getPassword())
+        );
+    }
+
 
     private void handleSQLException(SQLException e, String email) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);

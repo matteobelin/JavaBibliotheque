@@ -4,7 +4,6 @@ package com.esgi.data.authors;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.impl.AuthorRepositoryImpl;
-import com.esgi.data.users.UserModel;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -73,7 +72,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void author_User_With_Existing_Name_Should_Throw() {
+    void author_With_Existing_Name_Should_Throw() {
         //Arrange
         AuthorModel author = new AuthorModel(
                 null,
@@ -85,7 +84,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void author_User_With_Missing_Mandatory_Data_Should_Throw() {
+    void author_With_Missing_Mandatory_Data_Should_Throw() {
         //Arrange
         AuthorModel author = new AuthorModel(
                 null,

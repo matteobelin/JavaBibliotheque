@@ -29,6 +29,21 @@ public class GenreMapperTest {
                 .isEqualTo(expectedEntity);
     }
 
+    @Test
+    public void genreEntity_to_genreModel() {
+        //Arrange
+        GenreModel genreModel = makeGenreModel();
+        GenreEntity expectedEntity = makeGenreEntity();
+
+        //Act
+        GenreModel result = genreMapper.entityToModel(expectedEntity);
+
+        //Assert
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(genreModel);
+    }
+
 
     private GenreModel makeGenreModel() {
         return new GenreModel(2, "J.K. Rowling");
