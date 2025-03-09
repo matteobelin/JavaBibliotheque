@@ -48,6 +48,25 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+    protected List<T> getAllByColumn(String columnName, Object value) throws NotFoundException {
+        List<T> results = new ArrayList<>();
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
+            var statement = conn.prepareStatement(sql);
+            statement.setObject(1, value);
+
+            try (var result = statement.executeQuery()) {
+                while (result.next()) {
+                    results.add(parseSQLResult(result));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return results;
+    }
+
     public T getById(Integer id) throws NotFoundException {
         return this.getFirstByColumn("id", id);
     }

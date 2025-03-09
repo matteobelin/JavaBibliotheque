@@ -6,7 +6,6 @@ import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
-import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
 

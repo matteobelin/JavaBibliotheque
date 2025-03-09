@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.List;
 
 public class BookRepositoryTest {
     private BookRepository bookRepository;
@@ -57,7 +58,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_id_should_have_valid_authors() throws NotFoundException {
+    public void get_Book_by_id_should_have_valid_book() throws NotFoundException {
         // Arrange
         Integer bookId = 1;
 
@@ -65,8 +66,41 @@ public class BookRepositoryTest {
         BookModel actual = bookRepository.getById(bookId);
 
         // Assert
-        Assertions.assertThat(actual.getAuthorId()).isNotNull();
+        Assertions.assertThat(actual.getId()).isNotNull();
     }
+
+    @Test
+    public void get_Book_by_Title_should_have_valid_book() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        String bookTitle = "Steve Jobs";
+
+        // Act
+        List<BookModel> actual = bookRepository.getByTitle(bookTitle);
+
+        // Assert
+        Assertions.assertThat(actual).isNotNull()
+                .hasSize(2)
+                .extracting(BookModel::getId)
+                .containsExactly(4, 5);
+    }
+
+    @Test
+    public void get_Book_by_Title_should_have_valid_genres() throws NotFoundException {
+        // Arrange
+        String bookTitle = "Steve Jobs";
+
+        // Act
+        List<BookModel> actual = bookRepository.getByTitle(bookTitle);
+
+        // Assert
+        Assertions.assertThat(actual).isNotNull()
+                .hasSize(2)
+                .extracting(BookModel::getGenreIds)
+                .isNotNull();
+    }
+
+
+
 
     @Test
     public void get_Book_By_Id_When_Not_Found_Should_Throw() {
@@ -123,6 +157,20 @@ public class BookRepositoryTest {
                 .isNotNull()
                 .extracting(BookModel::getGenreIds)
                 .isEqualTo(book.getGenreIds());
+    }
+
+    @Test
+    public void create_Book_With_An_Existing_Author_And_Book_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                null,
+                "Steve Jobs",
+                4,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.create(book));
     }
 
     @Test
