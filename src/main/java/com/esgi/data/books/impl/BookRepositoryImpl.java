@@ -5,7 +5,6 @@ import com.esgi.data.Repository;
 import com.esgi.data.books.BookModel;
 import com.esgi.data.books.BookRepository;
 
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,10 +29,6 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return book;
     }
 
-    @Override
-    protected String exceptionMessage(BookModel model) {
-        return "";
-    }
 
     @Override
     protected BookModel parseSQLResult(ResultSet resultSet) throws SQLException {
