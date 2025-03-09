@@ -6,4 +6,5 @@ import com.esgi.core.exceptions.NotFoundException;
 public interface GenreService {
     GenreEntity getGenreById(int id) throws NotFoundException;
     void createGenre(GenreEntity genre) throws ConstraintViolationException;
+    void updateGenre(GenreEntity genre) throws ConstraintViolationException,NotFoundException;
 }

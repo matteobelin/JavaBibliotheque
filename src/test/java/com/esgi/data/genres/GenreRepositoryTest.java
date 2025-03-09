@@ -94,4 +94,49 @@ public class GenreRepositoryTest {
         Assertions.assertThatThrownBy(() -> genreRepository.create(genre));
     }
 
+    @Test
+    void update_should_update_the_genre() throws NotFoundException, ConstraintViolationException {
+        //Arrange
+        GenreModel editedGenre = new GenreModel(
+                2,
+                "test"
+        );
+
+        // Act
+        this.genreRepository.update(editedGenre);
+
+        // Assert
+        GenreModel genreFromDb = genreRepository.getById(editedGenre.getId());
+        Assertions.assertThat(genreFromDb)
+                .hasFieldOrPropertyWithValue("name", editedGenre.getName())
+                .hasFieldOrPropertyWithValue("id", 2);
+    }
+
+
+    @Test
+    void update_should_throw_NotFoundException_when_genre_id_doesnt_exist() {
+        //Arrange
+        GenreModel genre = new GenreModel(
+                20000,
+                "Thriller"
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.genreRepository.update(genre))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void update_should_throw_ConstraintViolationException_when_genre_name_taken() {
+        //Arrange
+        GenreModel genre = new GenreModel(
+                2,
+                "Mystery"
+        );
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.genreRepository.update(genre))
+                .isInstanceOf(ConstraintViolationException.class);
+    }
+
 }

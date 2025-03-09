@@ -2,8 +2,10 @@ package com.esgi.domain.genres;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
+import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
+import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.genres.impl.GenreServiceImpl;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -57,6 +59,18 @@ public class GenreServiceTest {
         //Assert
         Mockito.verify(genreRepository, Mockito.times(1)).create(expectedGenre);
         Mockito.verify(genreMapper, Mockito.times(1)).entityToModel(genre);
+    }
+
+    @Test
+    public void updateGenre_should_not_throw() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        GenreEntity genre = new GenreEntity(0, "test");
+        GenreModel expectedGenre = new GenreModel(0, "test");
+        Mockito.when(genreMapper.entityToModel(genre)).thenReturn(expectedGenre);
+        Mockito.doNothing().when(genreRepository).update(expectedGenre);
+
+        //Act
+        genreService.updateGenre(genre);
     }
 
 
