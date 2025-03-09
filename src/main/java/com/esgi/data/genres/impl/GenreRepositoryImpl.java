@@ -1,11 +1,11 @@
 package com.esgi.data.genres.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
-import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
 
@@ -58,6 +58,16 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
                 throw new ConstraintViolationException(exceptionMessage);
             case CONSTRAINT_NOTNULL:
                 throw new ConstraintViolationException("A required field of the user is missing.");
+        }
+    }
+
+    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(genre);
+
+        try {
+            super.executeUpdate(columnValueBinders, genre.getId());
+        } catch (SQLException e) {
+            handleSQLException(e, genre.getName());
         }
     }
 
