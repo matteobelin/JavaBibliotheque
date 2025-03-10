@@ -5,8 +5,10 @@ import com.esgi.domain.serialization.Serializer;
 import com.esgi.domain.users.UserService;
 import com.esgi.domain.users.UserServiceFactory;
 
+import static com.esgi.presentation.utils.AppFolderUtils.PATH_TO_AUTH_FILE;
+
 public final class AuthServiceFactory {
-    private static final String PATH_TO_AUTH_FILE = "./src/main/resources/auth.txt";
+
 
     private static AuthService authService;
 

@@ -8,15 +8,17 @@ import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
 public class AuthorRepositoryImpl extends Repository<AuthorModel> implements AuthorRepository {
-    @Override
-    protected String getTableName(){
-        return "authors";
+    public static final String TABLE_NAME = "authors";
+
+    public AuthorRepositoryImpl() {
+        super(TABLE_NAME);
     }
 
     @Override
@@ -54,6 +56,10 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
+    public void delete(String name) throws NotFoundException, ConstraintViolationException {
+        super.deleteByColumn("name", name);
+    }
+
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
@@ -75,7 +81,6 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
     public AuthorModel getByName(String name) throws NotFoundException {
         return this.getFirstByColumn("name",name);
     }
-
 }
 
 

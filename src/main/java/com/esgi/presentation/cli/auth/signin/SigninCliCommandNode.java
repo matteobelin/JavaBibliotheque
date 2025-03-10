@@ -38,7 +38,7 @@ public class SigninCliCommandNode extends CliCommandNode {
         try {
             this.userService.createUser(user);
 
-            String successMessage = "🎉 Welcome to Biblio %s, your account has been created ! 🎉".formatted(user.getName());
+            String successMessage = "Welcome to Biblio %s, your account has been created !".formatted(user.getName());
 
             String loginCommand = "biblio auth login %s %s --save".formatted(user.getEmail(), user.getPassword());
             String loginMessage = "-> You can now login using the command : %s".formatted(loginCommand);

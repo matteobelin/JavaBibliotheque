@@ -15,17 +15,19 @@ import java.util.Map;
 import java.util.Optional;
 
 public class GenreRepositoryImpl extends Repository<GenreModel> implements GenreRepository {
-    @Override
-    public String getTableName(){return "genres";}
+    public static final String TABLE_NAME = "genres";
+
+    public GenreRepositoryImpl() {
+        super(TABLE_NAME);
+    }
 
     @Override
     protected GenreModel parseSQLResult(ResultSet resultSet) throws SQLException{
-    return new GenreModel(
-            resultSet.getInt("id"),
-            resultSet.getString("name")
-    );
+        return new GenreModel(
+                resultSet.getInt("id"),
+                resultSet.getString("name")
+        );
     }
-
 
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(GenreModel genre) {
         return Map.of(
@@ -41,6 +43,10 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         } catch (SQLException e) {
             handleSQLException(e, genre.getName());
         }
+    }
+
+    public GenreModel getByName(String name) throws NotFoundException {
+        return this.getFirstByColumn("name",name);
     }
 
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
@@ -70,9 +76,4 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
             handleSQLException(e, genre.getName());
         }
     }
-
-    public GenreModel getByName(String name) throws NotFoundException {
-        return this.getFirstByColumn("name",name);
-    }
-
 }

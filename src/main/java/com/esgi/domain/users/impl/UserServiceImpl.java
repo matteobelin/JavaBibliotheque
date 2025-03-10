@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
         userRepository.update(userModel);
     }
 
-    public void deleteUser(int id) throws NotFoundException {
+    public void deleteUser(int id) throws NotFoundException, ConstraintViolationException {
         this.userRepository.delete(id);
     }
 }

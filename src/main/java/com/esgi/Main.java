@@ -7,12 +7,16 @@ import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPointFactory;
 import com.esgi.presentation.cli.ExitCode;
+import com.esgi.presentation.utils.AppFolderUtils;
 import com.esgi.presentation.utils.StringUtils;
 
+import java.io.IOException;
 import java.util.List;
 
 public class Main {
     public static void main(String[] args) {
+        initApp();
+
         AuthService authService = AuthServiceFactory.getAuthService();
 
         try {
@@ -29,6 +33,20 @@ public class Main {
         AppLogger.writeLines(AppLoggerColorEnum.GREEN, BIBLIO_ART_LIST);
         AppLogger.emptyLine();
         // TODO: MENU
+    }
+
+    private static void initApp() {
+        try {
+            AppFolderUtils.makeSureAppFolderExists();
+        } catch (IOException e) {
+            var Lines = List.of(
+                "There was an error creating the folder used by the app to store data.",
+                "Error message : " + e.getMessage()
+            );
+            AppLogger.error(StringUtils.wrapInLargeBox(Lines));
+
+            System.exit(ExitCode.INTERNAL_ERROR.ordinal());
+        }
     }
 
     private static void runCLICommand(String[] args) {

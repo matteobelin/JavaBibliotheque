@@ -166,36 +166,36 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_author() throws NotFoundException {
+    void delete_should_delete_author() throws NotFoundException, ConstraintViolationException {
         // Arrange
-        int id = 5;
+        String name = "Mickey Mouse";
 
         // Act
-        this.authorRepository.delete(id);
+        this.authorRepository.delete(name);
 
         // Assert
-        Assertions.assertThatThrownBy(() -> this.authorRepository.getById(id))
+        Assertions.assertThatThrownBy(() -> this.authorRepository.getByName(name))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
     void delete_should_throw_NotFoundException_when_id_not_in_db() {
         // Arrange
-        int id = 100000;
+        String name = "not_in_db";
 
         // Act - Assert
-        Assertions.assertThatThrownBy(() -> this.authorRepository.delete(id))
+        Assertions.assertThatThrownBy(() -> this.authorRepository.delete(name))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    void delete_should_throw_IllegalStateException_when_id_in_other_table() throws IllegalStateException {
+    void delete_should_throw_IllegalStateException_when_id_in_other_table() {
         // Arrange
-        int id = 1;
+        String name = "Isaac Asimov";
 
         // Act - Assert
-        Assertions.assertThatThrownBy(() -> this.authorRepository.delete(id))
-                .isInstanceOf(IllegalStateException.class);
+        Assertions.assertThatThrownBy(() -> this.authorRepository.delete(name))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
 }
