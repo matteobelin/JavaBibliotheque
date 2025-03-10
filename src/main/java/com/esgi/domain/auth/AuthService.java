@@ -7,7 +7,7 @@ import com.esgi.domain.users.UserEntity;
 public interface AuthService {
     boolean isLoggedIn();
 
-    boolean isConnectedUserAdmin();
+    boolean isLoggedInUserAdmin();
 
     UserEntity getLoggedInUser();
 

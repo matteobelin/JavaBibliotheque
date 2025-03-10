@@ -9,4 +9,8 @@ public class AdminCommandOption extends CliCommandNodeOption {
     public AdminCommandOption(String description) {
         super(NAME, SHORT_NAME, description, false);
     }
+
+    public AdminCommandOption(String description, boolean requireValue) {
+        super(NAME, SHORT_NAME, description, requireValue);
+    }
 }

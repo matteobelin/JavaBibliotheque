@@ -150,6 +150,23 @@ public abstract class Repository<T extends Model> {
     }
 
 
+    public void delete(Integer id) throws NotFoundException {
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
+            var statement = conn.prepareStatement(sql);
+            statement.setObject(1, id);
+
+            int rowsDeleted = statement.executeUpdate();
+            if(rowsDeleted == 0) {
+                throw new NotFoundException(this.notFoundErrorMessage("id", id));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+
     protected String notFoundErrorMessage(String columnName, Object value) {
         return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, getTableName());
     }
