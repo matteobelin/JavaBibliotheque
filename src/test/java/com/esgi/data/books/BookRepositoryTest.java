@@ -159,10 +159,52 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void create_Book_With_An_Existing_Author_And_Book_Should_Throw() {
+    public void update_Book_With_An_Existing_Author_And_Book_Should_Throw() {
         //Arrange
         BookModel book = new BookModel(
+                1,
+                "Steve Jobs",
+                4,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.update(book));
+    }
+
+    @Test
+    void book_Update_With_Missing_Mandatory_Data_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                1,
                 null,
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.update(book));
+    }
+
+    @Test
+    void update_book_With_Missing_Genre_Mandatory_Data_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                1,
+                "test",
+                1,
+                null
+        );
+
+        //Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.create(book));
+    }
+
+    @Test
+    public void Book_With_An_Existing_Author_And_Book_Should_Throw() {
+        //Arrange
+        BookModel book = new BookModel(
+                1,
                 "Steve Jobs",
                 4,
                 new ArrayList<>(Arrays.asList(1, 2, 3))
@@ -200,6 +242,52 @@ public class BookRepositoryTest {
         Assertions.assertThatThrownBy(() -> bookRepository.create(book));
     }
 
+    @Test
+    public void update_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException {
+        //Arrange
+        BookModel book = new BookModel(
+                1,
+                "test",
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Act
+        bookRepository.update(book);
+        Integer bookId = book.getId();
+        BookModel actual = bookRepository.getById(bookId);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .extracting(BookModel::getTitle)
+                .isEqualTo(book.getTitle());
+    }
+
+
+    @Test
+    public void update_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException {
+        //Arrange
+        BookModel book = new BookModel(
+                1,
+                "test",
+                1,
+                new ArrayList<>(Arrays.asList(1, 2, 3))
+        );
+
+        //Act
+        bookRepository.update(book);
+        Integer bookId = book.getId();
+        BookModel actual = bookRepository.getById(bookId);
+
+        //Assert
+        Assertions.assertThat(actual)
+                .isNotNull()
+                .extracting(BookModel::getGenreIds)
+                .isEqualTo(book.getGenreIds());
+    }
+
+    
 
 
 }

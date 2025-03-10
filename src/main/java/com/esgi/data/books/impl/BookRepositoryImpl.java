@@ -9,7 +9,7 @@ import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.books.BookModel;
 import com.esgi.data.books.BookRepository;
 
-
+import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -83,7 +83,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
                         .equals(bookModel.getTitle()) && book.getAuthorId().equals(bookModel.getAuthorId()));
     }
 
-    @Override
+   
     public void create(BookModel book) throws ConstraintViolationException, NotFoundException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
@@ -108,6 +108,51 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         }
     }
 
+    public void update(BookModel book) throws ConstraintViolationException, NotFoundException {
+        if(existInDb(book)){
+            throw new ConstraintViolationException("A book with this name and this author already exists.");
+        }
+        setTableName("books");
+        var columnValueBinders = getColumnValueBinders(book);
+        try {
+            super.executeUpdate(columnValueBinders,book.getId());
+        } catch (SQLException e) {
+            handleSQLException(e);
+        }
+        Integer bookId=book.getId();
+        setTableName("genre_book");
+        deleteBookGenre(book.getId());
+        for(Integer genreId : book.getGenreIds()){
+            columnValueBinders = getColumnValueBindersBookGenre(book,genreId);
+            try{
+                super.executeCreate(columnValueBinders,book);
+                book.setId(bookId);
+            } catch (SQLException e) {
+                handleSQLException(e);
+            }
+        }
+    }
+
+
+    public void deleteBookGenre(Integer id) throws NotFoundException {
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String sql = "DELETE FROM " + getTableName() + " WHERE book_id = ?";
+            var statement = conn.prepareStatement(sql);
+            statement.setObject(1, id);
+
+            int rowsDeleted = statement.executeUpdate();
+            if(rowsDeleted == 0) {
+                throw new NotFoundException(this.notFoundErrorMessage("id", id));
+            }
+
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    
+    
+
     private void handleSQLException(SQLException e) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
@@ -120,5 +165,8 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
                 throw new ConstraintViolationException("A required field of the author is missing.");
         }
     }
+
+    
+    
 
 }

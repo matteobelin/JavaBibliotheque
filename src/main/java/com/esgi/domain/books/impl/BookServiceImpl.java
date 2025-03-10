@@ -28,4 +28,11 @@ public class BookServiceImpl implements BookService {
         BookModel bookModel = bookMapper.entityToModel(bookEntity);
         bookRepository.create(bookModel);
     }
+
+    @Override
+    public void updateBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException {
+        BookModel bookModel = bookMapper.entityToModel(bookEntity);
+        bookRepository.update(bookModel);
+    }
+    
 }
