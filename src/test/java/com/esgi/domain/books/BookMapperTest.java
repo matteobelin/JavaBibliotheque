@@ -1,12 +1,9 @@
 package com.esgi.domain.books;
 
-import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
-import com.esgi.data.books.BookRepository;
 import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorService;
-import com.esgi.domain.books.impl.BookServiceImpl;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import org.assertj.core.api.Assertions;

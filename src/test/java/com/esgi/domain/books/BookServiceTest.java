@@ -2,7 +2,6 @@ package com.esgi.domain.books;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.books.BookModel;
 import com.esgi.data.books.BookRepository;
 import com.esgi.domain.authors.AuthorEntity;
