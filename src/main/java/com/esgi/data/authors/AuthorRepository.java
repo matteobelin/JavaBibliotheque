@@ -10,7 +10,7 @@ public interface AuthorRepository {
     AuthorModel getById(Integer id) throws NotFoundException;
     void create(AuthorModel author) throws ConstraintViolationException;
     void update(AuthorModel author) throws ConstraintViolationException,NotFoundException;
-    void delete(String name) throws NotFoundException;
+    void delete(String name) throws NotFoundException, ConstraintViolationException;
     List<AuthorModel> getAll();
     AuthorModel getByName(String name) throws NotFoundException;
 }

@@ -36,7 +36,7 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.update(authorModel);
     }
 
-    public void deleteAuthor(String name) throws NotFoundException {
+    public void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException {
         this.authorRepository.delete(name);
     }
 

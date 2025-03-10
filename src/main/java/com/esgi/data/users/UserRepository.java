@@ -9,5 +9,5 @@ public interface UserRepository {
    UserModel getByEmail(String email) throws NotFoundException;
    void create(UserModel user) throws ConstraintViolationException;
    void update(UserModel user) throws NotFoundException, ConstraintViolationException;
-   void delete(Integer id) throws NotFoundException;
+   void delete(Integer id) throws NotFoundException, ConstraintViolationException;
 }

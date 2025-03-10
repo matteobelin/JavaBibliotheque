@@ -13,9 +13,9 @@ public interface GenreBookRepository {
 
     void createGenreBook(GenreBookModel genreBook) throws ConstraintViolationException;
 
-    void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException;
+    void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException, ConstraintViolationException;
 
-    void deleteAllByGenreId(Integer genreId) throws NotFoundException;
+    void deleteAllByGenreId(Integer genreId) throws NotFoundException, ConstraintViolationException;
 
-    void deleteAllByBookId(Integer bookId) throws NotFoundException;
+    void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException;
 }

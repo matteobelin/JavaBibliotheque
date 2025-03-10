@@ -56,7 +56,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
-    public void delete(String name) throws NotFoundException {
+    public void delete(String name) throws NotFoundException, ConstraintViolationException {
         super.deleteByColumn("name", name);
     }
 

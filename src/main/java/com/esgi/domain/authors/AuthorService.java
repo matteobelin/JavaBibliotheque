@@ -8,7 +8,7 @@ import java.util.List;
 public interface AuthorService {
     AuthorEntity getAuthorById(int id) throws NotFoundException;
     void createAuthor(AuthorEntity author) throws ConstraintViolationException;
-    void deleteAuthor(String name) throws NotFoundException;
+    void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException;
     List<AuthorEntity> getAllAuthors();
     void updateAuthor(AuthorEntity author) throws ConstraintViolationException,NotFoundException;
 }

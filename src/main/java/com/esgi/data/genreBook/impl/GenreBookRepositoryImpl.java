@@ -59,20 +59,20 @@ public class GenreBookRepositoryImpl extends Repository<GenreBookModel> implemen
     }
 
     @Override
-    public void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException {
+    public void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException, ConstraintViolationException {
         super.deleteWhere(Map.of(
-            GENRE_ID_COLUMN, genreBook.getGenreId(),
-            BOOK_ID_COLUMN, genreBook.getBookId()
+            GENRE_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getGenreId()),
+            BOOK_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getBookId())
         ));
     }
 
     @Override
-    public void deleteAllByGenreId(Integer genreId) throws NotFoundException {
+    public void deleteAllByGenreId(Integer genreId) throws NotFoundException, ConstraintViolationException {
         super.deleteByColumn(GENRE_ID_COLUMN, genreId);
     }
 
     @Override
-    public void deleteAllByBookId(Integer bookId) throws NotFoundException {
+    public void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException {
         super.deleteByColumn(BOOK_ID_COLUMN, bookId);
     }
 

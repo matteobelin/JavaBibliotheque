@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.authors.delete;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.authors.AuthorService;
 import com.esgi.presentation.AppLogger;
@@ -31,7 +32,7 @@ public class DeleteAuthorCliCommandNode extends CliCommandNode {
             this.authorService.deleteAuthor(values.get(0));
 
             AppLogger.success("Author with name %s deleted !".formatted(values.get(0)));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
         }

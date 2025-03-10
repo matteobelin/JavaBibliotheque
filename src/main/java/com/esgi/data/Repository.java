@@ -66,22 +66,6 @@ public abstract class Repository<T extends Model> {
         return results;
     }
 
-    protected List<T> getAll() {
-        List<T> results = new ArrayList<>();
-        try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "SELECT * FROM " + getTableName();
-            var statement = conn.prepareStatement(sql);
-            try (var result = statement.executeQuery()) {
-                while (result.next()) {
-                    results.add(parseSQLResult(result));
-                }
-            }
-        } catch (SQLException e) {
-            throw new RuntimeException(e);
-        }
-        return results;
-    }
-
     public T getById(Integer id) throws NotFoundException {
         return this.getFirstByColumn("id", id);
     }
@@ -182,16 +166,20 @@ public abstract class Repository<T extends Model> {
     }
 
 
-    public void delete(Integer id) throws NotFoundException {
-        this.deleteByColumn("id", id);
+    public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
+        this.deleteWhere(Map.of(
+            "id", (statement, index) -> statement.setInt(index, id))
+        );
     }
 
-    protected void deleteByColumn(String columnName, Object value) throws NotFoundException {
-        this.deleteWhere(Map.of(columnName, value));
+    protected void deleteByColumn(String column, Object value) throws NotFoundException, ConstraintViolationException {
+        this.deleteWhere(Map.of(
+            column, (statement, index) -> statement.setObject(index, value))
+        );
     }
 
-    protected void deleteWhere(Map<String, Object> columnValues) throws NotFoundException {
-        String whereConditions = columnValues.keySet().stream().map(o -> o + " = ?").collect(Collectors.joining(","));
+    protected void deleteWhere(Map<String, SQLColumnValueBinder> columnValueBinders) throws NotFoundException, ConstraintViolationException {
+        String whereConditions = this.buildWhereConditions(columnValueBinders.keySet());
 
         String sql = "DELETE FROM " + tableName + " WHERE " + whereConditions;
 
@@ -199,22 +187,22 @@ public abstract class Repository<T extends Model> {
              var statement = conn.prepareStatement(sql)) {
 
             int index = 1;
-            for (Map.Entry<String, Object> entry : columnValues.entrySet()) {
-                statement.setObject(index, entry.getValue());
+            for (var entry : columnValueBinders.entrySet()) {
+                entry.getValue().bind(statement, index);
             }
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
-                var conditions =  columnValues.entrySet()
+                var conditions =  columnValueBinders.entrySet()
                         .stream()
-                        .map(o -> o.getKey() + " = " + o.getValue())
+                        .map(entry -> entry.getKey() + " = " + entry.getValue())
                         .collect(Collectors.joining(","));
 
-                throw new NotFoundException("No entity with this conditions found : " + conditions);
+                throw new NotFoundException("No record with these conditions found : " + conditions);
             }
 
         } catch (SQLException e) {
-            throw new RuntimeException(e);
+            throw new ConstraintViolationException("Record is linked to another table !");
         }
     }
 
@@ -223,6 +211,10 @@ public abstract class Repository<T extends Model> {
     }
 
     private String buildSetClause(Collection<String> columns) {
+        return columns.stream().map(column -> column + " = ?").collect(Collectors.joining(","));
+    }
+
+    private String buildWhereConditions(Collection<String> columns) {
         return columns.stream().map(column -> column + " = ?").collect(Collectors.joining(","));
     }
 }
