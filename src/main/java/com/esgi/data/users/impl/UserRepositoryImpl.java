@@ -6,11 +6,8 @@ import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
-import com.esgi.data.books.BookModel;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
-
-import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;

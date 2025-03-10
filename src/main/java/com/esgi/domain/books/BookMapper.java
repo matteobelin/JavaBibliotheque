@@ -30,6 +30,18 @@ public class BookMapper {
         );
     }
 
+    public BookModel entityToModel(BookEntity bookEntity) {
+        return new BookModel(
+                bookEntity.getId(),
+                bookEntity.getTitle(),
+                bookEntity.getAuthor().getId(),
+                bookEntity.getGenres().stream()
+                            .map(GenreEntity::getId)
+                            .collect(Collectors.toList())
+        );
+
+    }
+
     private GenreEntity getGenreEntityById(int id) {
         try {
             return genreService.getGenreById(id);

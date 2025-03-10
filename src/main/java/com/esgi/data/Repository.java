@@ -2,11 +2,6 @@ package com.esgi.data;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
-import com.esgi.core.exceptions.helpers.SQLExceptionParser;
-import com.esgi.data.books.BookModel;
-import com.esgi.data.users.UserModel;
-
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -18,12 +13,19 @@ import java.util.stream.Collectors;
 
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
+    private String currentTableName;
 
     public Repository() {
         this.connectionString = DataConfig.getDbConnectionString();
-    }
+        this.currentTableName = getTableName();
 
-    protected abstract String getTableName();
+    }
+    protected void setTableName(String tableName) {
+        this.currentTableName = tableName;
+    }
+    protected String getTableName(){
+        return this.currentTableName;
+    };
 
     protected abstract T parseSQLResult(ResultSet result) throws SQLException;
 
@@ -44,6 +46,25 @@ public abstract class Repository<T extends Model> {
         } catch (SQLException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    protected List<T> getAllByColumn(String columnName, Object value) throws NotFoundException {
+        List<T> results = new ArrayList<>();
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
+            var statement = conn.prepareStatement(sql);
+            statement.setObject(1, value);
+
+            try (var result = statement.executeQuery()) {
+                while (result.next()) {
+                    results.add(parseSQLResult(result));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+
+        return results;
     }
 
     public T getById(Integer id) throws NotFoundException {
@@ -105,7 +126,6 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void executeUpdate(Map<String, SQLColumnValueBinder> columnValueBinders, Integer whereId) throws NotFoundException, SQLException {
-
         try (var conn = DriverManager.getConnection(connectionString)) {
             String updateSQL = "UPDATE " + getTableName();
             String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
@@ -129,6 +149,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+
     public void delete(Integer id) throws NotFoundException {
         try (var conn = DriverManager.getConnection(connectionString)) {
             String sql = "DELETE FROM " + getTableName() + " WHERE id = ?";
@@ -144,6 +165,7 @@ public abstract class Repository<T extends Model> {
             throw new RuntimeException(e);
         }
     }
+
 
     protected String notFoundErrorMessage(String columnName, Object value) {
         return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, getTableName());

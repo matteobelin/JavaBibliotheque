@@ -17,8 +17,8 @@ import java.util.List;
 public class BookMapperTest {
 
     private BookMapper bookMapper;
-    private AuthorService authorService;
     private GenreService genreService;
+    private AuthorService authorService;
 
     @BeforeEach
     public void setUp() {
@@ -51,6 +51,23 @@ public class BookMapperTest {
                 .isNotNull()
                 .isEqualTo(makeBookEntity());
     }
+
+    @Test
+    public void bookEntity_to_bookModel() throws NotFoundException {
+        //Arrange
+        BookEntity bookEntity = makeBookEntity();
+
+        //Act
+        BookModel result = bookMapper.entityToModel(bookEntity);
+
+        //Assert
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(makeBookModel());
+    }
+
+
+
 
     private BookModel makeBookModel() {
         List<Integer> genreIds = Arrays.asList(1);
