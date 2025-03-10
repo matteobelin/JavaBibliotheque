@@ -287,7 +287,32 @@ public class BookRepositoryTest {
                 .isEqualTo(book.getGenreIds());
     }
 
-    
+    @Test
+    public void get_All_Book_should_return_BookList(){
+        //Arrange
+        List<BookModel> booksExpect = getBooks();
+        List<BookModel> books;
+
+        //Act
+        books=bookRepository.getAllBook();
+
+        //Assert
+        Assertions.assertThat(books)
+                .isNotNull()
+                .isEqualTo(booksExpect);
+    }
+
+
+
+    private List<BookModel> getBooks() {
+        return Arrays.asList(
+                new BookModel(1, "Foundation", 1, new ArrayList<>(Arrays.asList(1))),
+                new BookModel(2, "Harry Potter and the Philosopher s Stone", 2, new ArrayList<>(Arrays.asList(2))),
+                new BookModel(3, "Murder on the Orient Express", 3, new ArrayList<>(Arrays.asList(3))),
+                new BookModel(4, "Steve Jobs", 4, new ArrayList<>(Arrays.asList(4))),
+                new BookModel(5, "Steve Jobs", 1, new ArrayList<>(Arrays.asList(4, 3)))
+        );
+    }
 
 
 }

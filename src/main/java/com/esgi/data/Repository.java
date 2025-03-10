@@ -67,6 +67,22 @@ public abstract class Repository<T extends Model> {
         return results;
     }
 
+    protected List<T> getAll() {
+        List<T> results = new ArrayList<>();
+        try (var conn = DriverManager.getConnection(connectionString)) {
+            String sql = "SELECT * FROM " + getTableName();
+            var statement = conn.prepareStatement(sql);
+            try (var result = statement.executeQuery()) {
+                while (result.next()) {
+                    results.add(parseSQLResult(result));
+                }
+            }
+        } catch (SQLException e) {
+            throw new RuntimeException(e);
+        }
+        return results;
+    }
+
     public T getById(Integer id) throws NotFoundException {
         return this.getFirstByColumn("id", id);
     }

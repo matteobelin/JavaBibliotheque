@@ -12,6 +12,7 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
@@ -74,10 +75,10 @@ public class BookServiceTest {
         Mockito.doNothing().when(bookRepository).update(expectedBook);
 
         //Act
-        bookService.createBook(book);
+        bookService.updateBook(book);
 
         //Assert
-        Mockito.verify(bookRepository, Mockito.times(1)).create(expectedBook);
+        Mockito.verify(bookRepository, Mockito.times(1)).update(expectedBook);
         Mockito.verify(bookMapper, Mockito.times(1)).entityToModel(book);
     }
 
@@ -90,4 +91,5 @@ public class BookServiceTest {
         List<Integer> genreIds = Arrays.asList(1);
         return new BookModel(1,"Foundation",1,genreIds);
     }
+
 }
