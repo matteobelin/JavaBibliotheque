@@ -33,4 +33,7 @@ public class GenreServiceImpl implements GenreService {
         GenreModel genreModel = genreMapper.entityToModel(genreEntity);
         genreRepository.update(genreModel);
     }
+    public void deleteGenre(int id)throws NotFoundException,IllegalStateException {
+        genreRepository.delete(id);
+    }
 }

@@ -49,6 +49,20 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         return this.getFirstByColumn("name",name);
     }
 
+    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(genre);
+
+        try {
+            super.executeUpdate(columnValueBinders, genre.getId());
+        } catch (SQLException e) {
+            handleSQLException(e, genre.getName());
+        }
+    }
+
+    public GenreModel getByName(String name) throws NotFoundException {
+        return this.getFirstByColumn("name",name);
+    }
+  
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
@@ -64,16 +78,6 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
                 throw new ConstraintViolationException(exceptionMessage);
             case CONSTRAINT_NOTNULL:
                 throw new ConstraintViolationException("A required field of the genre is missing.");
-        }
-    }
-
-    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException {
-        var columnValueBinders = getColumnValueBinders(genre);
-
-        try {
-            super.executeUpdate(columnValueBinders, genre.getId());
-        } catch (SQLException e) {
-            handleSQLException(e, genre.getName());
         }
     }
 }

@@ -163,4 +163,37 @@ public class GenreRepositoryTest {
                 .isInstanceOf(ConstraintViolationException.class);
     }
 
+    @Test
+    void delete_should_delete_genre() throws NotFoundException {
+        // Arrange
+        int id = 5;
+
+        // Act
+        this.genreRepository.delete(id);
+
+        // Assert
+        Assertions.assertThatThrownBy(() -> this.genreRepository.getById(id))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void delete_should_throw_NotFoundException_when_id_not_in_db() {
+        // Arrange
+        int id = 100000;
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(id))
+                .isInstanceOf(NotFoundException.class);
+    }
+
+    @Test
+    void delete_should_throw_IllegalStateException_when_id_in_other_table() throws IllegalStateException {
+        // Arrange
+        int id = 1;
+
+        // Act - Assert
+        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(id))
+                .isInstanceOf(IllegalStateException.class);
+    }
+
 }
