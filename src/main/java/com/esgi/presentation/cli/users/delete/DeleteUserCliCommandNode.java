@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.users.delete;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.users.UserService;
@@ -47,7 +48,7 @@ public class DeleteUserCliCommandNode extends CliCommandNode {
             this.userService.deleteUser(userToDelete.getId());
 
             AppLogger.success("User with email '%s' has been deleted !".formatted(email));
-        } catch (NotFoundException e) {
+        } catch (NotFoundException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
         }

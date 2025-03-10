@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.users.delete;
 
+import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.users.UserEntity;
@@ -29,7 +30,7 @@ public class DeleteUserCliCommandNodeTest {
     private UserService userService;
 
     @Test
-    public void should_return_ok_when_user_logged_in() throws NotFoundException {
+    public void should_return_ok_when_user_logged_in() throws NotFoundException, ConstraintViolationException {
         // Arrange
         String[] args = new String[]{};
         String email = "test@gmail.com";
@@ -52,7 +53,7 @@ public class DeleteUserCliCommandNodeTest {
     }
 
     @Test
-    public void should_return_ok_when_admin_delete_other_user() throws NotFoundException {
+    public void should_return_ok_when_admin_delete_other_user() throws NotFoundException, ConstraintViolationException {
         // Arrange
         String email = "test@gmail.com";
         String[] args = new String[]{email};

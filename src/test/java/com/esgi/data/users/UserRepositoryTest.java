@@ -183,7 +183,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_user() throws NotFoundException {
+    void delete_should_delete_user() throws NotFoundException, ConstraintViolationException {
         // Arrange
         int id = 1;
 

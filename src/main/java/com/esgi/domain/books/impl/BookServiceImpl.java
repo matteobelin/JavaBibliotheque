@@ -8,6 +8,9 @@ import com.esgi.domain.books.BookEntity;
 import com.esgi.domain.books.BookMapper;
 import com.esgi.domain.books.BookService;
 
+import java.util.ArrayList;
+import java.util.List;
+
 public class BookServiceImpl implements BookService {
     private final BookRepository bookRepository;
     private final BookMapper bookMapper;
@@ -21,6 +24,16 @@ public class BookServiceImpl implements BookService {
     public BookEntity getBookById(int id) throws  NotFoundException {
         BookModel bookModel = bookRepository.getById(id);
             return bookMapper.modelToEntity(bookModel);
+    }
+
+    @Override
+    public List<BookEntity> getAllBooks() {
+        List<BookModel> books = bookRepository.getAllBook();
+        List<BookEntity> bookEntities = new ArrayList<>();
+        for(BookModel book : books){
+            bookEntities.add(bookMapper.modelToEntity(book));
+        }
+        return bookEntities;
     }
 
     @Override

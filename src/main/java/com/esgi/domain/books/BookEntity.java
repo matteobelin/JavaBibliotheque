@@ -5,11 +5,11 @@ import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.genres.GenreEntity;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
+
 import java.util.List;
 
 @EqualsAndHashCode(callSuper = true)
 @Data
-
 public class BookEntity extends Entity {
     private String title;
     private AuthorEntity author;
@@ -21,4 +21,6 @@ public class BookEntity extends Entity {
         this.author = author;
         this.genres = genres;
     }
+
+    public BookEntity() {}
 }

@@ -13,4 +13,6 @@ public class AuthorEntity extends Entity {
         super(id);
         this.name = name;
     }
+
+    public AuthorEntity() {}
 }
