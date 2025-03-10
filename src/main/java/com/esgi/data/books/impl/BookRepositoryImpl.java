@@ -83,7 +83,6 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
                         .equals(bookModel.getTitle()) && book.getAuthorId().equals(bookModel.getAuthorId()));
     }
 
-   
     public void create(BookModel book) throws ConstraintViolationException, NotFoundException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
@@ -131,6 +130,22 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
                 handleSQLException(e);
             }
         }
+    }
+
+    public List<BookModel> getAllBook(){
+        setTableName("books");
+        List<BookModel> books = this.getAll();
+        List<Integer> genreIds;
+        for (BookModel book : books) {
+            try {
+                genreIds = getListById(book.getId(), "book_id", "genre_id", "genre_book");
+            } catch (SQLException e) {
+                throw new RuntimeException(e);
+            }
+            book.setGenreIds(genreIds);
+        }
+        return books;
+
     }
 
 
