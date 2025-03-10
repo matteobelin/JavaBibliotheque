@@ -2,7 +2,8 @@ INSERT INTO genres (name) VALUES
 ('Science Fiction'),
 ('Fantasy'),
 ('Mystery'),
-('Biography');
+('Biography'),
+('Comics');
 
 INSERT INTO authors (name) VALUES
 ('Isaac Asimov'),

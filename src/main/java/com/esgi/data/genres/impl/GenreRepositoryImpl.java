@@ -75,4 +75,5 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         return this.getFirstByColumn("name",name);
     }
 
+
 }
