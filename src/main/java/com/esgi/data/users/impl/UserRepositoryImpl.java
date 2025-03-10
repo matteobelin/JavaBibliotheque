@@ -8,32 +8,43 @@ import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
 import com.esgi.data.users.UserModel;
 import com.esgi.data.users.UserRepository;
+
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Map;
 import java.util.Optional;
 
 public class UserRepositoryImpl extends Repository<UserModel> implements UserRepository {
-    @Override
-    protected String getTableName() {
-        return "users";
+
+    public static final String TABLE_NAME = "users";
+
+    private static final String EMAIL_COLUMN = "email";
+
+    private static final String PASSWORD_COLUMN = "password";
+
+    private static final String NAME_COLUMN = "name";
+
+    private static final String IS_ADMIN_COLUMN = "isAdmin";
+
+    public UserRepositoryImpl() {
+        super(TABLE_NAME);
     }
 
     @Override
     protected UserModel parseSQLResult(ResultSet resultSet) throws SQLException {
         return new UserModel(
                 resultSet.getInt("id"),
-                resultSet.getString("email"),
-                resultSet.getBoolean("isAdmin"),
-                resultSet.getString("name"),
-                resultSet.getString("password")
+                resultSet.getString(EMAIL_COLUMN),
+                resultSet.getBoolean(IS_ADMIN_COLUMN),
+                resultSet.getString(NAME_COLUMN),
+                resultSet.getString(PASSWORD_COLUMN)
         );
     }
 
 
     @Override
     public UserModel getByEmail(String email) throws NotFoundException {
-        return super.getFirstByColumn("email", email);
+        return super.getFirstByColumn(EMAIL_COLUMN, email);
     }
 
     public void update(UserModel user) throws ConstraintViolationException, NotFoundException {
@@ -58,19 +69,19 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
 
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(UserModel user) {
         return Map.of(
-        "email", (statement, index) -> statement.setString(index, user.getEmail()),
-        "name", (statement, index) -> statement.setString(index, user.getName()),
-        "isAdmin", (statement, index) -> statement.setBoolean(index, user.isAdmin())
+            EMAIL_COLUMN, (statement, index) -> statement.setString(index, user.getEmail()),
+            NAME_COLUMN, (statement, index) -> statement.setString(index, user.getName()),
+            IS_ADMIN_COLUMN, (statement, index) -> statement.setBoolean(index, user.isAdmin())
         );
     }
 
 
     private Map<String, SQLColumnValueBinder> getColumnValueBindersCreation(UserModel user) {
         return Map.of(
-                "email", (statement, index) -> statement.setString(index, user.getEmail()),
-                "name", (statement, index) -> statement.setString(index, user.getName()),
-                "isAdmin", (statement, index) -> statement.setBoolean(index, user.isAdmin()),
-                "password",(statement, index) -> statement.setString(index, user.getPassword())
+            EMAIL_COLUMN, (statement, index) -> statement.setString(index, user.getEmail()),
+            NAME_COLUMN, (statement, index) -> statement.setString(index, user.getName()),
+            IS_ADMIN_COLUMN, (statement, index) -> statement.setBoolean(index, user.isAdmin()),
+            PASSWORD_COLUMN,(statement, index) -> statement.setString(index, user.getPassword())
         );
     }
 

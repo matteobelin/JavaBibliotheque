@@ -16,25 +16,19 @@ import java.util.stream.Collectors;
 
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
-    private String currentTableName;
+    private final String tableName;
 
-    public Repository() {
+    public Repository(String tableName) {
         this.connectionString = DataConfig.getDbConnectionString();
-        this.currentTableName = getTableName();
+        this.tableName = tableName;
 
         DataConfig.getInstance().initDb();
     }
-    protected void setTableName(String tableName) {
-        this.currentTableName = tableName;
-    }
-    protected String getTableName(){
-        return this.currentTableName;
-    };
 
     protected abstract T parseSQLResult(ResultSet result) throws SQLException;
 
     protected T getFirstByColumn(String columnName, Object value) throws NotFoundException {
-        String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
+        String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
 
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql)) {
@@ -56,7 +50,7 @@ public abstract class Repository<T extends Model> {
     protected List<T> getAllByColumn(String columnName, Object value) throws NotFoundException {
         List<T> results = new ArrayList<>();
         try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "SELECT * FROM " + getTableName() + " WHERE " + columnName + " = ?";
+            String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
             var statement = conn.prepareStatement(sql);
             statement.setObject(1, value);
 
@@ -93,7 +87,7 @@ public abstract class Repository<T extends Model> {
     }
 
     public List<T> getAll() {
-        String sql = "SELECT * FROM " + getTableName();
+        String sql = "SELECT * FROM " + tableName;
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql);
              var result = statement.executeQuery()) {
@@ -145,7 +139,7 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void executeCreate(Map<String, SQLColumnValueBinder> columnValueBinders,T model) throws  SQLException, ConstraintViolationException {
-        String insertSQL = "INSERT INTO " + getTableName();
+        String insertSQL = "INSERT INTO " + tableName;
         String setValuesSQL = " ( " + String.join(", ", columnValueBinders.keySet())+") VALUES ( " + this.generatePlaceholders(columnValueBinders.keySet()) + " )";
 
         String sql = insertSQL + setValuesSQL;
@@ -164,7 +158,7 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void executeUpdate(Map<String, SQLColumnValueBinder> columnValueBinders, Integer whereId) throws NotFoundException, SQLException {
-        String updateSQL = "UPDATE " + getTableName();
+        String updateSQL = "UPDATE " + tableName;
         String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
         String whereSQL = " WHERE id = ?;";
 
@@ -193,15 +187,30 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void deleteByColumn(String columnName, Object value) throws NotFoundException {
-        String sql = "DELETE FROM " + getTableName() + " WHERE " + columnName + " = ?";
+        this.deleteWhere(Map.of(columnName, value));
+    }
+
+    protected void deleteWhere(Map<String, Object> columnValues) throws NotFoundException {
+        String whereConditions = columnValues.keySet().stream().map(o -> o + " = ?").collect(Collectors.joining(","));
+
+        String sql = "DELETE FROM " + tableName + " WHERE " + whereConditions;
 
         try (var conn = DriverManager.getConnection(connectionString);
-            var statement = conn.prepareStatement(sql)) {
-            statement.setObject(1, value);
+             var statement = conn.prepareStatement(sql)) {
+
+            int index = 1;
+            for (Map.Entry<String, Object> entry : columnValues.entrySet()) {
+                statement.setObject(index, entry.getValue());
+            }
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
-                throw new NotFoundException(this.notFoundErrorMessage(columnName, value));
+                var conditions =  columnValues.entrySet()
+                        .stream()
+                        .map(o -> o.getKey() + " = " + o.getValue())
+                        .collect(Collectors.joining(","));
+
+                throw new NotFoundException("No entity with this conditions found : " + conditions);
             }
 
         } catch (SQLException e) {
@@ -209,9 +218,8 @@ public abstract class Repository<T extends Model> {
         }
     }
 
-
     protected String notFoundErrorMessage(String columnName, Object value) {
-        return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, getTableName());
+        return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, tableName);
     }
 
     private String buildSetClause(Collection<String> columns) {

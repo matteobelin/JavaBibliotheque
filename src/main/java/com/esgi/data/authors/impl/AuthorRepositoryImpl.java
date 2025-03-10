@@ -15,9 +15,10 @@ import java.util.Map;
 import java.util.Optional;
 
 public class AuthorRepositoryImpl extends Repository<AuthorModel> implements AuthorRepository {
-    @Override
-    protected String getTableName(){
-        return "authors";
+    public static final String TABLE_NAME = "authors";
+
+    public AuthorRepositoryImpl() {
+        super(TABLE_NAME);
     }
 
     @Override
