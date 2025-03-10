@@ -75,6 +75,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
     public AuthorModel getByName(String name) throws NotFoundException {
         return this.getFirstByColumn("name",name);
     }
+
 }
 
 

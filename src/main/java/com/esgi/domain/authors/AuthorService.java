@@ -8,4 +8,5 @@ public interface AuthorService {
     AuthorEntity getAuthorById(int id) throws NotFoundException;
     void createAuthor(AuthorEntity author) throws ConstraintViolationException;
     void updateAuthor(AuthorEntity author) throws ConstraintViolationException,NotFoundException;
+    void deleteAuthor(int id) throws NotFoundException,IllegalStateException;
 }

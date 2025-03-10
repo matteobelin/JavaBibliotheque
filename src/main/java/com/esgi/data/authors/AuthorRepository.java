@@ -10,4 +10,5 @@ public interface AuthorRepository {
     void create(AuthorModel author) throws ConstraintViolationException;
     void update(AuthorModel author) throws ConstraintViolationException,NotFoundException;
     AuthorModel getByName(String name) throws NotFoundException;
+    void delete(Integer id) throws NotFoundException;
 }
