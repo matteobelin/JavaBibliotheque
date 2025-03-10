@@ -8,7 +8,8 @@ INSERT INTO authors (name) VALUES
 ('Isaac Asimov'),
 ('J.K. Rowling'),
 ('Agatha Christie'),
-( 'Walter Isaacson');
+( 'Walter Isaacson'),
+( 'Mickey Mouse');
 
 INSERT INTO books (title, author_id) VALUES
 ('Foundation',1),

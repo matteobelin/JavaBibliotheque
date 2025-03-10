@@ -35,6 +35,10 @@ public class AuthorServiceImpl implements AuthorService {
         authorRepository.update(authorModel);
     }
 
+    public void deleteAuthor(int id) throws NotFoundException,IllegalStateException {
+        authorRepository.delete(id);
+    }
+
 
 
 }

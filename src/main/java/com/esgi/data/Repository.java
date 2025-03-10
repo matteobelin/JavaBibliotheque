@@ -2,10 +2,8 @@ package com.esgi.data;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+
+import java.sql.*;
 import java.util.*;
 
 import java.util.stream.Collectors;
@@ -177,7 +175,10 @@ public abstract class Repository<T extends Model> {
                 throw new NotFoundException(this.notFoundErrorMessage("id", id));
             }
 
-        } catch (SQLException e) {
+        } catch (SQLIntegrityConstraintViolationException e) {
+            throw new IllegalStateException("Impossible to delete the element " + id + " because it is referenced elsewhere.", e);
+        }
+        catch (SQLException e) {
             throw new RuntimeException(e);
         }
     }
