@@ -64,6 +64,23 @@ public class BookServiceTest {
         Mockito.verify(bookMapper, Mockito.times(1)).entityToModel(book);
     }
 
+    @Test
+    public void update_Book_Should_Not_Throw() throws ConstraintViolationException, NotFoundException {
+        //Arrange
+        BookEntity book = makeBookEntity();
+        BookModel expectedBook = makeBookModel();
+
+        Mockito.when(bookMapper.entityToModel(book)).thenReturn(expectedBook);
+        Mockito.doNothing().when(bookRepository).update(expectedBook);
+
+        //Act
+        bookService.createBook(book);
+
+        //Assert
+        Mockito.verify(bookRepository, Mockito.times(1)).create(expectedBook);
+        Mockito.verify(bookMapper, Mockito.times(1)).entityToModel(book);
+    }
+
     private BookEntity makeBookEntity() {
         List<GenreEntity> genreEntities = Arrays.asList(new GenreEntity(1,"Science Fiction"));
         return new BookEntity(1,"Foundation",new AuthorEntity(1, "Isaac Asimov"),genreEntities);

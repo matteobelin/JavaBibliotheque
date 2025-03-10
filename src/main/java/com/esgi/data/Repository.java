@@ -126,7 +126,6 @@ public abstract class Repository<T extends Model> {
     }
 
     protected void executeUpdate(Map<String, SQLColumnValueBinder> columnValueBinders, Integer whereId) throws NotFoundException, SQLException {
-
         try (var conn = DriverManager.getConnection(connectionString)) {
             String updateSQL = "UPDATE " + getTableName();
             String setValuesSQL = " SET " + this.buildSetClause(columnValueBinders.keySet());
@@ -149,6 +148,7 @@ public abstract class Repository<T extends Model> {
             }
         }
     }
+
 
     protected String notFoundErrorMessage(String columnName, Object value) {
         return "Record with %s '%s' not found in table '%s'".formatted(columnName, value, getTableName());
