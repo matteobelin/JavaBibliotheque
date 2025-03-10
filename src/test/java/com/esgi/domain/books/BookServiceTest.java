@@ -82,6 +82,11 @@ public class BookServiceTest {
         Mockito.verify(bookMapper, Mockito.times(1)).entityToModel(book);
     }
 
+    private BookEntity makeBookEntity() {
+        List<GenreEntity> genreEntities = Arrays.asList(new GenreEntity(1,"Science Fiction"));
+        return new BookEntity(1,"Foundation",new AuthorEntity(1, "Isaac Asimov"),genreEntities);
+    }
+
     private BookModel makeBookModel() {
         List<Integer> genreIds = Arrays.asList(1);
         return new BookModel(1,"Foundation",1,genreIds);
