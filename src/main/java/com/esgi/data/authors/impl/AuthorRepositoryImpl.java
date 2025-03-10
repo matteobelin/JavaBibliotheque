@@ -68,10 +68,13 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
                 String exceptionMessage = String.format("An author with this name (%s) already exists.", name);
                 throw new ConstraintViolationException(exceptionMessage);
             case CONSTRAINT_NOTNULL:
-                throw new ConstraintViolationException("A required field of the user is missing.");
+                throw new ConstraintViolationException("A required field of the author is missing.");
         }
     }
 
+    public AuthorModel getByName(String name) throws NotFoundException {
+        return this.getFirstByColumn("name",name);
+    }
 }
 
 

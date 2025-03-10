@@ -2,7 +2,6 @@ package com.esgi.data.users;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.users.impl.UserRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
