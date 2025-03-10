@@ -60,4 +60,18 @@ public class AuthorServiceTest {
         Mockito.verify(authorMapper, Mockito.times(1)).entityToModel(author);
     }
 
+    @Test
+    public void updateAuthor_should_not_throw() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        AuthorEntity author = new AuthorEntity(0, "test");
+        AuthorModel expectedAuthor = new AuthorModel(0, "test");
+        Mockito.when(authorMapper.entityToModel(author)).thenReturn(expectedAuthor);
+        Mockito.doNothing().when(authorRepository).update(expectedAuthor);
+
+        //Act
+        authorService.updateAuthor(author);
+    }
+
+
+
 }

@@ -44,6 +44,16 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
+    public void update(AuthorModel author) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(author);
+
+        try {
+            super.executeUpdate(columnValueBinders, author.getId());
+        } catch (SQLException e) {
+            handleSQLException(e, author.getName());
+        }
+    }
+
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 

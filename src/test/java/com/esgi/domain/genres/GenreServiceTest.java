@@ -59,5 +59,17 @@ public class GenreServiceTest {
         Mockito.verify(genreMapper, Mockito.times(1)).entityToModel(genre);
     }
 
+    @Test
+    public void updateGenre_should_not_throw() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        GenreEntity genre = new GenreEntity(0, "test");
+        GenreModel expectedGenre = new GenreModel(0, "test");
+        Mockito.when(genreMapper.entityToModel(genre)).thenReturn(expectedGenre);
+        Mockito.doNothing().when(genreRepository).update(expectedGenre);
+
+        //Act
+        genreService.updateGenre(genre);
+    }
+
 
 }

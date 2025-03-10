@@ -61,6 +61,16 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         }
     }
 
+    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException {
+        var columnValueBinders = getColumnValueBinders(genre);
+
+        try {
+            super.executeUpdate(columnValueBinders, genre.getId());
+        } catch (SQLException e) {
+            handleSQLException(e, genre.getName());
+        }
+    }
+
     public GenreModel getByName(String name) throws NotFoundException {
         return this.getFirstByColumn("name",name);
     }

@@ -22,9 +22,15 @@ public class GenreServiceImpl implements GenreService {
         return genreMapper.modelToEntity(genreModel);
     }
 
-    @Override
+
     public void createGenre(GenreEntity genreEntity) throws ConstraintViolationException {
         GenreModel genreModel = genreMapper.entityToModel(genreEntity);
         genreRepository.create(genreModel);
+    }
+
+    public void updateGenre(GenreEntity genreEntity) throws ConstraintViolationException, NotFoundException {
+
+        GenreModel genreModel = genreMapper.entityToModel(genreEntity);
+        genreRepository.update(genreModel);
     }
 }
