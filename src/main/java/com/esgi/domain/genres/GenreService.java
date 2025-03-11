@@ -10,6 +10,6 @@ public interface GenreService {
     List<GenreEntity> getAllGenres();
     void createGenre(GenreEntity genre) throws ConstraintViolationException;
     void updateGenre(GenreEntity genre) throws ConstraintViolationException,NotFoundException;
-    void deleteGenre(int id) throws NotFoundException, ConstraintViolationException;
     void deleteGenre(String name) throws NotFoundException,ConstraintViolationException;
+    GenreEntity getGenreByName(String name) throws NotFoundException;
 }

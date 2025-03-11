@@ -185,7 +185,6 @@ public abstract class Repository<T extends Model> {
 
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql)) {
-
             int index = 1;
             for (var entry : columnValueBinders.entrySet()) {
                 entry.getValue().bind(statement, index);
