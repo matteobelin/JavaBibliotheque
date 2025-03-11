@@ -3,7 +3,6 @@ package com.esgi.data.books;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.impl.BookRepositoryImpl;
-import com.esgi.data.genreBook.GenreBookModel;
 import com.esgi.data.genreBook.GenreBookRepository;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
@@ -151,9 +150,7 @@ public class BookRepositoryTest {
     public void create_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException {
         //Arrange
         var genreIds = new ArrayList<>(Arrays.asList(1, 2, 3));
-        var genreBooks = genreIds.stream()
-                .map(id -> new GenreBookModel(id, 1))
-                .toList();
+
         BookModel book = new BookModel(
                 null,
                 "test",
@@ -319,6 +316,27 @@ public class BookRepositoryTest {
                 .isEqualTo(booksExpect);
     }
 
+    @Test
+        public void delete_Book_Should_Remove_Book() throws NotFoundException, ConstraintViolationException {
+            // Arrange
+            BookModel book = new BookModel(
+                    null,
+                    "test",
+                    1,
+                    new ArrayList<>(Arrays.asList(1, 2, 3))
+            );
+            bookRepository.create(book);
+            Integer bookId = book.getId();
+
+            // Act
+            bookRepository.delete(bookId);
+
+            // Assert
+            Assertions.assertThatThrownBy(() -> bookRepository.getById(bookId))
+                    .isInstanceOf(NotFoundException.class);
+        }
+
+    
 
 
     private List<BookModel> getBooks() {

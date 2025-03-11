@@ -114,7 +114,13 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         for(Integer genreId : book.getGenreIds()){
             var genreBook = new GenreBookModel(genreId, bookId);
             this.genreBookRepository.createGenreBook(genreBook);
-        }
+        };
+    }
+
+    public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
+        this.genreBookRepository.deleteAllByBookId(id);
+        System.out.println(getById(id));
+        super.delete(id);
     }
 
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(BookModel book) {

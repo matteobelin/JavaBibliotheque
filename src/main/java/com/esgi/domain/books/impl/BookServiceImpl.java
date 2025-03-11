@@ -47,5 +47,9 @@ public class BookServiceImpl implements BookService {
         BookModel bookModel = bookMapper.entityToModel(bookEntity);
         bookRepository.update(bookModel);
     }
+
+    public void deleteBook(int id) throws NotFoundException, ConstraintViolationException {
+        bookRepository.delete(id);
+    }
     
 }

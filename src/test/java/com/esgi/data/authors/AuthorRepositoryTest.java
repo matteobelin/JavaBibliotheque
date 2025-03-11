@@ -189,7 +189,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void delete_should_throw_IllegalStateException_when_id_in_other_table() {
+    void delete_should_throw_ConstraintViolationException_when_id_in_other_table() {
         // Arrange
         String name = "Isaac Asimov";
 

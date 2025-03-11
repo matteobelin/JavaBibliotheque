@@ -74,7 +74,7 @@ public class GenreBookRepositoryImpl extends Repository<GenreBookModel> implemen
     @Override
     public void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException {
         super.deleteByColumn(BOOK_ID_COLUMN, bookId);
-    }
+       }
 
     private Map<String, SQLColumnValueBinder> makeColumnValueBinders(GenreBookModel genreBook) {
         return Map.of(

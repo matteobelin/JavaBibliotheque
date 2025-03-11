@@ -59,10 +59,11 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         }
     }
 
-    public GenreModel getByName(String name) throws NotFoundException {
-        return this.getFirstByColumn("name",name);
+    public void delete(String name) throws NotFoundException, ConstraintViolationException {
+        super.deleteByColumn("name", name);
     }
-  
+
+
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
