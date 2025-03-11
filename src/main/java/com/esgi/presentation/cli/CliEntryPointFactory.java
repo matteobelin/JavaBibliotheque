@@ -3,6 +3,7 @@ package com.esgi.presentation.cli;
 import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.presentation.cli.auth.AuthCliCommandNodeFactory;
 import com.esgi.presentation.cli.authors.AuthorCliCommandFactory;
+import com.esgi.presentation.cli.genres.GenreCliCommandFactory;
 import com.esgi.presentation.cli.users.UserCliCommandFactory;
 
 public final class CliEntryPointFactory {
@@ -13,7 +14,14 @@ public final class CliEntryPointFactory {
         var userCliCommandNode = UserCliCommandFactory.makeUserCliCommandNode();
         var authCliCommandNode = AuthCliCommandNodeFactory.makeAuthCliCommandNode();
         var authorCliCommandNode = AuthorCliCommandFactory.makeAuthorCliCommandNode();
+        var genreCliCommandNode = GenreCliCommandFactory.makeGenreCliCommandNode();
 
-        return new CliEntryPoint(authService, authCliCommandNode, userCliCommandNode, authorCliCommandNode);
+        return new CliEntryPoint(
+            authService,
+            authCliCommandNode,
+            userCliCommandNode,
+            authorCliCommandNode,
+            genreCliCommandNode
+        );
     }
 }

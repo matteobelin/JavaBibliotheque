@@ -3,19 +3,21 @@ package com.esgi;
 import com.esgi.core.exceptions.IncorrectCredentialsException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.auth.AuthServiceFactory;
+import com.esgi.presentation.AppFolderConfig;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPointFactory;
 import com.esgi.presentation.cli.ExitCode;
-import com.esgi.presentation.utils.AppFolderUtils;
 import com.esgi.presentation.utils.StringUtils;
 
 import java.io.IOException;
+import java.net.URISyntaxException;
 import java.util.List;
 
 public class Main {
+
     public static void main(String[] args) {
-        initApp();
+        initAppFolderConfig();
 
         AuthService authService = AuthServiceFactory.getAuthService();
 
@@ -35,13 +37,14 @@ public class Main {
         // TODO: MENU
     }
 
-    private static void initApp() {
+    private static void initAppFolderConfig() {
         try {
-            AppFolderUtils.makeSureAppFolderExists();
-        } catch (IOException e) {
+            AppFolderConfig appFolderConfig = new AppFolderConfig();
+            appFolderConfig.initAppFolderConfig();
+        } catch (IOException | URISyntaxException e) {
             var Lines = List.of(
-                "There was an error creating the folder used by the app to store data.",
-                "Error message : " + e.getMessage()
+                    "There was an error creating the folder used by the app to store data.",
+                    "Error message : " + e.getMessage()
             );
             AppLogger.error(StringUtils.wrapInLargeBox(Lines));
 

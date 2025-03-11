@@ -8,6 +8,8 @@ import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreMapper;
 import com.esgi.domain.genres.GenreService;
 
+import java.util.List;
+
 public class GenreServiceImpl implements GenreService {
     private final GenreRepository genreRepository;
     private final GenreMapper genreMapper;
@@ -20,6 +22,11 @@ public class GenreServiceImpl implements GenreService {
     public GenreEntity getGenreById(int id) throws NotFoundException {
         GenreModel genreModel = genreRepository.getById(id);
         return genreMapper.modelToEntity(genreModel);
+    }
+
+    public List<GenreEntity> getAllGenres() {
+        var genreModels = this.genreRepository.getAll();
+        return this.genreMapper.modelsToEntities(genreModels);
     }
 
 
