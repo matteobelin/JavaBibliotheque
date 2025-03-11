@@ -13,7 +13,7 @@ import java.util.List;
 public class LoginCliCommandNode extends CliCommandNode {
     public static final String NAME = "login";
     public static final String DESCRIPTION =
-            "Login into the system using email and password (biblio auth login EMAIL PASSWORD [OPTIONS])";
+            "Login into the system using email and password (biblio auth login EMAIL PASSWORD)";
 
     private final AuthService authService;
 
@@ -21,23 +21,19 @@ public class LoginCliCommandNode extends CliCommandNode {
         super(NAME, DESCRIPTION);
 
         this.authService = authService;
-
-        var saveCredentialsOptions = new SaveCredentialsCommandOption();
-        commandOptions.add(saveCredentialsOptions);
     }
 
     @Override
     public ExitCode run(String[] args) {
         var values = this.extractValuesFromArgs(args);
         if (values.size() < 2) {
-            var errorMessage = String.format("The '%s' command requires at least two arguments : EMAIL and PASSWORD", NAME);
+            var errorMessage = String.format("The '%s' command requires 2 arguments : EMAIL and PASSWORD", NAME);
             AppLogger.error(errorMessage);
             return ExitCode.ARGUMENT_MISSING;
         }
 
         try {
-            var options = this.extractOptionsFromArgs(args);
-            var credentials = makeCredentials(values, options);
+            var credentials = makeCredentials(values);
 
             var connectedUser = this.authService.login(credentials);
 
@@ -51,10 +47,10 @@ public class LoginCliCommandNode extends CliCommandNode {
     }
 
 
-    private AuthCredentials makeCredentials(List<String> values, List<CliCommandNodeOption> options) {
+    private AuthCredentials makeCredentials(List<String> values) {
         String email = values.get(0);
         String password = values.get(1);
-        boolean saveCredentials = options.stream().anyMatch(this::isSaveCredentialsOption);
+        boolean saveCredentials = true; // in CLI it needs to be true, otherwise the user can't do anything
 
         return new AuthCredentials(email, password, saveCredentials);
     }

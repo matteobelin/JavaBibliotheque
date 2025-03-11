@@ -192,12 +192,7 @@ public abstract class Repository<T extends Model> {
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
-                var conditions =  columnValueBinders.entrySet()
-                        .stream()
-                        .map(entry -> entry.getKey() + " = " + entry.getValue())
-                        .collect(Collectors.joining(","));
-
-                throw new NotFoundException("No record with these conditions found : " + conditions);
+                throw new NotFoundException("No corresponding record found to delete." );
             }
 
         } catch (SQLException e) {

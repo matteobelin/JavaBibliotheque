@@ -4,11 +4,9 @@ import com.esgi.domain.auth.impl.AuthServiceImpl;
 import com.esgi.domain.serialization.Serializer;
 import com.esgi.domain.users.UserService;
 import com.esgi.domain.users.UserServiceFactory;
-
-import static com.esgi.presentation.utils.AppFolderUtils.PATH_TO_AUTH_FILE;
+import com.esgi.presentation.AppFolderConfig;
 
 public final class AuthServiceFactory {
-
 
     private static AuthService authService;
 
@@ -22,7 +20,9 @@ public final class AuthServiceFactory {
 
     private static AuthService makeAuthService() {
         UserService userService = UserServiceFactory.getUserService();
-        Serializer<AuthCredentials> serializer = new Serializer<>(PATH_TO_AUTH_FILE, AuthCredentials.class);
+
+        String authFilePath = AppFolderConfig.getPathToAuthFile();
+        Serializer<AuthCredentials> serializer = new Serializer<>(authFilePath, AuthCredentials.class);
 
         return new AuthServiceImpl(userService, serializer);
     }
