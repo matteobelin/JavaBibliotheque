@@ -164,36 +164,36 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_genre() throws NotFoundException {
+    void delete_should_delete_genre() throws NotFoundException,ConstraintViolationException {
         // Arrange
-        int id = 5;
+        String name = "Comics";
 
         // Act
-        this.genreRepository.delete(id);
+        this.genreRepository.delete(name);
 
         // Assert
-        Assertions.assertThatThrownBy(() -> this.genreRepository.getById(id))
+        Assertions.assertThatThrownBy(() -> this.genreRepository.getByName(name))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
     void delete_should_throw_NotFoundException_when_id_not_in_db() {
         // Arrange
-        int id = 100000;
+        String name = "test";
 
         // Act - Assert
-        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(id))
+        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(name))
                 .isInstanceOf(NotFoundException.class);
     }
 
     @Test
-    void delete_should_throw_IllegalStateException_when_id_in_other_table() throws IllegalStateException {
+    void delete_should_throw_ConstraintViolationException_when_id_in_other_table() throws ConstraintViolationException {
         // Arrange
-        int id = 1;
+        String name = "Biography";
 
         // Act - Assert
-        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(id))
-                .isInstanceOf(IllegalStateException.class);
+        Assertions.assertThatThrownBy(() -> this.genreRepository.delete(name))
+                .isInstanceOf(ConstraintViolationException.class);
     }
 
 }

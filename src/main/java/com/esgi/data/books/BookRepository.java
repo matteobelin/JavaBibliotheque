@@ -11,4 +11,5 @@ public interface BookRepository {
     List<BookModel> getByTitle(String title) throws NotFoundException;
     void update(BookModel book) throws NotFoundException, ConstraintViolationException;
     List<BookModel> getAllBook();
+    void delete(Integer id) throws NotFoundException, ConstraintViolationException;
 }

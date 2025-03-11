@@ -10,4 +10,5 @@ public interface BookService {
     void createBook(BookEntity book) throws ConstraintViolationException, NotFoundException;
     void updateBook(BookEntity book) throws ConstraintViolationException, NotFoundException;
     List<BookEntity> getAllBooks();
+    void deleteBook(int id) throws NotFoundException,ConstraintViolationException;
 }
