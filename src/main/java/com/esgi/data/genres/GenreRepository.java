@@ -8,5 +8,6 @@ public interface GenreRepository{
     void create(GenreModel genre) throws ConstraintViolationException;
     void update(GenreModel genre) throws ConstraintViolationException,NotFoundException;
     GenreModel getByName(String name) throws NotFoundException;
-    void delete(Integer id) throws NotFoundException,IllegalStateException;
+    void delete(Integer id) throws NotFoundException, ConstraintViolationException;
+    void delete(String name) throws NotFoundException, ConstraintViolationException;
 }
