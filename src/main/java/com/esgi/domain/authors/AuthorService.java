@@ -11,4 +11,5 @@ public interface AuthorService {
     void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException;
     List<AuthorEntity> getAllAuthors();
     void updateAuthor(AuthorEntity author) throws ConstraintViolationException,NotFoundException;
+    AuthorEntity getAuthorByName(String name) throws NotFoundException;
 }

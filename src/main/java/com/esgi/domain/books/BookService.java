@@ -11,4 +11,7 @@ public interface BookService {
     void updateBook(BookEntity book) throws ConstraintViolationException, NotFoundException;
     List<BookEntity> getAllBooks();
     void deleteBook(int id) throws NotFoundException,ConstraintViolationException;
+    List<BookEntity> getBooksByAuthor(int authorId) throws NotFoundException;
+    List<BookEntity> getBooksByTitle(String title) throws NotFoundException;
+    List<BookEntity> getBooksByGenre(int genreId) throws NotFoundException;
 }

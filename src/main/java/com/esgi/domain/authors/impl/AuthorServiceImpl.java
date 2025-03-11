@@ -24,6 +24,11 @@ public class AuthorServiceImpl implements AuthorService {
         return authorMapper.modelToEntity(authorModel);
     }
 
+    public AuthorEntity getAuthorByName(String name) throws NotFoundException{
+        AuthorModel authorModel = authorRepository.getByName(name);
+        return authorMapper.modelToEntity(authorModel);
+    }
+
     @Override
     public void createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
         AuthorModel authorModel = authorMapper.entityToModel(authorEntity);

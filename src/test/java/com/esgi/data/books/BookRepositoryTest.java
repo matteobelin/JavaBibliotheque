@@ -336,6 +336,42 @@ public class BookRepositoryTest {
                     .isInstanceOf(NotFoundException.class);
         }
 
+    @Test
+    public void get_book_by_author_should_Return_bookList()throws NotFoundException {
+        //Arrange
+        List<BookModel> booksExpect = Arrays.asList(new BookModel(
+                2,
+                "Harry Potter and the Philosopher s Stone",
+                2,
+                new ArrayList<>(Arrays.asList(2))
+        ));
+        //Act
+        List<BookModel> books=bookRepository.getByAuthor(2);
+        //Assert
+        Assertions.assertThat(books)
+                .isNotNull()
+                .isEqualTo(booksExpect);
+
+    }
+
+
+    @Test
+    public void get_book_by_title_should_Return_bookList()throws NotFoundException {
+        //Arrange
+        List<BookModel> booksExpect = Arrays.asList(new BookModel(
+                2,
+                "Harry Potter and the Philosopher s Stone",
+                2,
+                new ArrayList<>(Arrays.asList(2))
+        ));
+        //Act
+        List<BookModel> books=bookRepository.getByTitle("Harry Potter and the Philosopher s Stone");
+        //Assert
+        Assertions.assertThat(books)
+                .isNotNull()
+                .isEqualTo(booksExpect);
+    }
+
     
 
 

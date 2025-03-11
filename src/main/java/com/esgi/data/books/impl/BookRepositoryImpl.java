@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 import static com.esgi.core.exceptions.helpers.SQLExceptionEnum.CONSTRAINT_NOTNULL;
 
@@ -46,15 +47,31 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     public List<BookModel> getByTitle(String title) throws NotFoundException {
-        List<BookModel> books = this.getAllByColumn("title",title);
-        List<Integer> genreIds;
+        return getBooksByColumn("title", title);
+    }
+
+    public List<BookModel> getByAuthor(Integer authorId) throws NotFoundException {
+        return getBooksByColumn("author_id", authorId);
+    }
+
+    private List<BookModel> getBooksByColumn(String column, Object value) throws NotFoundException {
+        List<BookModel> books = this.getAllByColumn(column, value);
         for (BookModel book : books) {
             try {
-                genreIds = getListById(book.getId(), "book_id", "genre_id", "genre_book");
+                List<Integer> genreIds = getListById(book.getId(), "book_id", "genre_id", "genre_book");
+                book.setGenreIds(genreIds);
             } catch (SQLException e) {
                 throw new RuntimeException(e);
             }
-            book.setGenreIds(genreIds);
+        }
+        return books;
+    }
+
+    public List<BookModel> getByGenre(Integer genreId) throws NotFoundException {
+        List<GenreBookModel> booksId=genreBookRepository.findAllByGenreId(genreId);
+        List<BookModel> books = new ArrayList<>();
+        for (GenreBookModel book : booksId) {
+            books.add(getById(book.getBookId()));
         }
         return books;
     }
