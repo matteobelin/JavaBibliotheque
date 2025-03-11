@@ -28,6 +28,7 @@ public class GenreServiceImpl implements GenreService {
     public GenreEntity getGenreByName(String name) throws NotFoundException {
         GenreModel genreModel = genreRepository.getByName(name);
         return genreMapper.modelToEntity(genreModel);
+    }
 
     public List<GenreEntity> getAllGenres() {
         var genreModels = this.genreRepository.getAll();
