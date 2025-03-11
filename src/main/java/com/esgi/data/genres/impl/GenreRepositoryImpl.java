@@ -63,7 +63,6 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         super.deleteByColumn("name", name);
     }
 
-
     private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
