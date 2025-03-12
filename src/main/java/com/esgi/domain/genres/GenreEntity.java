@@ -14,6 +14,4 @@ public class GenreEntity extends Entity {
         super(id);
         this.name = name;
     }
-
-    public GenreEntity() {}
 }
