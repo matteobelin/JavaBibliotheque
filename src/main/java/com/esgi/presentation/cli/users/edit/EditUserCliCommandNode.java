@@ -13,7 +13,7 @@ import com.esgi.presentation.cli.CliCommandNodeOption;
 import com.esgi.presentation.cli.ExitCode;
 import com.esgi.presentation.cli.options.AdminCommandOption;
 import com.esgi.presentation.cli.options.ValueCliCommandNodeOption;
-import com.esgi.presentation.cli.utils.ArgsParserUtils;
+import com.esgi.presentation.utils.StringUtils;
 
 import java.util.List;
 
@@ -119,7 +119,7 @@ public class EditUserCliCommandNode extends CliCommandNode {
         var adminOption = options.stream().filter(this::isAdminOption).findFirst();
         if(adminOption.isPresent()) {
             String isAdminStringValue = adminOption.get().getValue();
-            boolean isAdmin = ArgsParserUtils.yesNoValueToBoolean(isAdminStringValue);
+            boolean isAdmin = StringUtils.yesNoValueToBoolean(isAdminStringValue);
             updatedUserInformation.setAdmin(isAdmin);
 
             return updatedUserInformation;

@@ -1,9 +1,14 @@
 package com.esgi.presentation.cli.genres.list;
 
+import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.cli.CliCommandNode;
 import com.esgi.presentation.cli.ExitCode;
+import com.esgi.presentation.utils.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class ListGenreCliCommandNode extends CliCommandNode {
 
@@ -19,13 +24,31 @@ public class ListGenreCliCommandNode extends CliCommandNode {
 
     @Override
     public ExitCode run(String[] args) {
+        var tableHeader = List.of(
+                "#",
+                "Name"
+        );
+        var tableRows = new ArrayList<List<String>>();
+        tableRows.add(tableHeader);
 
         var genres = this.genreService.getAllGenres();
-
         for (int i = 0; i < genres.size(); i++) {
-            AppLogger.info("%d. %s".formatted(i + 1, genres.get(i).getName()));
+            var genre = genres.get(i);
+            var tableRow = this.mapGenreToTableRow(i + 1, genre);
+            tableRows.add(tableRow);
         }
 
+        var table = StringUtils.makeTable(tableRows);
+        AppLogger.emptyLine();
+        AppLogger.info(table);
+
         return ExitCode.OK;
+    }
+
+    private List<String> mapGenreToTableRow(Integer i, GenreEntity genre) {
+        return List.of(
+            i.toString(),
+            genre.getName()
+        );
     }
 }

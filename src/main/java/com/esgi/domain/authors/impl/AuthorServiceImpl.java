@@ -30,9 +30,10 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public void createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
+    public AuthorEntity createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
         AuthorModel authorModel = authorMapper.entityToModel(authorEntity);
         authorRepository.create(authorModel);
+        return authorMapper.modelToEntity(authorModel);
     }
 
     public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException {
