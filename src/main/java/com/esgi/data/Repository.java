@@ -3,6 +3,7 @@ package com.esgi.data;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
 
+import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -17,6 +18,8 @@ import java.util.stream.Collectors;
 public abstract class Repository<T extends Model> {
     protected final String connectionString;
     private final String tableName;
+
+    protected static final String ENABLE_FOREIGN_KEYS_STATEMENT = "PRAGMA foreign_keys = ON;";
 
     public Repository(String tableName) {
         this.connectionString = DataConfig.getDbConnectionString();
@@ -181,14 +184,18 @@ public abstract class Repository<T extends Model> {
     protected void deleteWhere(Map<String, SQLColumnValueBinder> columnValueBinders) throws NotFoundException, ConstraintViolationException {
         String whereConditions = this.buildWhereConditions(columnValueBinders.keySet());
 
-        String sql = "DELETE FROM " + tableName + " WHERE " + whereConditions;
+        String sql = " DELETE FROM " + tableName + " WHERE " + whereConditions;
 
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql)) {
+
             int index = 1;
             for (var entry : columnValueBinders.entrySet()) {
                 entry.getValue().bind(statement, index);
             }
+
+            // must enable foreign keys with sqlite to make we don't delete a record that's referenced in another table
+            this.enableForeignKeys(conn);
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
@@ -197,6 +204,12 @@ public abstract class Repository<T extends Model> {
 
         } catch (SQLException e) {
             throw new ConstraintViolationException("Record is linked to another table !");
+        }
+    }
+
+    private void enableForeignKeys(Connection connection) throws SQLException {
+        try(var statement = connection.prepareStatement(ENABLE_FOREIGN_KEYS_STATEMENT)) {
+            statement.execute();
         }
     }
 

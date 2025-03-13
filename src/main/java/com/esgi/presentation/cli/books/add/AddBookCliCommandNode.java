@@ -2,16 +2,16 @@ package com.esgi.presentation.cli.books.add;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorService;
 import com.esgi.domain.books.BookEntity;
 import com.esgi.domain.books.BookService;
-import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.cli.CliCommandNode;
 import com.esgi.presentation.cli.ExitCode;
-import com.esgi.presentation.utils.StringUtils;
+import com.esgi.presentation.utils.AuthorUtils;
+import com.esgi.presentation.utils.BookUtils;
+import com.esgi.presentation.utils.GenreUtils;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -58,11 +58,15 @@ public class AddBookCliCommandNode extends CliCommandNode {
                 return ExitCode.OK;
             }
 
-            this.bookService.createBook(book.get());
+            var createdBook = this.bookService.createBook(book.get());
 
-            String title = book.get().getTitle();
-            String authorName = book.get().getAuthor().getName();
+            String title = createdBook.getTitle();
+            String authorName = createdBook.getAuthor().getName();
             AppLogger.success("Book with title '%s' by '%s' created ! ".formatted(title, authorName));
+
+            var singleBookTable = BookUtils.makeBookTable(List.of(createdBook));
+            AppLogger.emptyLine();
+            AppLogger.info(singleBookTable);
         } catch (ConstraintViolationException | NotFoundException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
@@ -75,20 +79,13 @@ public class AddBookCliCommandNode extends CliCommandNode {
         String title = values.get(0);
 
         String authorName = values.get(1);
-        var author = this.getAuthorByName(authorName);
+        var author = AuthorUtils.getOrAskToCreateAuthorByName(authorName, this.authorService);
         if (author.isEmpty()) {
             return Optional.empty();
         }
 
-        var genres = new ArrayList<GenreEntity>();
-        if (values.size() == 3) {
-            String genreNames = values.get(2);
-            var listGenreNames = Arrays.stream(genreNames.split(",")).map(String::trim).toList();
-            genres.addAll(this.getGenresByName(listGenreNames));
-        } else if (values.size() > 2) {
-            var genreNames = values.subList(2, values.size());
-            genres.addAll(this.getGenresByName(genreNames));
-        }
+        var listGenreNames = extractGenreNamesFromValues(values);
+        var genres = GenreUtils.getOrCreateGenresByName(listGenreNames, this.genreService);
 
         BookEntity book = new BookEntity();
         book.setTitle(title);
@@ -98,65 +95,16 @@ public class AddBookCliCommandNode extends CliCommandNode {
         return Optional.of(book);
     }
 
-    private Optional<AuthorEntity> getAuthorByName(String authorName) throws ConstraintViolationException {
-        try {
-            var author = this.authorService.getAuthorByName(authorName);
-            return Optional.of(author);
-        } catch (NotFoundException e) {
-            return askToCreateAuthor(authorName);
-        }
-    }
-
-    private Optional<AuthorEntity> askToCreateAuthor(String authorName) throws ConstraintViolationException {
-        String confirmationMessage = "The author '%s' does not exist in the system, do you wish to create it ? (y/n)".formatted(authorName);
-        boolean create = AppLogger.askForConfirmation(confirmationMessage);
-        if (create) {
-            var author = new AuthorEntity();
-            author.setName(authorName);
-
-            return Optional.of(this.authorService.createAuthor(author));
+    private List<String> extractGenreNamesFromValues(List<String> values) {
+        if (values.size() == 3) {
+            String genreNames = values.get(2);
+            return Arrays.stream(genreNames.split(",")).map(String::trim).toList();
         }
 
-        return Optional.empty();
-    }
-
-    private List<GenreEntity> getGenresByName(List<String> genreNames) {
-        var genres = new ArrayList<GenreEntity>();
-        for (String genreName : genreNames) {
-            try {
-                var genre = this.getGenreByName(genreName);
-                genre.ifPresent(genres::add);
-            } catch (ConstraintViolationException e) {
-                var errorMessageLines = StringUtils.wrapInSmallBox(List.of(
-                    e.getMessage(),
-                    "-> This genre will not be added to the book"
-                ));
-                AppLogger.error(errorMessageLines);
-            }
+        if (values.size() > 2) {
+            return values.subList(2, values.size());
         }
 
-        return genres;
-    }
-
-    private Optional<GenreEntity> getGenreByName(String genreName) throws ConstraintViolationException {
-        try {
-            var genre = this.genreService.getGenreByName(genreName);
-            return Optional.of(genre);
-        } catch (NotFoundException e) {
-            return askToCreateGenre(genreName);
-        }
-    }
-
-    private Optional<GenreEntity> askToCreateGenre(String genreName) throws ConstraintViolationException {
-        String confirmationMessage = "The genre '%s' does not exist in the system, do you wish to create it ? (y/n)".formatted(genreName);
-        boolean create = AppLogger.askForConfirmation(confirmationMessage);
-        if (create) {
-            var genre = new GenreEntity();
-            genre.setName(genreName);
-
-            return Optional.of(this.genreService.createGenre(genre));
-        }
-
-        return Optional.empty();
+        return new ArrayList<>();
     }
 }

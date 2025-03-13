@@ -10,9 +10,18 @@ import com.esgi.domain.genres.GenreServiceFactory;
 
 
 public class BookServiceFactory {
+    private static BookService bookService;
+
+    public static BookService getBookService() {
+        if (bookService == null) {
+            bookService = BookServiceFactory.makeBookService();
+        }
+        return bookService;
+    }
+
     public static BookService makeBookService() {
-        AuthorService authorService = AuthorServiceFactory.makeAuthorService();
-        GenreService genreService = GenreServiceFactory.makeGenreService();
+        AuthorService authorService = AuthorServiceFactory.getAuthorService();
+        GenreService genreService = GenreServiceFactory.getGenreService();
 
         BookMapper bookMapper = new BookMapper(authorService, genreService);
 

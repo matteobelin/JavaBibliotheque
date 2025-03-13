@@ -17,7 +17,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import static com.esgi.core.exceptions.helpers.SQLExceptionEnum.CONSTRAINT_NOTNULL;
 
@@ -136,7 +135,6 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
 
     public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
         this.genreBookRepository.deleteAllByBookId(id);
-        System.out.println(getById(id));
         super.delete(id);
     }
 

@@ -19,8 +19,8 @@ CREATE TABLE genre_book (
                             genre_id INTEGER,
                             book_id INTEGER,
                             PRIMARY KEY (genre_id, book_id),
-                            FOREIGN KEY (genre_id) REFERENCES genres (id),
-                            FOREIGN KEY (book_id) REFERENCES books (id)
+                            FOREIGN KEY (genre_id) REFERENCES genres (id) ON DELETE CASCADE,
+                            FOREIGN KEY (book_id) REFERENCES books (id) ON DELETE CASCADE
 );
 
 CREATE TABLE users (

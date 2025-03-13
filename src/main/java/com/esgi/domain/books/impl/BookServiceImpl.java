@@ -7,6 +7,7 @@ import com.esgi.data.books.BookRepository;
 import com.esgi.domain.books.BookEntity;
 import com.esgi.domain.books.BookMapper;
 import com.esgi.domain.books.BookService;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,7 +23,7 @@ public class BookServiceImpl implements BookService {
     @Override
     public BookEntity getBookById(int id) throws  NotFoundException {
         BookModel bookModel = bookRepository.getById(id);
-            return bookMapper.modelToEntity(bookModel);
+        return bookMapper.modelToEntity(bookModel);
     }
 
     @Override
@@ -58,9 +59,10 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public void createBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException {
+    public BookEntity createBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException {
         BookModel bookModel = bookMapper.entityToModel(bookEntity);
         bookRepository.create(bookModel);
+        return bookMapper.modelToEntity(bookModel);
     }
 
     @Override
