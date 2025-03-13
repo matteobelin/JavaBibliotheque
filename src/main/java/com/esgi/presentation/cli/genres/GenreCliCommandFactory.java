@@ -11,7 +11,7 @@ public final class GenreCliCommandFactory {
     public static GenreCliCommandNode makeGenreCliCommandNode() {
         var authService = AuthServiceFactory.getAuthService();
 
-        var genreService = GenreServiceFactory.makeGenreService();
+        var genreService = GenreServiceFactory.getGenreService();
 
         var addGenreCommand = new AddGenreCliCommandNode(genreService);
         var deleteGenreCommand = new DeleteGenreCliCommandNode(genreService);

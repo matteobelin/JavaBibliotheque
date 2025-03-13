@@ -43,7 +43,54 @@ public final class StringUtils {
         return formattedLines;
     }
 
+    public static List<String> makeTable(List<List<String>> data) {
+        List<String> columnNames = data.get(0);
+
+        List<Integer> columnWidths = columnNames.stream().map(String::length).collect(Collectors.toList());
+
+        data.forEach(row -> {
+            for (int i = 0; i < row.size(); i++) {
+                var value = row.get(i);
+
+                var columnWidth = columnWidths.get(i);
+                var maxColumnWidth = Math.max(columnWidth, value.length());
+
+                columnWidths.set(i, maxColumnWidth);
+            }
+        });
+
+        var totalColumnWidth = columnWidths.stream().reduce(Integer::sum);
+        var tableWidth = totalColumnWidth.orElse(2) + columnWidths.size() * 3 + 2;
+        var columnSeparator = " | ";
+        var rowSeparator = " " + "-".repeat(tableWidth - 1);
+
+        var table = new ArrayList<String>();
+        data.forEach(row -> {
+            var rowBuilder = new StringBuilder();
+            rowBuilder.append(columnSeparator);
+
+            for(int i = 0; i < row.size(); i++) {
+                var cell = row.get(i);
+
+                var columnWidth = columnWidths.get(i);
+                var cellSuffixEmptySpace = repeatEmptySpace(columnWidth - cell.length());
+
+                rowBuilder.append(cell).append(cellSuffixEmptySpace).append(columnSeparator);
+            }
+
+            table.add(rowBuilder.toString());
+            table.add(rowSeparator);
+        });
+
+        return table;
+    }
+
     public static String repeatEmptySpace(int count) {
         return " ".repeat(count);
+    }
+
+    public static boolean yesNoValueToBoolean(String value) {
+        String lowerVaseValue = value.toLowerCase();
+        return lowerVaseValue.equals("y") || lowerVaseValue.equals("yes");
     }
 }

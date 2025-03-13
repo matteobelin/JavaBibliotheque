@@ -21,6 +21,8 @@ public final class DataConfig {
 
     private static DataConfig instance;
 
+    public static boolean usingSQLite = true;
+
     private DataConfig() {}
 
     public static DataConfig getInstance() {
@@ -42,6 +44,7 @@ public final class DataConfig {
 
     public static void useTestDb() {
         DataConfig.dbConnectionString = TEST_DB_CONNECTION_STRING;
+        usingSQLite = false;
     }
 
     private boolean isDbInitialized() {

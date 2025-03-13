@@ -53,9 +53,4 @@ public final class ArgsParserUtils {
     public static boolean isNotAnOption(String arg) {
         return !isAnOption(arg);
     }
-
-    public static boolean yesNoValueToBoolean(String value) {
-        String lowerVaseValue = value.toLowerCase();
-        return lowerVaseValue.equals("y") || lowerVaseValue.equals("yes");
-    }
 }

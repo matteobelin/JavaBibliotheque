@@ -11,7 +11,7 @@ public final class AuthorCliCommandFactory {
     public static AuthorCliCommandNode makeAuthorCliCommandNode() {
         var authService = AuthServiceFactory.getAuthService();
 
-        var authorService = AuthorServiceFactory.makeAuthorService();
+        var authorService = AuthorServiceFactory.getAuthorService();
 
         var addAuthorCommand = new AddAuthorCliCommandNode(authorService);
         var deleteAuthorCommand = new DeleteAuthorCliCommandNode(authorService);

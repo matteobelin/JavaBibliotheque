@@ -1,9 +1,14 @@
 package com.esgi.presentation;
 
+import com.esgi.presentation.utils.StringUtils;
+
 import java.util.List;
+import java.util.Scanner;
 
 
 public final class AppLogger {
+
+    private static final Scanner scanner = new Scanner(System.in);
 
     public static void write(AppLoggerColorEnum color, String message) {
         System.out.println(color.value + message + AppLoggerColorEnum.DEFAULT.value);
@@ -23,6 +28,10 @@ public final class AppLogger {
         AppLogger.write(AppLoggerColorEnum.DEFAULT, message);
     }
 
+    public static void info(List<String> lines) {
+        AppLogger.writeLines(AppLoggerColorEnum.DEFAULT, lines);
+    }
+
     public static void success(String message) {
         AppLogger.write(AppLoggerColorEnum.GREEN, message);
     }
@@ -37,5 +46,10 @@ public final class AppLogger {
 
     public static void warn(String message) {
         AppLogger.write(AppLoggerColorEnum.ORANGE, message);
+    }
+
+    public static boolean askForConfirmation(String message) {
+        info(message);
+        return StringUtils.yesNoValueToBoolean(scanner.nextLine());
     }
 }

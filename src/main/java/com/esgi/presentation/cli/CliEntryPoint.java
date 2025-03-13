@@ -3,6 +3,7 @@ package com.esgi.presentation.cli;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.presentation.cli.auth.AuthCliCommandNode;
 import com.esgi.presentation.cli.authors.AuthorCliCommandNode;
+import com.esgi.presentation.cli.books.BookCliCommandNode;
 import com.esgi.presentation.cli.genres.GenreCliCommandNode;
 import com.esgi.presentation.cli.users.UserCliCommandNode;
 
@@ -16,11 +17,13 @@ public class CliEntryPoint extends CliCommandNode {
          AuthCliCommandNode authCliCommand,
          UserCliCommandNode userCliCommand,
          AuthorCliCommandNode authorCliCommand,
-         GenreCliCommandNode genreCliCommand
+         GenreCliCommandNode genreCliCommand,
+         BookCliCommandNode bookCliCommand
     ) {
         super(NAME, DESCRIPTION);
 
         childrenCommands.add(authCliCommand);
+        childrenCommands.add(bookCliCommand);
 
         if (authService.isLoggedIn()) {
             childrenCommands.add(userCliCommand);
