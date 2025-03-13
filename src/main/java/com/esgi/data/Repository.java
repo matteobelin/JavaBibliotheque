@@ -184,7 +184,7 @@ public abstract class Repository<T extends Model> {
     protected void deleteWhere(Map<String, SQLColumnValueBinder> columnValueBinders) throws NotFoundException, ConstraintViolationException {
         String whereConditions = this.buildWhereConditions(columnValueBinders.keySet());
 
-        String sql = " DELETE FROM " + tableName + " WHERE " + whereConditions;
+        String sql = "DELETE FROM " + tableName + " WHERE " + whereConditions;
 
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql)) {
@@ -199,7 +199,7 @@ public abstract class Repository<T extends Model> {
 
             int rowsDeleted = statement.executeUpdate();
             if(rowsDeleted == 0) {
-                throw new NotFoundException("No corresponding record found to delete." );
+                throw new NotFoundException("No corresponding record found to delete.");
             }
 
         } catch (SQLException e) {
@@ -208,6 +208,11 @@ public abstract class Repository<T extends Model> {
     }
 
     private void enableForeignKeys(Connection connection) throws SQLException {
+        boolean notUsingSQLite = !DataConfig.usingSQLite;
+        if (notUsingSQLite) {
+            return;
+        }
+
         try(var statement = connection.prepareStatement(ENABLE_FOREIGN_KEYS_STATEMENT)) {
             statement.execute();
         }
