@@ -2,7 +2,6 @@ package com.esgi.data.loans;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.data.genres.GenreModel;
 import com.esgi.data.loans.impl.LoanRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
 import org.assertj.core.api.Assertions;
