@@ -15,7 +15,7 @@ public class LoanServiceImpl implements LoanService {
     private LoanRepository loanRepository;
     private LoanMapper loanMapper;
 
-    public void createLoan(LoanEntity loanEntity) throws ConstraintViolationException {
+    public void createLoan(LoanEntity loanEntity) throws ConstraintViolationException, NotFoundException {
         LoanModel loanModel = loanMapper.entityToModel(loanEntity);
         loanRepository.create(loanModel);
     }

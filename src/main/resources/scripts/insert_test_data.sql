@@ -27,7 +27,8 @@ INSERT INTO users (email, name, isAdmin, password) VALUES
 INSERT INTO loans (user_id, book_id, start_date, end_date) VALUES
 (1, 1, '2025-01-01', '2025-01-15'),
 (2, 2, '2025-01-05', '2025-01-20'),
-(3, 3, '2025-01-10', '');
+(3, 3, '2025-01-10', '2025-02-12'),
+(2,4,'2025-01-10',null);
 
 INSERT INTO genre_book (genre_id, book_id) VALUES
 (1, 1),

@@ -6,7 +6,7 @@ import com.esgi.core.exceptions.NotFoundException;
 import java.util.List;
 
 public interface LoanService {
-    void createLoan(LoanEntity loan) throws ConstraintViolationException;;
+    void createLoan(LoanEntity loan) throws ConstraintViolationException, NotFoundException;;
     void bookReturn(LoanEntity loan) throws ConstraintViolationException, NotFoundException;
     LoanEntity getLoan(int id) throws NotFoundException;
     List<LoanEntity> getAll();

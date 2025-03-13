@@ -11,6 +11,8 @@ import com.esgi.data.loans.LoanRepository;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -28,10 +30,10 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     protected LoanModel parseSQLResult(ResultSet result) throws SQLException {
         return new LoanModel(
                 result.getInt("id"),
-                result.getInt("userId"),
-                result.getInt("bookId"),
-                result.getDate("startDate"),
-                result.getDate("endDate")
+                result.getInt("user_id"),
+                result.getInt("book_id"),
+                result.getDate("start_date"),
+                result.getDate("end_date")
         );
     }
 
@@ -50,7 +52,11 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     @Override
-    public void create(LoanModel loanModel) throws ConstraintViolationException {
+    public void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException {
+        if(validateBookLoan(loanModel)){
+            throw new IllegalStateException("Book is already loaned");
+        };
+        loanModel.setStartDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         var columns = getColumnValueBinders(loanModel);
         try {
             super.executeCreate(columns,loanModel);
@@ -61,12 +67,22 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
 
     @Override
     public void bookReturn(LoanModel loanModel) throws ConstraintViolationException, NotFoundException {
+        if(!validateBookLoan(loanModel)){
+            throw new IllegalStateException("Book is not loaned");
+        };
+        loanModel.setEndDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         var columns = getEndDate(loanModel);
         try{
             super.executeUpdate(columns,loanModel.getId());
         }catch (SQLException e){
             handleSQLException(e);
         }
+    }
+
+    public boolean validateBookLoan(LoanModel loanModel) throws ConstraintViolationException, NotFoundException {
+        List<LoanModel> loans = getAllLoansBook();
+        return loans.stream()
+                .anyMatch(loan -> loan.getBookId().equals(loanModel.getBookId()));
     }
 
 
@@ -86,7 +102,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     public List<LoanModel> getAllLoansBook() throws NotFoundException {
-        return getAllByColumn("end_date","");
+        return getAllByColumn("end_date",null);
     }
 
 
