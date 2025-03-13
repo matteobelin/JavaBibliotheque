@@ -69,7 +69,7 @@ public class LoanRepositoryTest {
         //Act
         List<LoanModel> loans = loanRepostory.getAll();
         //Assert
-        Assertions.assertThat(loans).isNotNull().hasSize(3);
+        Assertions.assertThat(loans).isNotNull().hasSize(4);
     }
 
     @Test
