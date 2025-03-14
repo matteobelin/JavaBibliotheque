@@ -6,8 +6,8 @@ import com.esgi.data.books.BookModel;
 import com.esgi.domain.authors.AuthorService;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
-import lombok.SneakyThrows;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,14 +20,23 @@ public class BookMapper {
         this.genreService = genreService;
     }
 
-    @SneakyThrows
-    public BookEntity modelToEntity(BookModel bookModel) {
+    public BookEntity modelToEntity(BookModel bookModel) throws NotFoundException {
         return new BookEntity(
                 bookModel.getId(),
                 bookModel.getTitle(),
                 authorService.getAuthorById(bookModel.getAuthorId()),
                 mapGenreIdsToEntities(bookModel.getGenreIds())
         );
+    }
+
+    public List<BookEntity> modelsToEntities(List<BookModel> bookModels) throws NotFoundException {
+        var bookEntities = new ArrayList<BookEntity>();
+
+        for (BookModel bookModel : bookModels) {
+            bookEntities.add(modelToEntity(bookModel));
+        }
+
+        return bookEntities;
     }
 
     public BookModel entityToModel(BookEntity bookEntity) {

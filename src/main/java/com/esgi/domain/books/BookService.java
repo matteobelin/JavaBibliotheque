@@ -9,7 +9,7 @@ public interface BookService {
     BookEntity getBookById(int id) throws NotFoundException;
     BookEntity createBook(BookEntity book) throws ConstraintViolationException, NotFoundException;
     void updateBook(BookEntity book) throws ConstraintViolationException, NotFoundException;
-    List<BookEntity> getAllBooks();
+    List<BookEntity> getAllBooks() throws NotFoundException;
     void deleteBook(int id) throws NotFoundException,ConstraintViolationException;
     List<BookEntity> getBooksByAuthor(int authorId) throws NotFoundException;
     List<BookEntity> getBooksByTitle(String title) throws NotFoundException;

@@ -6,6 +6,7 @@ import com.esgi.presentation.cli.HelpCliCommand;
 import com.esgi.presentation.cli.books.add.AddBookCliCommandNode;
 import com.esgi.presentation.cli.books.delete.DeleteBookCliCommandNode;
 import com.esgi.presentation.cli.books.edit.EditBookCliCommandNode;
+import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 
 import java.util.List;
@@ -21,7 +22,8 @@ public class BookCliCommandNode extends CliCommandNode {
           AddBookCliCommandNode addBookCommand,
           EditBookCliCommandNode editBookCommand,
           DeleteBookCliCommandNode deleteBookCommand,
-          ListBookCliCommandNode listBookCommand
+          ListBookCliCommandNode listBookCommand,
+          ExportBooksCliCommandNode exportBooksCommand
     ) {
         super(NAME, DESCRIPTION);
 
@@ -32,6 +34,7 @@ public class BookCliCommandNode extends CliCommandNode {
         }
 
         this.childrenCommands.add(listBookCommand);
+        this.childrenCommands.add(exportBooksCommand);
 
         this.childrenCommands.add(new HelpCliCommand(List.copyOf(this.getChildrenCommands())));
     }
