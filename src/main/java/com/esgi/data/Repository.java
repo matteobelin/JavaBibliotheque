@@ -32,7 +32,6 @@ public abstract class Repository<T extends Model> {
 
     protected T getFirstByColumn(String columnName, Object value) throws NotFoundException {
         String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
-
         try (var conn = DriverManager.getConnection(connectionString);
              var statement = conn.prepareStatement(sql)) {
             statement.setObject(1, value);
@@ -53,7 +52,7 @@ public abstract class Repository<T extends Model> {
     protected List<T> getAllByColumn(String columnName, Object value) throws NotFoundException {
         List<T> results = new ArrayList<>();
         try (var conn = DriverManager.getConnection(connectionString)) {
-            String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " = ?";
+            String sql = "SELECT * FROM " + tableName + " WHERE " + columnName + " IS NOT DISTINCT FROM ?";
             var statement = conn.prepareStatement(sql);
             statement.setObject(1, value);
 
