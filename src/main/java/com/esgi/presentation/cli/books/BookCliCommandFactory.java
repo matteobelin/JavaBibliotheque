@@ -7,6 +7,7 @@ import com.esgi.domain.genres.GenreServiceFactory;
 import com.esgi.presentation.cli.books.add.AddBookCliCommandNode;
 import com.esgi.presentation.cli.books.delete.DeleteBookCliCommandNode;
 import com.esgi.presentation.cli.books.edit.EditBookCliCommandNode;
+import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 
 public final class BookCliCommandFactory {
@@ -22,7 +23,15 @@ public final class BookCliCommandFactory {
         var editBookCommand = new EditBookCliCommandNode(bookService, authorService, genreService);
         var deleteBookCommand = new DeleteBookCliCommandNode(bookService);
         var listBookCommand = new ListBookCliCommandNode(bookService);
+        var exportBooksCommand = new ExportBooksCliCommandNode(bookService);
 
-        return new BookCliCommandNode(authService, addBookCommand, editBookCommand, deleteBookCommand, listBookCommand);
+        return new BookCliCommandNode(
+            authService,
+            addBookCommand,
+            editBookCommand,
+            deleteBookCommand,
+            listBookCommand,
+            exportBooksCommand
+        );
     }
 }

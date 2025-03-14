@@ -45,12 +45,12 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public List<BookEntity> getAllBooks() {
+    public List<BookEntity> getAllBooks() throws NotFoundException {
         List<BookModel> books = bookRepository.getAllBook();
         return convertToEntities(books);
     }
 
-    private List<BookEntity> convertToEntities(List<BookModel> books) {
+    private List<BookEntity> convertToEntities(List<BookModel> books) throws NotFoundException {
         List<BookEntity> bookEntities = new ArrayList<>();
         for (BookModel bookModel : books) {
             bookEntities.add(bookMapper.modelToEntity(bookModel));

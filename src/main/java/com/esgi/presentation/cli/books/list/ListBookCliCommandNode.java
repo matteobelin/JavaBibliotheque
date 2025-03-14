@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.books.list;
 
+import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.books.BookService;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.cli.CliCommandNode;
@@ -22,12 +23,17 @@ public class ListBookCliCommandNode extends CliCommandNode {
 
     @Override
     public ExitCode run(String[] args) {
-        var books = this.bookService.getAllBooks();
+        try {
+            var books = this.bookService.getAllBooks();
 
-        var table = BookUtils.makeBookTable(books);
+            var table = BookUtils.makeBookTable(books);
 
-        AppLogger.emptyLine();
-        AppLogger.info(table);
+            AppLogger.emptyLine();
+            AppLogger.info(table);
+        } catch (NotFoundException e) {
+            AppLogger.error(e.getMessage());
+            return ExitCode.INTERNAL_ERROR; // should not happen, could be a foreign key not respected
+        }
 
         return ExitCode.OK;
     }
