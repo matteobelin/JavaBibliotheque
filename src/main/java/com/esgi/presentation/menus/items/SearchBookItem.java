@@ -1,6 +1,5 @@
 package com.esgi.presentation.menus.items;
 
-import com.esgi.presentation.CommandAccessLevel;
 import com.esgi.presentation.menus.MenuItem;
 
 public class SearchBookItem extends MenuItem {

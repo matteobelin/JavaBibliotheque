@@ -4,7 +4,6 @@ import com.esgi.presentation.menus.MenuItem;
 import com.esgi.presentation.menus.Menus;
 import com.esgi.presentation.menus.items.LoanItem;
 import com.esgi.presentation.menus.items.SearchBookItem;
-import com.esgi.presentation.menus.items.SubMenuItem;
 
 import java.util.ArrayList;
 import java.util.List;
