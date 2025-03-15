@@ -7,6 +7,7 @@ import com.esgi.presentation.cli.books.add.AddBookCliCommandNode;
 import com.esgi.presentation.cli.books.delete.DeleteBookCliCommandNode;
 import com.esgi.presentation.cli.books.edit.EditBookCliCommandNode;
 import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
+import com.esgi.presentation.cli.books.importation.ImportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 
 import java.util.List;
@@ -23,14 +24,15 @@ public class BookCliCommandNode extends CliCommandNode {
           EditBookCliCommandNode editBookCommand,
           DeleteBookCliCommandNode deleteBookCommand,
           ListBookCliCommandNode listBookCommand,
-          ExportBooksCliCommandNode exportBooksCommand
-    ) {
+          ExportBooksCliCommandNode exportBooksCommand,
+          ImportBooksCliCommandNode importBooksCommand) {
         super(NAME, DESCRIPTION);
 
         if (authService.isLoggedInUserAdmin()) {
             this.childrenCommands.add(addBookCommand);
             this.childrenCommands.add(editBookCommand);
             this.childrenCommands.add(deleteBookCommand);
+            this.childrenCommands.add(importBooksCommand);
         }
 
         this.childrenCommands.add(listBookCommand);
