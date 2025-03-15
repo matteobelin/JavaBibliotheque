@@ -1,10 +1,11 @@
 package com.esgi.presentation.menus.items;
 
-import com.esgi.presentation.menus.MenuItem;
+import com.esgi.presentation.menus.Menu;
 
-public class LoanItem extends MenuItem {
-    public LoanItem() {
-        super("loan a book");
+public class LoanItem implements MenuItem {
+    @Override
+    public String getTitle() {
+        return "loan a book";
     }
 
     @Override

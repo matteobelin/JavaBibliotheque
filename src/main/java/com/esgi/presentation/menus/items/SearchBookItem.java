@@ -1,10 +1,11 @@
 package com.esgi.presentation.menus.items;
 
-import com.esgi.presentation.menus.MenuItem;
+import com.esgi.presentation.menus.Menu;
 
-public class SearchBookItem extends MenuItem {
-    public SearchBookItem() {
-        super("search a book");
+public class SearchBookItem implements MenuItem {
+    @Override
+    public String getTitle() {
+        return "search a book";
     }
 
     @Override

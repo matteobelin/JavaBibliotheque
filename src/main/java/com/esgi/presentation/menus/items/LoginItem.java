@@ -1,10 +1,12 @@
 package com.esgi.presentation.menus.items;
 
-import com.esgi.presentation.menus.MenuItem;
+import com.esgi.presentation.menus.Menu;
 
-public class LoginItem extends MenuItem {
-    public LoginItem() {
-        super("login");
+public class LoginItem implements MenuItem {
+
+    @Override
+    public String getTitle() {
+        return "login";
     }
 
     @Override

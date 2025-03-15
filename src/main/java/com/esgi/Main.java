@@ -8,7 +8,7 @@ import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPointFactory;
 import com.esgi.presentation.cli.ExitCode;
-import com.esgi.presentation.menus.Menus;
+import com.esgi.presentation.menus.Menu;
 import com.esgi.presentation.menus.templates.MainMenu;
 import com.esgi.presentation.utils.StringUtils;
 
@@ -19,7 +19,6 @@ import java.util.List;
 public class Main {
 
     public static void main(String[] args) {
-        Menus mainMenu = new MainMenu();
         initAppFolderConfig();
 
         AuthService authService = AuthServiceFactory.getAuthService();
@@ -35,6 +34,7 @@ public class Main {
             return;
         }
 
+        Menu mainMenu = new MainMenu();
         AppLogger.writeLines(AppLoggerColorEnum.GREEN, BIBLIO_ART_LIST);
         AppLogger.emptyLine();
         mainMenu.display();

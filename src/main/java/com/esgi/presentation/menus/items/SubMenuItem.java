@@ -1,21 +1,25 @@
 package com.esgi.presentation.menus.items;
 
-import com.esgi.presentation.menus.MenuItem;
-import com.esgi.presentation.menus.Menus;
+import com.esgi.presentation.menus.Menu;
 
 import java.util.function.Supplier;
 
-public class SubMenuItem extends MenuItem {
-    private final Supplier<Menus> menusSupplier;
+public class SubMenuItem implements MenuItem {
+    final String title;
+    final Menu subMenu;
 
-    public SubMenuItem(String title, Supplier<Menus> menusSupplier) {
-        super(title);
-        this.menusSupplier = menusSupplier;
+    public SubMenuItem(String title, Menu subMenu) {
+        this.title = title;
+        this.subMenu = subMenu;
+    }
+
+    @Override
+    public String getTitle() {
+        return title;
     }
 
     @Override
     public void execute() {
-        Menus subMenu = menusSupplier.get();
         subMenu.display();
     }
 }
