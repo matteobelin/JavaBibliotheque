@@ -7,6 +7,7 @@ import java.util.Scanner;
 
 
 public final class AppLogger {
+    private AppLogger() {}
 
     private static final Scanner scanner = new Scanner(System.in);
 
