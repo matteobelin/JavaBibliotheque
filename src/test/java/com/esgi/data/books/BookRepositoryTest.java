@@ -335,6 +335,25 @@ public class BookRepositoryTest {
             Assertions.assertThatThrownBy(() -> bookRepository.getById(bookId))
                     .isInstanceOf(NotFoundException.class);
         }
+    @Test
+    public void delete_Book_When_genre_is_Empty_Should_Remove_Book() throws NotFoundException, ConstraintViolationException {
+        // Arrange
+        BookModel book = new BookModel(
+                null,
+                "test",
+                1,
+                new ArrayList<>()
+        );
+        bookRepository.create(book);
+        Integer bookId = book.getId();
+
+        // Act
+        bookRepository.delete(bookId);
+
+        // Assert
+        Assertions.assertThatThrownBy(() -> bookRepository.getById(bookId))
+                .isInstanceOf(NotFoundException.class);
+    }
 
     @Test
     public void get_book_by_author_should_Return_bookList()throws NotFoundException {

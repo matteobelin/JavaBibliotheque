@@ -134,8 +134,11 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
-        this.genreBookRepository.deleteAllByBookId(id);
-        super.delete(id);
+        BookModel book = this.getById(id);
+        if(!book.getGenreIds().isEmpty()){
+            this.genreBookRepository.deleteAllByBookId(id);
+        }
+            super.delete(id);
     }
 
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(BookModel book) {
@@ -170,7 +173,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         }
 
         if(optionalExceptionType.get() == CONSTRAINT_NOTNULL){
-                throw new ConstraintViolationException("A required field of the author is missing.");
+                throw new ConstraintViolationException("A required field of the book is missing.");
         }
     }
 }
