@@ -299,7 +299,7 @@ Lists all books currently borrowed by a user.
 biblio loans currents [EMAIL]
     [EMAIL]      Identify which user's currents borrowing to display by their email.
 ```
-
+# 🚧 En cours d'implémentation 
 ## 📌 Menu
 
 ### Auth Menu
