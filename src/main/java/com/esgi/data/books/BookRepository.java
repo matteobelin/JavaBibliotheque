@@ -11,9 +11,9 @@ public interface BookRepository {
     void create(BookModel book) throws ConstraintViolationException, NotFoundException, InternalErrorException;
     List<BookModel> getByTitle(String title) throws NotFoundException, InternalErrorException;
     List<BookModel> getByAuthor(Integer authorId) throws NotFoundException, InternalErrorException;
-    List<BookModel> getByGenre(Integer genreId) throws NotFoundException, InternalErrorException;
+    List<BookModel> searchBook(String searchValue) throws InternalErrorException;
     void update(BookModel book) throws NotFoundException, ConstraintViolationException, InternalErrorException;
-    List<BookModel> getAllBook();
+    List<BookModel> getAllBook() throws InternalErrorException;
     void delete(Integer id) throws NotFoundException, ConstraintViolationException, InternalErrorException;
 
 }

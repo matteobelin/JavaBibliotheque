@@ -10,6 +10,10 @@ import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.importation.ImportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 
+import com.esgi.presentation.cli.books.unborrowed.UnborrowedBookCliCommandeNode;
+
+import com.esgi.presentation.cli.books.search.SearchBookCliCommandNode;
+
 import java.util.List;
 
 public class BookCliCommandNode extends CliCommandNode {
@@ -24,8 +28,10 @@ public class BookCliCommandNode extends CliCommandNode {
           EditBookCliCommandNode editBookCommand,
           DeleteBookCliCommandNode deleteBookCommand,
           ListBookCliCommandNode listBookCommand,
+          SearchBookCliCommandNode searchBookCommand,
           ExportBooksCliCommandNode exportBooksCommand,
-          ImportBooksCliCommandNode importBooksCommand) {
+          ImportBooksCliCommandNode importBooksCommand,
+          UnborrowedBookCliCommandeNode unborrowedBooksCommand) {
         super(NAME, DESCRIPTION);
 
         if (authService.isLoggedInUserAdmin()) {
@@ -36,7 +42,9 @@ public class BookCliCommandNode extends CliCommandNode {
         }
 
         this.childrenCommands.add(listBookCommand);
+        this.childrenCommands.add(searchBookCommand);
         this.childrenCommands.add(exportBooksCommand);
+        this.childrenCommands.add(unborrowedBooksCommand);
 
         this.childrenCommands.add(new HelpCliCommand(List.copyOf(this.getChildrenCommands())));
     }

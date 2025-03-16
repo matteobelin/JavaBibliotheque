@@ -8,7 +8,7 @@ import com.esgi.core.exceptions.NotFoundException;
 public interface UserService {
     UserEntity getUserById(int id) throws NotFoundException, InternalErrorException;
     UserEntity getUserByEmail(String email) throws NotFoundException, InternalErrorException;
-    void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException;
-    void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException;
+    void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, InternalErrorException;
+    void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException, InternalErrorException;
     void deleteUser(int id) throws NotFoundException, ConstraintViolationException, InternalErrorException;
 }

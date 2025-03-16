@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.authors.list;
 
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorService;
 import com.esgi.presentation.AppLogger;
@@ -23,7 +24,7 @@ public class ListAuthorsCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) {
+    public ExitCode run(String[] args) throws InternalErrorException {
         var tableHeader = List.of(
             "#",
             "Name"

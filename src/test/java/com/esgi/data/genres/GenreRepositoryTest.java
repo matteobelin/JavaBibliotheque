@@ -165,7 +165,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_genre() throws NotFoundException,ConstraintViolationException {
+    void delete_should_delete_genre() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         String name = "Comics";
 
@@ -188,7 +188,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    void delete_should_throw_ConstraintViolationException_when_id_in_other_table() throws ConstraintViolationException {
+    void delete_should_throw_ConstraintViolationException_when_id_in_other_table() {
         // Arrange
         String name = "Biography";
 

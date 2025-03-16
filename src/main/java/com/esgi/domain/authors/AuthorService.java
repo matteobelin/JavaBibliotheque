@@ -8,9 +8,9 @@ import java.util.List;
 
 public interface AuthorService {
     AuthorEntity getAuthorById(int id) throws NotFoundException, InternalErrorException;
-    AuthorEntity createAuthor(AuthorEntity author) throws ConstraintViolationException;
-    void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException;
-    List<AuthorEntity> getAllAuthors();
-    void updateAuthor(AuthorEntity author) throws ConstraintViolationException,NotFoundException;
+    AuthorEntity createAuthor(AuthorEntity author) throws ConstraintViolationException, InternalErrorException;
+    void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException;
+    List<AuthorEntity> getAllAuthors() throws InternalErrorException;
+    void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException, InternalErrorException;
     AuthorEntity getAuthorByName(String name) throws NotFoundException, InternalErrorException;
 }

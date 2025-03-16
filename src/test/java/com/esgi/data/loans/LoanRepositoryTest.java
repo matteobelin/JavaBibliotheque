@@ -67,7 +67,7 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void get_all_loans_should_Return_Loans(){
+    public void get_all_loans_should_Return_Loans() throws InternalErrorException {
         //Act
         List<LoanModel> loans = loanRepostory.getAll();
         //Assert
@@ -104,4 +104,5 @@ public class LoanRepositoryTest {
         //Assert
         Assertions.assertThat(loanRepostory.getById(id)).isNotNull().isEqualTo(loan);
     }
+
 }

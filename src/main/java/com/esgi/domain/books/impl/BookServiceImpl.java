@@ -27,22 +27,11 @@ public class BookServiceImpl implements BookService {
         return bookMapper.modelToEntity(bookModel);
     }
 
-    @Override
-    public List<BookEntity> getBooksByGenre (int genreId) throws NotFoundException, InternalErrorException {
-        List<BookModel> books = bookRepository.getByGenre(genreId);
-        return convertToEntities(books);
-    }
 
     @Override
-    public List<BookEntity> getBooksByAuthor(int authorId) throws NotFoundException, InternalErrorException {
-        List<BookModel> books = bookRepository.getByAuthor(authorId);
-        return convertToEntities(books);
-    }
-
-    @Override
-    public List<BookEntity> getBooksByTitle(String name) throws NotFoundException, InternalErrorException {
-        List<BookModel> books = bookRepository.getByTitle(name);
-        return convertToEntities(books);
+    public List<BookEntity> searchBook(String searchValue) throws InternalErrorException, NotFoundException {
+        var models = bookRepository.searchBook(searchValue);
+        return convertToEntities(models);
     }
 
     @Override

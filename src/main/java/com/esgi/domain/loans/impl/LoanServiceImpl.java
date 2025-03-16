@@ -25,7 +25,7 @@ public class LoanServiceImpl implements LoanService {
         loanValidator = validator;
     }
 
-    public void createLoan(LoanEntity loanEntity) throws ConstraintViolationException, NotFoundException, BookLoanException {
+    public void createLoan(LoanEntity loanEntity) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
         boolean bookCanNotBeBorrowed = !loanValidator.canBookBeBorrowed(loanEntity.getBook());
         if(bookCanNotBeBorrowed) {
             throw new BookLoanException("This book can not be borrowed");
@@ -35,7 +35,7 @@ public class LoanServiceImpl implements LoanService {
         loanRepository.create(loanModel);
     }
 
-    public void bookReturn(LoanEntity loanEntity) throws ConstraintViolationException, NotFoundException, BookLoanException {
+    public void bookReturn(LoanEntity loanEntity) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
         boolean bookCanNotBeReturned = !loanValidator.canBookBeReturned(loanEntity.getBook());
         if(bookCanNotBeReturned) {
             throw new BookLoanException("This book can not be returned");
@@ -58,6 +58,11 @@ public class LoanServiceImpl implements LoanService {
 
     public List<LoanEntity> getAll() throws NotFoundException, InternalErrorException {
         var loanModel = loanRepository.getAll();
+        return this.loanMapper.modelToEntity(loanModel);
+    }
+
+    public List<LoanEntity> getCurrentLoan()throws NotFoundException, InternalErrorException {
+        var loanModel = loanRepository.getCurrentLoan();
         return this.loanMapper.modelToEntity(loanModel);
     }
 

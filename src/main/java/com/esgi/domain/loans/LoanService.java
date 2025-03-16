@@ -8,11 +8,12 @@ import com.esgi.core.exceptions.NotFoundException;
 import java.util.List;
 
 public interface LoanService {
-    void createLoan(LoanEntity loan) throws ConstraintViolationException, NotFoundException, BookLoanException;;
-    void bookReturn(LoanEntity loan) throws ConstraintViolationException, NotFoundException, BookLoanException;
+    void createLoan(LoanEntity loan) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;;
+    void bookReturn(LoanEntity loan) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;
     LoanEntity getLoan(int id) throws NotFoundException, InternalErrorException;
     LoanEntity findLoanByUserIdAndBookId(Integer userId, Integer bookId) throws NotFoundException, InternalErrorException;
     List<LoanEntity> getAll() throws NotFoundException, InternalErrorException;
     List<LoanEntity> getByUserId(int id) throws ConstraintViolationException, NotFoundException, InternalErrorException;
     List<LoanEntity> getCurrentLoanOfUser(int userId) throws NotFoundException, InternalErrorException;
+    List<LoanEntity> getCurrentLoan() throws NotFoundException, InternalErrorException;
 }

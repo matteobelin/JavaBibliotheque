@@ -31,26 +31,26 @@ public class GenreServiceImpl implements GenreService {
         return genreMapper.modelToEntity(genreModel);
     }
 
-    public List<GenreEntity> getAllGenres() {
+    public List<GenreEntity> getAllGenres() throws InternalErrorException {
         var genreModels = this.genreRepository.getAll();
         return this.genreMapper.modelsToEntities(genreModels);
 
     }
 
 
-    public GenreEntity createGenre(GenreEntity genreEntity) throws ConstraintViolationException {
+    public GenreEntity createGenre(GenreEntity genreEntity) throws ConstraintViolationException, InternalErrorException {
         GenreModel genreModel = genreMapper.entityToModel(genreEntity);
         genreRepository.create(genreModel);
         return genreMapper.modelToEntity(genreModel);
     }
 
-    public void updateGenre(GenreEntity genreEntity) throws ConstraintViolationException, NotFoundException {
+    public void updateGenre(GenreEntity genreEntity) throws ConstraintViolationException, NotFoundException, InternalErrorException {
 
         GenreModel genreModel = genreMapper.entityToModel(genreEntity);
         genreRepository.update(genreModel);
     }
 
-    public void deleteGenre(String name) throws NotFoundException, ConstraintViolationException {
+    public void deleteGenre(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException {
         genreRepository.delete(name);
     }
 }
