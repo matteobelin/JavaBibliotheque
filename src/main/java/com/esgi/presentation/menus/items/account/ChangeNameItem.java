@@ -1,16 +1,16 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.account;
 
 import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class SignInItem implements MenuItem {
-
+public class ChangeNameItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "sign in";
+        return "chane username";
     }
 
     @Override
-    public void execute() {
+    public void execute(Menu menu) throws Exception {
         throw new RuntimeException("Not implemented");
     }
 
