@@ -1,5 +1,6 @@
 package com.esgi.presentation.menus.items.loans;
 
+import com.esgi.presentation.menus.Menu;
 import com.esgi.presentation.menus.items.MenuItem;
 
 public class SeeLoansAdminItem implements MenuItem {
@@ -9,7 +10,7 @@ public class SeeLoansAdminItem implements MenuItem {
     }
 
     @Override
-    public void execute() {
+    public void execute(Menu menu) {
         throw new RuntimeException("Not implemented");
     }
 

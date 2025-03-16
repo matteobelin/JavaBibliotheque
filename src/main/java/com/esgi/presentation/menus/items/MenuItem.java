@@ -4,6 +4,6 @@ import com.esgi.presentation.menus.Menu;
 
 public interface  MenuItem {
     String getTitle();
-    void execute();
+    void execute(Menu menu);
     boolean needsAdmin();
 }

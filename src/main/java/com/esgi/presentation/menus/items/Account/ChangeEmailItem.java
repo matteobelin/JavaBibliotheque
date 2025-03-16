@@ -1,5 +1,6 @@
 package com.esgi.presentation.menus.items.Account;
 
+import com.esgi.presentation.menus.Menu;
 import com.esgi.presentation.menus.items.MenuItem;
 
 public class ChangeEmailItem implements MenuItem {
@@ -9,7 +10,7 @@ public class ChangeEmailItem implements MenuItem {
     }
 
     @Override
-    public void execute() {
+    public void execute(Menu menu) {
         throw new RuntimeException("Not implemented");
     }
 
