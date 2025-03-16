@@ -126,4 +126,5 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
         );
         return super.getAllWhere(conditions);
     }
+
 }
