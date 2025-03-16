@@ -49,6 +49,10 @@ public final class AppLogger {
         AppLogger.write(AppLoggerColorEnum.ORANGE, message);
     }
 
+    public static void warn(List<String> lines) {
+        AppLogger.writeLines(AppLoggerColorEnum.ORANGE, lines);
+    }
+
     public static boolean askForConfirmation(String message) {
         info(message);
         return StringUtils.yesNoValueToBoolean(scanner.nextLine());

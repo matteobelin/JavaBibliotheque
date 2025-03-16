@@ -1,6 +1,7 @@
 package com.esgi.presentation.utils;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
@@ -11,7 +12,7 @@ import java.util.List;
 import java.util.Optional;
 
 public final class GenreUtils {
-    public static List<GenreEntity> getOrCreateGenresByName(List<String> genreNames, GenreService genreService) {
+    public static List<GenreEntity> getOrCreateGenresByName(List<String> genreNames, GenreService genreService) throws InternalErrorException {
         var genres = new ArrayList<GenreEntity>();
         for (String genreName : genreNames) {
             try {
@@ -29,7 +30,7 @@ public final class GenreUtils {
         return genres;
     }
 
-    public static Optional<GenreEntity> getOrCreateGenreByName(String genreName, GenreService genreService) throws ConstraintViolationException {
+    public static Optional<GenreEntity> getOrCreateGenreByName(String genreName, GenreService genreService) throws ConstraintViolationException, InternalErrorException {
         try {
             var genre = genreService.getGenreByName(genreName);
             return Optional.of(genre);

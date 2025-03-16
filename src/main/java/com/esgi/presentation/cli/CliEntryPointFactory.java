@@ -5,6 +5,7 @@ import com.esgi.presentation.cli.auth.AuthCliCommandNodeFactory;
 import com.esgi.presentation.cli.authors.AuthorCliCommandFactory;
 import com.esgi.presentation.cli.books.BookCliCommandFactory;
 import com.esgi.presentation.cli.genres.GenreCliCommandFactory;
+import com.esgi.presentation.cli.loans.LoanCliCommandFactory;
 import com.esgi.presentation.cli.users.UserCliCommandFactory;
 
 public final class CliEntryPointFactory {
@@ -17,6 +18,7 @@ public final class CliEntryPointFactory {
         var authorCliCommandNode = AuthorCliCommandFactory.makeAuthorCliCommandNode();
         var genreCliCommandNode = GenreCliCommandFactory.makeGenreCliCommandNode();
         var bookCliCommandNode = BookCliCommandFactory.makeBookCliCommandNode();
+        var loanCliCommandNode = LoanCliCommandFactory.makeLoanCliCommandNode();
 
         return new CliEntryPoint(
             authService,
@@ -24,7 +26,8 @@ public final class CliEntryPointFactory {
             userCliCommandNode,
             authorCliCommandNode,
             genreCliCommandNode,
-            bookCliCommandNode
+            bookCliCommandNode,
+            loanCliCommandNode
         );
     }
 }

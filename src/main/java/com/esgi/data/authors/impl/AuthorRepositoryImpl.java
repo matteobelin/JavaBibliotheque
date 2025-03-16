@@ -1,6 +1,7 @@
 package com.esgi.data.authors.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
@@ -78,7 +79,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
-    public AuthorModel getByName(String name) throws NotFoundException {
+    public AuthorModel getByName(String name) throws NotFoundException, InternalErrorException {
         return this.getFirstByColumn("name",name);
     }
 }

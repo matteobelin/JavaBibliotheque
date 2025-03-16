@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.books.list;
 
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.books.BookService;
 import com.esgi.presentation.AppLogger;
@@ -33,6 +34,9 @@ public class ListBookCliCommandNode extends CliCommandNode {
         } catch (NotFoundException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.INTERNAL_ERROR; // should not happen, could be a foreign key not respected
+        } catch (InternalErrorException e) {
+            AppLogger.error(e.getMessage());
+            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;

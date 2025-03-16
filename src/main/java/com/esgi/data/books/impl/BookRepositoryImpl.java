@@ -1,6 +1,7 @@
 package com.esgi.data.books.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
@@ -33,7 +34,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     @Override
-    public BookModel getById(Integer id) throws NotFoundException {
+    public BookModel getById(Integer id) throws NotFoundException, InternalErrorException {
         BookModel book = super.getById(id);
         List<Integer> genreIds;
         try {
@@ -45,15 +46,15 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return book;
     }
 
-    public List<BookModel> getByTitle(String title) throws NotFoundException {
+    public List<BookModel> getByTitle(String title) throws NotFoundException, InternalErrorException {
         return getBooksByColumn("title", title);
     }
 
-    public List<BookModel> getByAuthor(Integer authorId) throws NotFoundException {
+    public List<BookModel> getByAuthor(Integer authorId) throws NotFoundException, InternalErrorException {
         return getBooksByColumn("author_id", authorId);
     }
 
-    private List<BookModel> getBooksByColumn(String column, Object value) throws NotFoundException {
+    private List<BookModel> getBooksByColumn(String column, Object value) throws InternalErrorException {
         List<BookModel> books = this.getAllByColumn(column, value);
         for (BookModel book : books) {
             try {
@@ -66,7 +67,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return books;
     }
 
-    public List<BookModel> getByGenre(Integer genreId) throws NotFoundException {
+    public List<BookModel> getByGenre(Integer genreId) throws NotFoundException, InternalErrorException {
         List<GenreBookModel> booksId=genreBookRepository.findAllByGenreId(genreId);
         List<BookModel> books = new ArrayList<>();
         for (GenreBookModel book : booksId) {
@@ -85,14 +86,14 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return new BookModel(bookId, title, authorId, new ArrayList<>());
     }
 
-    public boolean existInDb(BookModel bookModel) throws NotFoundException {
-        List<BookModel> books =getByTitle(bookModel.getTitle());
+    public boolean existInDb(BookModel bookModel) throws NotFoundException, InternalErrorException {
+        List<BookModel> books = getByTitle(bookModel.getTitle());
         return books.stream()
                 .anyMatch(book -> book.getTitle()
                         .equals(bookModel.getTitle()) && book.getAuthorId().equals(bookModel.getAuthorId()));
     }
 
-    public void create(BookModel book) throws ConstraintViolationException, NotFoundException {
+    public void create(BookModel book) throws ConstraintViolationException, NotFoundException, InternalErrorException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
         }
@@ -112,7 +113,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         }
     }
 
-    public void update(BookModel book) throws ConstraintViolationException, NotFoundException {
+    public void update(BookModel book) throws ConstraintViolationException, NotFoundException, InternalErrorException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
         }
@@ -133,12 +134,15 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         };
     }
 
-    public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
+    public void delete(Integer id) throws NotFoundException, ConstraintViolationException, InternalErrorException {
         BookModel book = this.getById(id);
-        if(!book.getGenreIds().isEmpty()){
+
+        boolean bookHasGenres = !book.getGenreIds().isEmpty();
+        if(bookHasGenres){
             this.genreBookRepository.deleteAllByBookId(id);
         }
-            super.delete(id);
+
+        super.delete(id);
     }
 
     private Map<String, SQLColumnValueBinder> getColumnValueBinders(BookModel book) {

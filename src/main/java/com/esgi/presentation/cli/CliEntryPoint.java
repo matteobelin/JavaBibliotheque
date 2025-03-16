@@ -5,6 +5,7 @@ import com.esgi.presentation.cli.auth.AuthCliCommandNode;
 import com.esgi.presentation.cli.authors.AuthorCliCommandNode;
 import com.esgi.presentation.cli.books.BookCliCommandNode;
 import com.esgi.presentation.cli.genres.GenreCliCommandNode;
+import com.esgi.presentation.cli.loans.LoanCliCommandNode;
 import com.esgi.presentation.cli.users.UserCliCommandNode;
 
 import java.util.List;
@@ -18,7 +19,8 @@ public class CliEntryPoint extends CliCommandNode {
          UserCliCommandNode userCliCommand,
          AuthorCliCommandNode authorCliCommand,
          GenreCliCommandNode genreCliCommand,
-         BookCliCommandNode bookCliCommand
+         BookCliCommandNode bookCliCommand,
+         LoanCliCommandNode loanCliCommand
     ) {
         super(NAME, DESCRIPTION);
 
@@ -29,6 +31,7 @@ public class CliEntryPoint extends CliCommandNode {
             childrenCommands.add(userCliCommand);
             childrenCommands.add(authorCliCommand);
             childrenCommands.add(genreCliCommand);
+            childrenCommands.add(loanCliCommand);
         }
 
         childrenCommands.add(new HelpCliCommand(List.copyOf(childrenCommands)));

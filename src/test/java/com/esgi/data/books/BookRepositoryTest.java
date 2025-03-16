@@ -1,6 +1,7 @@
 package com.esgi.data.books;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.impl.BookRepositoryImpl;
 import com.esgi.data.genreBook.GenreBookRepository;
@@ -41,7 +42,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_id_should_return_valid_book() throws NotFoundException {
+    public void get_Book_by_id_should_return_valid_book() throws NotFoundException, InternalErrorException {
         // Arrange
         Integer bookId = 1;
 
@@ -58,7 +59,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_id_should_have_valid_genres() throws NotFoundException {
+    public void get_Book_by_id_should_have_valid_genres() throws NotFoundException, InternalErrorException {
         // Arrange
         Integer bookId = 1;
 
@@ -70,7 +71,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_id_should_have_valid_book() throws NotFoundException {
+    public void get_Book_by_id_should_have_valid_book() throws NotFoundException, InternalErrorException {
         // Arrange
         Integer bookId = 1;
 
@@ -82,7 +83,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_Title_should_have_valid_book() throws NotFoundException, ConstraintViolationException {
+    public void get_Book_by_Title_should_have_valid_book() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         String bookTitle = "Steve Jobs";
 
@@ -97,7 +98,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_Book_by_Title_should_have_valid_genres() throws NotFoundException {
+    public void get_Book_by_Title_should_have_valid_genres() throws NotFoundException, InternalErrorException {
         // Arrange
         String bookTitle = "Steve Jobs";
 
@@ -124,7 +125,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void create_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException {
+    public void create_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         BookModel book = new BookModel(
                 null,
@@ -147,7 +148,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void create_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException {
+    public void create_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         var genreIds = new ArrayList<>(Arrays.asList(1, 2, 3));
 
@@ -257,7 +258,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void update_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException {
+    public void update_Book_Should_Save_Book() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         BookModel book = new BookModel(
                 1,
@@ -280,7 +281,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void update_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException {
+    public void update_Book_Should_Save_Book_And_Genre() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         BookModel book = new BookModel(
                 1,
@@ -317,7 +318,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-        public void delete_Book_Should_Remove_Book() throws NotFoundException, ConstraintViolationException {
+        public void delete_Book_Should_Remove_Book() throws NotFoundException, ConstraintViolationException, InternalErrorException {
             // Arrange
             BookModel book = new BookModel(
                     null,
@@ -336,7 +337,7 @@ public class BookRepositoryTest {
                     .isInstanceOf(NotFoundException.class);
         }
     @Test
-    public void delete_Book_When_genre_is_Empty_Should_Remove_Book() throws NotFoundException, ConstraintViolationException {
+    public void delete_Book_When_genre_is_Empty_Should_Remove_Book() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         BookModel book = new BookModel(
                 null,
@@ -356,7 +357,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_book_by_author_should_Return_bookList()throws NotFoundException {
+    public void get_book_by_author_should_Return_bookList() throws NotFoundException, InternalErrorException {
         //Arrange
         List<BookModel> booksExpect = Arrays.asList(new BookModel(
                 2,
@@ -375,7 +376,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void get_book_by_title_should_Return_bookList()throws NotFoundException {
+    public void get_book_by_title_should_Return_bookList() throws NotFoundException, InternalErrorException {
         //Arrange
         List<BookModel> booksExpect = Arrays.asList(new BookModel(
                 2,

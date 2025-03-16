@@ -1,6 +1,7 @@
 package com.esgi.domain.genres;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
@@ -23,7 +24,7 @@ public class GenreServiceTest {
     }
 
     @Test
-    public void get_Genre_By_Id_Should_Return_Genre() throws NotFoundException {
+    public void get_Genre_By_Id_Should_Return_Genre() throws NotFoundException, InternalErrorException {
         //Arrange
         Integer genreId = 1;
         GenreEntity expectedGenre = new GenreEntity(genreId,"Science Fiction");

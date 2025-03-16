@@ -1,6 +1,7 @@
 package com.esgi.domain.users.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
@@ -22,13 +23,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserById(int id) throws NotFoundException {
+    public UserEntity getUserById(int id) throws NotFoundException, InternalErrorException {
         UserModel userModel = userRepository.getById(id);
         return userMapper.modelToEntity(userModel);
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) throws NotFoundException {
+    public UserEntity getUserByEmail(String email) throws NotFoundException, InternalErrorException {
         UserModel userModel = userRepository.getByEmail(email);
         return userMapper.modelToEntity(userModel);
     }
@@ -48,7 +49,7 @@ public class UserServiceImpl implements UserService {
         userRepository.update(userModel);
     }
 
-    public void deleteUser(int id) throws NotFoundException, ConstraintViolationException {
+    public void deleteUser(int id) throws NotFoundException, ConstraintViolationException, InternalErrorException {
         this.userRepository.delete(id);
     }
 }

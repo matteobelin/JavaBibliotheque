@@ -2,6 +2,7 @@ package com.esgi.data.authors;
 
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.impl.AuthorRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
@@ -76,7 +77,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    public void create_Author_Should_Save_Author() throws ConstraintViolationException, NotFoundException {
+    public void create_Author_Should_Save_Author() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         AuthorModel author = new AuthorModel(
                 null,
@@ -121,7 +122,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void update_should_update_the_author() throws NotFoundException, ConstraintViolationException {
+    void update_should_update_the_author() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         //Arrange
         AuthorModel editedAuthor = new AuthorModel(
                 2,

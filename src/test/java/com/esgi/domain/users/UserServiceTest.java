@@ -1,6 +1,7 @@
 package com.esgi.domain.users;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
@@ -30,7 +31,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void get_User_By_Id_Should_Return_User() throws NotFoundException {
+    public void get_User_By_Id_Should_Return_User() throws NotFoundException, InternalErrorException {
         // Arrange
         Integer userId = 1;
         UserEntity expectedUser = new UserEntity(userId, "email", true, "name", "test");
