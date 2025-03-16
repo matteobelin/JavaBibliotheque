@@ -25,7 +25,7 @@ public class SubMenuItem implements MenuItem {
     }
 
     @Override
-    public void execute() throws Exception {
+    public void execute(Menu menu) throws Exception {
         subMenu.display();
     }
 

@@ -1,4 +1,4 @@
-package com.esgi.presentation.menus.items.Account;
+package com.esgi.presentation.menus.items.account;
 
 import com.esgi.domain.AppContext;
 import com.esgi.domain.auth.AuthCredentials;
@@ -20,7 +20,7 @@ public class LoginItem implements MenuItem {
     }
 
     @Override
-    public void execute() throws Exception {
+    public void execute(Menu menu) throws Exception {
         UserEntity loggedUser;
         Scanner scanner = new Scanner(System.in);
 

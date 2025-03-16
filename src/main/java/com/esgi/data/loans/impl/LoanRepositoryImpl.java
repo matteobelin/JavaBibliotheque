@@ -13,6 +13,7 @@ import com.esgi.data.SQLNullValue;
 import com.esgi.data.SQLWhereCondition;
 import com.esgi.data.loans.LoanModel;
 import com.esgi.data.loans.LoanRepository;
+import com.esgi.domain.loans.LoanEntity;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -112,6 +113,14 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
             SQLWhereCondition.makeEqualCondition(USER_ID_COLUMN, userId),
             SQLWhereCondition.makeEqualCondition(BOOK_ID_COLUMN, bookId)
         ));
+    }
+
+    @Override
+    public List<LoanModel> getAllCurrents() throws NotFoundException, InternalErrorException {
+        var conditions = List.of(
+                new SQLWhereCondition(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
+        );
+        return super.getAllWhere(conditions);
     }
 
     public List<LoanModel> getByUserId(Integer userId) throws InternalErrorException {

@@ -30,6 +30,7 @@ public final class LoanUtils {
     public static List<String> makeLoanTable(List<LoanEntity> loans) {
         var tableHeader = List.of(
                 "#",
+                "User Id",
                 "Book Id",
                 "Book",
                 "Author",
@@ -58,6 +59,7 @@ public final class LoanUtils {
 
         return List.of(
             index.toString(),
+            String.valueOf(loan.getUserId()),
             String.valueOf(loan.getBook().getId()),
             loan.getBook().getTitle(),
             loan.getBook().getAuthor().getName(),

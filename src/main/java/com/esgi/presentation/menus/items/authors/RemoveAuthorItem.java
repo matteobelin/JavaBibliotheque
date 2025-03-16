@@ -1,5 +1,6 @@
 package com.esgi.presentation.menus.items.authors;
 
+import com.esgi.presentation.menus.Menu;
 import com.esgi.presentation.menus.items.MenuItem;
 
 public class RemoveAuthorItem implements MenuItem {
@@ -9,7 +10,7 @@ public class RemoveAuthorItem implements MenuItem {
     }
 
     @Override
-    public void execute() throws Exception {
+    public void execute(Menu menu) throws Exception {
         throw new RuntimeException("Not implemented");
     }
 

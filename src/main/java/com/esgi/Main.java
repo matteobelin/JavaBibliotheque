@@ -41,7 +41,7 @@ public class Main {
         AppLogger.writeLines(AppLoggerColorEnum.GREEN, BIBLIO_ART_LIST);
         AppLogger.emptyLine();
 
-        if (context.isAdmin()) {
+        if (context.isLoggedIn()) {
             menu = new HomeMenu();
         } else {
             menu = new MainMenu();

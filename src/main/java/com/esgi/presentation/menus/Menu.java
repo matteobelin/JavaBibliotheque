@@ -103,7 +103,7 @@ public class Menu {
         }
 
         try {
-            displayedList.get(choice - 1).execute();
+            displayedList.get(choice - 1).execute(this);
         } catch (Exception e) {
             AppLogger.error("An error occurred. Please try again.");
             display();

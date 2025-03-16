@@ -1,4 +1,4 @@
-package com.esgi.presentation.menus.items.Account;
+package com.esgi.presentation.menus.items.account;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.domain.AppContext;
@@ -20,7 +20,7 @@ public class SignInItem implements MenuItem {
     }
 
     @Override
-    public void execute() throws Exception {
+    public void execute(Menu menu) throws Exception {
         Scanner scanner = new Scanner(System.in);
         UserEntity newUser = new UserEntity();
 
@@ -37,7 +37,7 @@ public class SignInItem implements MenuItem {
             userService.createUser(newUser);
         } catch (ConstraintViolationException e) {
             AppLogger.error("An user with this email address already exists!");
-            execute();
+            execute(menu);
             return;
         }
 
