@@ -4,6 +4,7 @@ import com.esgi.core.exceptions.IncorrectCredentialsException;
 import com.esgi.domain.AppContext;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.auth.AuthServiceFactory;
+import com.esgi.domain.users.UserEntity;
 import com.esgi.presentation.AppFolderConfig;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;

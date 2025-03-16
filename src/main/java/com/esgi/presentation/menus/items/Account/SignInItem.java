@@ -1,6 +1,6 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.Account;
 
-import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
 public class SignInItem implements MenuItem {
 

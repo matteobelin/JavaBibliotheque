@@ -1,11 +1,11 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.Genres;
 
-import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class LoanItem implements MenuItem {
+public class AddGenreItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "loan a book";
+        return "add a genre";
     }
 
     @Override
@@ -15,6 +15,6 @@ public class LoanItem implements MenuItem {
 
     @Override
     public boolean needsAdmin() {
-        return false;
+        return true;
     }
 }
