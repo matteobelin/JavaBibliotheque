@@ -87,6 +87,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+
     protected List<T> resultSetToList(ResultSet result) throws SQLException {
         List<T> models = new ArrayList<>();
         while(result.next()) {
@@ -103,22 +104,11 @@ public abstract class Repository<T extends Model> {
 
         return this.executeQuery(sql, conditions);
     }
-        var filteredConditions = conditions.stream()
-                .filter(condition -> !(condition.value() instanceof SQLNullValue))
-                .toList();
-
-        var conn = DriverManager.getConnection(connectionString);
-        var statement = conn.prepareStatement(sql);
 
     protected QueryResult executeQuery(String sql, List<SQLWhereCondition<?>> conditions) throws SQLException {
         var valueBinders = this.valueBindersFromColumnValues(conditions);
         var statement = this.prepareSql(sql, valueBinders);
         return new QueryResult(statement, statement.executeQuery());
-        var valueBinders = filteredConditions.stream().map(SQLWhereCondition::makeValueBinder).toList();
-
-        SQLHelper.bindValues(statement, valueBinders);
-
-        return statement;
     }
 
     public List<Integer> getListById(Integer entityId, String entityIdColumn, String relatedIdColumn, String joinTableName)
@@ -182,7 +172,7 @@ public abstract class Repository<T extends Model> {
 
     protected void deleteByColumn(String column, Object value) throws NotFoundException, SQLException {
         this.deleteWhere(List.of(
-            SQLWhereCondition.makeEqualCondition(column, value)
+                SQLWhereCondition.makeEqualCondition(column, value)
         ));
     }
 

@@ -121,9 +121,8 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     public List<LoanModel> getCurrentLoan() throws InternalErrorException {
-        var conditions = List.of(
+        List<SQLWhereCondition<?>> conditions  = List.of(
                 new SQLWhereCondition(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
-
         );
         return super.getAllWhere(conditions);
     }

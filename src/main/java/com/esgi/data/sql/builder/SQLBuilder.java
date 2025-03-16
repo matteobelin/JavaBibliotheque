@@ -46,6 +46,7 @@ public abstract class SQLBuilder {
         return whereBuilder;
     }
 
+
     protected SQLBuilder append(String sql) {
         statementBuilder.append(" ").append(sql);
         return this;

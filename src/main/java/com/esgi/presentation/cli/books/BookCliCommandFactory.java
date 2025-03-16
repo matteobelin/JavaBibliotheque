@@ -4,6 +4,7 @@ import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.domain.authors.AuthorServiceFactory;
 import com.esgi.domain.books.BookServiceFactory;
 import com.esgi.domain.genres.GenreServiceFactory;
+import com.esgi.domain.loans.LoanServiceFactory;
 import com.esgi.presentation.cli.books.add.AddBookCliCommandNode;
 import com.esgi.presentation.cli.books.delete.DeleteBookCliCommandNode;
 import com.esgi.presentation.cli.books.edit.EditBookCliCommandNode;
