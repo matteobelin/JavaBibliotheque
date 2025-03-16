@@ -10,11 +10,11 @@ import java.util.List;
 public interface LoanRepository {
     LoanModel getById(Integer id) throws NotFoundException, InternalErrorException;
     LoanModel findLoanByUserIdAndBookId(Integer userId, Integer bookId) throws NotFoundException, InternalErrorException;
-    List<LoanModel> getAll();
+    List<LoanModel> getAll() throws InternalErrorException;
     List<LoanModel> getByUserId(Integer userId) throws ConstraintViolationException, NotFoundException, InternalErrorException;
     List<LoanModel> getCurrentLoanOfUser(Integer userId) throws InternalErrorException;
-    void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException;
-    void bookReturn(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException;
+    void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;
+    void bookReturn(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;
     boolean isBookBorrowed(Integer bookId);
     List<LoanModel> getCurrentLoan()throws InternalErrorException;
 }

@@ -1,6 +1,7 @@
 package com.esgi.presentation.cli.authors.delete;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.authors.AuthorService;
 import com.esgi.presentation.AppLogger;
@@ -20,7 +21,7 @@ public class DeleteAuthorCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) {
+    public ExitCode run(String[] args) throws InternalErrorException {
         var values = this.extractValuesFromArgs(args);
 
         if (values.isEmpty()) {

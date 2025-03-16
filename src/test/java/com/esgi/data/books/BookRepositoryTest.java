@@ -16,6 +16,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -303,7 +304,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_All_Book_should_return_BookList(){
+    public void get_All_Book_should_return_BookList() throws InternalErrorException {
         //Arrange
         List<BookModel> booksExpect = getBooks();
         List<BookModel> books;
@@ -318,7 +319,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-        public void delete_Book_Should_Remove_Book() throws NotFoundException, ConstraintViolationException, InternalErrorException {
+        public void delete_Book_Should_Remove_Book() throws NotFoundException, ConstraintViolationException, InternalErrorException, SQLException {
             // Arrange
             BookModel book = new BookModel(
                     null,
@@ -357,7 +358,7 @@ public class BookRepositoryTest {
     }
 
     @Test
-    public void get_book_by_author_should_Return_bookList() throws NotFoundException, InternalErrorException {
+    public void get_book_by_author_should_Return_bookList() throws InternalErrorException {
         //Arrange
         List<BookModel> booksExpect = Arrays.asList(new BookModel(
                 2,
@@ -376,7 +377,7 @@ public class BookRepositoryTest {
 
 
     @Test
-    public void get_book_by_title_should_Return_bookList() throws NotFoundException, InternalErrorException {
+    public void get_book_by_title_should_Return_bookList() throws InternalErrorException {
         //Arrange
         List<BookModel> booksExpect = Arrays.asList(new BookModel(
                 2,
@@ -392,8 +393,36 @@ public class BookRepositoryTest {
                 .isEqualTo(booksExpect);
     }
 
-    
+    @Test
+    public void search_should_find_by_title() throws InternalErrorException {
+        String title = "Founda";
 
+        var books = this.bookRepository.searchBook(title);
+
+        Assertions.assertThat(books)
+                .hasSize(1)
+                .allMatch(book -> book.getTitle().contains(title));
+    }
+
+    @Test
+    public void search_should_find_by_author() throws InternalErrorException {
+        String author = "Rowling";
+
+        var books = this.bookRepository.searchBook(author);
+
+        Assertions.assertThat(books)
+                .hasSize(1);
+    }
+
+    @Test
+    public void search_should_find_by_genre() throws InternalErrorException {
+        String genre = "Science Fic";
+
+        var books = this.bookRepository.searchBook(genre);
+
+        Assertions.assertThat(books)
+                .hasSize(1);
+    }
 
     private List<BookModel> getBooks() {
         return Arrays.asList(
@@ -404,6 +433,4 @@ public class BookRepositoryTest {
                 new BookModel(5, "Steve Jobs", 1, new ArrayList<>(Arrays.asList(4, 3)))
         );
     }
-
-
 }

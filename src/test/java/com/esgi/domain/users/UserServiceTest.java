@@ -50,7 +50,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void create_User_Should_Not_Throw() throws ConstraintViolationException, InvalidArgumentException {
+    public void create_User_Should_Not_Throw() throws ConstraintViolationException, InvalidArgumentException, InternalErrorException {
         //Arrange
         UserEntity user = new UserEntity(0, "email@gmail.com", true, "name", "test");
         UserModel expectedUser = new UserModel(0, "email@gmail.com", true, "name", "test");
@@ -62,7 +62,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUser_should_not_throw() throws NotFoundException, ConstraintViolationException, InvalidArgumentException {
+    public void updateUser_should_not_throw() throws NotFoundException, ConstraintViolationException, InvalidArgumentException, InternalErrorException {
         // Arrange
         UserEntity user = new UserEntity(0, "email@gmail.com", true, "name", "test");
         UserModel expectedUser = new UserModel(0, "email@gmail.com", true, "name", "test");
@@ -74,7 +74,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUser_should_throw_InvalidArgumentException_when_email_is_invalid() throws NotFoundException, ConstraintViolationException, InvalidArgumentException {
+    public void updateUser_should_throw_InvalidArgumentException_when_email_is_invalid()  {
         // Arrange
         UserEntity user = new UserEntity(0, "email@gmail", true, "name", "test");
 

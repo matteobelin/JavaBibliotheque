@@ -31,23 +31,23 @@ public class AuthorServiceImpl implements AuthorService {
     }
 
     @Override
-    public AuthorEntity createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
+    public AuthorEntity createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException, InternalErrorException {
         AuthorModel authorModel = authorMapper.entityToModel(authorEntity);
         authorRepository.create(authorModel);
         return authorMapper.modelToEntity(authorModel);
     }
 
-    public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException {
+    public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException, InternalErrorException {
 
         AuthorModel authorModel = authorMapper.entityToModel(author);
         authorRepository.update(authorModel);
     }
 
-    public void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException {
+    public void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException {
         this.authorRepository.delete(name);
     }
 
-    public List<AuthorEntity> getAllAuthors() {
+    public List<AuthorEntity> getAllAuthors() throws InternalErrorException {
         List<AuthorModel> models = this.authorRepository.getAll();
         return authorMapper.modelsToEntities(models);
     }

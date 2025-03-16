@@ -12,11 +12,11 @@ public interface GenreBookRepository {
 
     List<GenreBookModel> findAllByBookId(Integer bookId) throws NotFoundException, InternalErrorException;
 
-    void createGenreBook(GenreBookModel genreBook) throws ConstraintViolationException;
+    void createGenreBook(GenreBookModel genreBook) throws ConstraintViolationException, InternalErrorException;
 
-    void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException, ConstraintViolationException;
+    void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException, ConstraintViolationException, InternalErrorException;
 
-    void deleteAllByGenreId(Integer genreId) throws NotFoundException, ConstraintViolationException;
+    void deleteAllByGenreId(Integer genreId) throws NotFoundException, ConstraintViolationException, InternalErrorException;
 
-    void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException;
+    void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException, InternalErrorException;
 }
