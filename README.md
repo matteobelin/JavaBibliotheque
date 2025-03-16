@@ -24,8 +24,12 @@ _By Adrien Dhommeaux, Matteo Belin and Paul Menard_
 ## 🚀 Installation
 
 Once the repository is cloned you need to :
-- create the Database with the `create_db.sql` script
 - run `mvn clean install` to build the project
+- open a terminal in the `target` folder
+    - On Windows : 
+        - run `biblio` for the menu and `biblio [commands]` for the CLI
+    - On Linux : 
+        - run `java --jar biblio.jar` for the menu and `java --jar biblio.jar [commands]` for the CLI
 
 ## 🛠️ CLI
 
@@ -65,9 +69,7 @@ Allows a user to log in with an email and password.
 ```
 biblio auth login EMAIL PASSWORD [OPTIONS]
     EMAIL        User's mail.
-    PASSWORD     User's password.
-    [OPTIONS]:
-    --save, -s   Save the session to avoid logging in repeatedly.
+    PASSWORD     User's password.repeatedly.
 ```
 
 #### Logout
@@ -88,15 +90,18 @@ Adds a new book to the library.
 biblio books add NAME AUTHOR [GENRES]
     NAME         Book's name.
     AUTHOR       Author's name.
-    [GENRES]     Specify one or multiple genres using ',' as separator. See example.
+    [GENRES]     Specify one or multiple genres. See example.
 ```
 
 > [!Note]
 > If the specified author or genres do not exist, the system will prompt for confirmation before creating them.
 
-> **💡 Example**
+> **💡 Examples**
 > ```
-> biblio books add "Le Petit Prince" "Antoine de Saint- Exupéry" "Fiction, Aventure"
+> biblio books add "Le Petit Prince" "Antoine de Saint-Exupéry" "Fiction, Aventure"
+> ``` 
+> ```
+> biblio books add "Le Petit Prince" "Antoine de Saint-Exupéry" Fiction Aventure
 > ``` 
 
 
@@ -111,15 +116,15 @@ biblio books edit ID [OPTIONS]
     ID           Book's id. see list command to find any book's id.
     [OPTIONS]:
     --author, -a Author's name.
-    --genre, -g  Genres.
-    --name, -n   Specify one or multiple genres using ',' as separator. See example.
+    --genre, -g  Specify one or multiple genres using ',' as separator. See example.
+    --title, -t  Book's title.
 ```
 > [!Note]
 > If the specified author or genres do not exist, the system will prompt for confirmation before creating them.
 
 > **💡 Example**
 > ```
-> biblio books edit 3 --author "Antoine de Saint- Exupéry" --genre "Fiction, Aventure" --name "Le Petit Prince"
+> biblio books edit 3 --author "Antoine de Saint-Exupéry" --genre "Fiction, Aventure" --title "Le Petit Prince"
 > ``` 
 ---
 
@@ -136,36 +141,42 @@ biblio books delete ID
 ---
 
 #### List
-Displays a list of all books with filtering options.
+Displays a list of all the books in the library
 ```
-biblio books list [FILTERS]
-    FILTERS:     Filters options.
-    --author, -a Author's name.
-    --genres, -g Genres.
-    --name, -n   Specify one or multiple genres using ',' as separator. See example.
+biblio books list
 ```
->  **💡 Example**
-> ```
-> biblio books list --author "Antoine de Saint- Exupéry" --genre "Fiction, Aventure" --name "Le Petit Prince"
-> ``` 
+
+---
+#### Search
+Search a book in the library by it's Title, Author or Genres.
+> [!Note]
+> The search is case insensitive and matches any term containing the query
+```
+biblio books search SEARCH_TEXT
+    SEARCH_TEXT the search query used to find books in the library. 
+```
+
+---
+#### Unborrowed
+Displays a list of books that are currently available for borrowing.
+
+```
+biblio books unborrowed 
+```
 ---
 
 #### Export
 Exports books data to a specified JSON file.
 > [!Important]
 > This command is only available for **ADMINS**
-```
-biblio books export PATH [BOOKS]
-    PATH         Export's file path.
-    BOOKS        Specify one or multiple books IDs using ',' as separator. See example.
-```
-> [!Note]
-> If no books IDs are provided, all books will be exported.
 
->  **💡 Example**
-> ```
-> biblio books export "1, 3, 4, 5"
-> ``` 
+> [!Note] 
+> If the path (folders) doesn't exist it will be created 
+```
+biblio books export PATH 
+```
+
+
 ---
 
 #### Import
@@ -178,7 +189,10 @@ biblio books import PATH
     PATH         Import's file path.
 ```
 
+
 ---
+
+
 
 ### ⸻ Users ⸻
 
@@ -403,4 +417,3 @@ What do you want to do :
 ```
 
 ## ❌ Uninstall
-
