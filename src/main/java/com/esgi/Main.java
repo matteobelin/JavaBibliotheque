@@ -1,6 +1,7 @@
 package com.esgi;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
+import com.esgi.domain.AppContext;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.presentation.AppFolderConfig;
@@ -9,6 +10,7 @@ import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPointFactory;
 import com.esgi.presentation.cli.ExitCode;
 import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.templates.HomeMenu;
 import com.esgi.presentation.menus.templates.MainMenu;
 import com.esgi.presentation.utils.StringUtils;
 
@@ -20,11 +22,12 @@ public class Main {
 
     public static void main(String[] args) {
         initAppFolderConfig();
-
+        AppContext context = AppContext.getInstance();
         AuthService authService = AuthServiceFactory.getAuthService();
 
         try {
             authService.tryToLoginWithSavedCredentials();
+            context.setLoggedInUser(authService.getLoggedInUser());
         } catch (IncorrectCredentialsException e) {
             AppLogger.warn("There was an error logging you in. Please login manually.");
         }
@@ -34,10 +37,17 @@ public class Main {
             return;
         }
 
-        Menu mainMenu = new MainMenu();
+        Menu menu;
         AppLogger.writeLines(AppLoggerColorEnum.GREEN, BIBLIO_ART_LIST);
         AppLogger.emptyLine();
-        mainMenu.display();
+
+        if (context.isAdmin()) {
+            menu = new HomeMenu();
+        } else {
+            menu = new MainMenu();
+        }
+
+        menu.display();
     }
 
     private static void initAppFolderConfig() {
