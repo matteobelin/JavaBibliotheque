@@ -8,6 +8,8 @@ import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.cli.CliEntryPointFactory;
 import com.esgi.presentation.cli.ExitCode;
+import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.templates.MainMenu;
 import com.esgi.presentation.utils.StringUtils;
 
 import java.io.IOException;
@@ -32,9 +34,10 @@ public class Main {
             return;
         }
 
+        Menu mainMenu = new MainMenu();
         AppLogger.writeLines(AppLoggerColorEnum.GREEN, BIBLIO_ART_LIST);
         AppLogger.emptyLine();
-        // TODO: MENU
+        mainMenu.display();
     }
 
     private static void initAppFolderConfig() {
