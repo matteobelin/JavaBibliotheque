@@ -2,7 +2,6 @@ package com.esgi.domain.users;
 
 import com.esgi.data.users.UserModel;
 import org.assertj.core.api.Assertions;
-import org.h2.engine.User;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -28,6 +27,18 @@ public class UserMapperTest {
         Assertions.assertThat(result)
                 .isNotNull()
                 .isEqualTo(expectedUserEntity);
+    }
+
+    @Test
+    public void userEntity_to_UserModel() {
+        UserEntity userEntity = makeUserEntity();
+        UserModel expectedUserModel = makeUserModel();
+
+        UserModel result = userMapper.entityToModel(userEntity);
+
+        Assertions.assertThat(result)
+                .isNotNull()
+                .isEqualTo(expectedUserModel);
     }
 
     private UserModel makeUserModel() {
