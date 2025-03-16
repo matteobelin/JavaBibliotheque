@@ -10,6 +10,7 @@ import com.esgi.presentation.cli.books.edit.EditBookCliCommandNode;
 import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.importation.ImportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
+import com.esgi.presentation.cli.books.search.SearchBookCliCommandNode;
 
 public final class BookCliCommandFactory {
 
@@ -24,6 +25,7 @@ public final class BookCliCommandFactory {
         var editBookCommand = new EditBookCliCommandNode(bookService, authorService, genreService);
         var deleteBookCommand = new DeleteBookCliCommandNode(bookService);
         var listBookCommand = new ListBookCliCommandNode(bookService);
+        var searchBookCommand = new SearchBookCliCommandNode(bookService);
         var exportBooksCommand = new ExportBooksCliCommandNode(bookService);
         var importBooksCommand = new ImportBooksCliCommandNode(bookService,authorService,genreService);
 
@@ -33,6 +35,7 @@ public final class BookCliCommandFactory {
             editBookCommand,
             deleteBookCommand,
             listBookCommand,
+            searchBookCommand,
             exportBooksCommand,
             importBooksCommand
         );

@@ -12,7 +12,6 @@ import com.esgi.domain.users.UserService;
 import com.esgi.domain.users.usecase.UserUseCase;
 
 
-
 public class UserServiceImpl implements UserService {
     private final UserRepository userRepository;
     private final UserMapper userMapper;
@@ -35,14 +34,14 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException {
+    public void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, InternalErrorException {
         UserUseCase.validateUserInformationIsValid(user);
 
         UserModel userModel = userMapper.entityToModel(user);
         userRepository.create(userModel);
     }
 
-    public void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException {
+    public void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException, InternalErrorException {
         UserUseCase.validateUserInformationIsValid(user);
 
         UserModel userModel = userMapper.entityToModel(user);

@@ -1,10 +1,11 @@
-package com.esgi.data;
+package com.esgi.data.sql;
 
 import lombok.Getter;
 
 public enum SQLComparator {
     EQUALS("="),
-    IS("IS");
+    IS("IS"),
+    LIKE("LIKE");
 
     @Getter
     private final String value;

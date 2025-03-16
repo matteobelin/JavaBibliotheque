@@ -1,6 +1,7 @@
 package com.esgi;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.presentation.AppFolderConfig;
@@ -64,7 +65,14 @@ public class Main {
         }
 
         var cliEntryPoint = CliEntryPointFactory.makeCliEntryPoint();
-        ExitCode exitCode = cliEntryPoint.run(args);
+
+        ExitCode exitCode;
+        try {
+            exitCode = cliEntryPoint.run(args);
+        } catch (InternalErrorException e) {
+            AppLogger.error(e.getMessage());
+            exitCode = ExitCode.INTERNAL_ERROR;
+        }
 
         System.exit(exitCode.ordinal());
     }

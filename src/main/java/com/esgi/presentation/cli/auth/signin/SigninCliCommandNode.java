@@ -1,6 +1,7 @@
 package com.esgi.presentation.cli.auth.signin;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserService;
@@ -24,7 +25,7 @@ public class SigninCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) {
+    public ExitCode run(String[] args) throws InternalErrorException {
         List<String> values = this.extractValuesFromArgs(args);
 
         if (values.size() < 2) {

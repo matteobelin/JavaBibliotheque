@@ -28,6 +28,23 @@ public class StringUtilsTest {
     }
 
     @Test
+    public void makeTable_should_make_a_table() {
+        List<List<String>> data = List.of(
+                List.of("column 1", "column 2"),
+                List.of("Hello", "World")
+        );
+
+        var table = StringUtils.makeTable(data);
+
+        Assertions.assertThat(table).containsExactly(
+                " | column 1 | column 2 | ",
+                " -----------------------",
+                " | Hello    | World    | ",
+                " -----------------------"
+        );
+    }
+
+    @Test
     public void repeatEmptySpace_should_return_empty_spaces() {
         // Arrange
         int count = 3;
@@ -39,5 +56,32 @@ public class StringUtilsTest {
         Assertions.assertThat(result)
                 .isBlank().
                 hasSize(3);
+    }
+
+    @Test
+    public void yesNoValueToBoolean_should_return_true_with_yes() {
+        String value = "yes";
+
+        boolean result = StringUtils.yesNoValueToBoolean(value);
+
+        Assertions.assertThat(result).isTrue();
+    }
+
+    @Test
+    public void yesNoValueToBoolean_should_return_true_with_y() {
+        String value = "y";
+
+        boolean result = StringUtils.yesNoValueToBoolean(value);
+
+        Assertions.assertThat(result).isTrue();
+    }
+
+    @Test
+    public void yesNoValueToBoolean_should_return_false_with_no() {
+        String value = "no";
+
+        boolean result = StringUtils.yesNoValueToBoolean(value);
+
+        Assertions.assertThat(result).isFalse();
     }
 }

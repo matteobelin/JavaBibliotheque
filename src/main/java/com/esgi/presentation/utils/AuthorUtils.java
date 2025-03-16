@@ -21,7 +21,8 @@ public final class AuthorUtils {
     }
 
 
-    public static Optional<AuthorEntity> askToCreateAuthor(String authorName, AuthorService authorService) throws ConstraintViolationException {
+    public static Optional<AuthorEntity> askToCreateAuthor(String authorName, AuthorService authorService)
+            throws ConstraintViolationException, InternalErrorException {
 
         String confirmationMessage = "The author '%s' does not exist in the system, do you wish to create it ? (y/n)".formatted(authorName);
         boolean create = AppLogger.askForConfirmation(confirmationMessage);

@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli;
 
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.OptionRequiresValueException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -35,7 +36,7 @@ public class CliCommandNodeTest {
     }
 
     @Test
-    public void should_find_child_command() {
+    public void should_find_child_command() throws InternalErrorException {
         // Arrange
         String[] args = new String[] {"CHILD_NAME"};
 
@@ -47,7 +48,7 @@ public class CliCommandNodeTest {
     }
 
     @Test
-    public void should_not_find_unknown_command() {
+    public void should_not_find_unknown_command() throws InternalErrorException {
         // Arrange
         String[] args = new String[] {"command"};
 

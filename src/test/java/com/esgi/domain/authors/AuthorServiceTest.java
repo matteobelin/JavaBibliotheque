@@ -45,7 +45,7 @@ public class AuthorServiceTest {
 
 
     @Test
-    public void create_Author_Should_Not_Throw() throws ConstraintViolationException {
+    public void create_Author_Should_Not_Throw() throws ConstraintViolationException, InternalErrorException {
         //Arrange
         AuthorEntity author = new AuthorEntity(2,"J.K. Rowling");
         AuthorModel expectedAuthor = new AuthorModel(2,"J.K. Rowling");
@@ -62,7 +62,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void updateAuthor_should_not_throw() throws NotFoundException, ConstraintViolationException {
+    public void updateAuthor_should_not_throw() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         AuthorEntity author = new AuthorEntity(0, "test");
         AuthorModel expectedAuthor = new AuthorModel(0, "test");

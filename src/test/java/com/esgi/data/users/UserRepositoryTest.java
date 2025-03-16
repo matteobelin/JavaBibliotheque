@@ -74,7 +74,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void create_User_With_Existing_Email_Should_Throw() throws ConstraintViolationException {
+    void create_User_With_Existing_Email_Should_Throw() throws ConstraintViolationException, InternalErrorException {
         //Arrange
         UserModel user = new UserModel(
                 null,
