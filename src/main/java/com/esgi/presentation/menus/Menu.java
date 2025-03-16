@@ -102,7 +102,12 @@ public class Menu {
             return;
         }
 
-        displayedList.get(choice - 1).execute(this);
+        try {
+            displayedList.get(choice - 1).execute();
+        } catch (Exception e) {
+            AppLogger.error("An error occurred. Please try again.");
+            display();
+        }
     }
 
     public void addItem(MenuItem item) {

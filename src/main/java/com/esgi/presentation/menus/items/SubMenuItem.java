@@ -2,8 +2,6 @@ package com.esgi.presentation.menus.items;
 
 import com.esgi.presentation.menus.Menu;
 
-import java.util.function.Supplier;
-
 public class SubMenuItem implements MenuItem {
     final String title;
     final Menu subMenu;
@@ -27,7 +25,7 @@ public class SubMenuItem implements MenuItem {
     }
 
     @Override
-    public void execute(Menu menu) {
+    public void execute() throws Exception {
         subMenu.display();
     }
 

@@ -20,7 +20,7 @@ public class LoginItem implements MenuItem {
     }
 
     @Override
-    public void execute(Menu menu) {
+    public void execute() throws Exception {
         UserEntity loggedUser = null;
         Scanner scanner = new Scanner(System.in);
 
@@ -37,19 +37,11 @@ public class LoginItem implements MenuItem {
         AuthService authService = AuthServiceFactory.getAuthService();
         AuthCredentials credentials = new AuthCredentials(email, password, stayLoggedIn);
 
-        try {
-            loggedUser = authService.login(credentials);
-        } catch (Exception ignored) {
-            AppLogger.error("Login failed. Please try again.");
-        }
+        loggedUser = authService.login(credentials);
 
-        if(loggedUser != null){
-            AppContext.getInstance().setLoggedInUser(loggedUser);
-            Menu homeMenu = new HomeMenu();
-            homeMenu.display();
-            return;
-        }
-        menu.display();
+        AppContext.getInstance().setLoggedInUser(loggedUser);
+        Menu homeMenu = new HomeMenu();
+        homeMenu.display();
     }
 
     @Override
