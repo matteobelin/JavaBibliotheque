@@ -102,7 +102,7 @@ public class Menu {
             return;
         }
 
-        displayedList.get(choice - 1).execute();
+        displayedList.get(choice - 1).execute(this);
     }
 
     public void addItem(MenuItem item) {
