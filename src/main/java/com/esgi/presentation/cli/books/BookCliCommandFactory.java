@@ -11,6 +11,7 @@ import com.esgi.presentation.cli.books.export.ExportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.importation.ImportBooksCliCommandNode;
 import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 import com.esgi.presentation.cli.books.search.SearchBookCliCommandNode;
+import com.esgi.presentation.cli.books.unborrowed.UnborrowedBookCliCommandeNode;
 
 public final class BookCliCommandFactory {
 
@@ -20,12 +21,14 @@ public final class BookCliCommandFactory {
         var bookService = BookServiceFactory.getBookService();
         var authorService = AuthorServiceFactory.getAuthorService();
         var genreService = GenreServiceFactory.getGenreService();
+        var loanService = LoanServiceFactory.getLoanService();
 
         var addBookCommand = new AddBookCliCommandNode(bookService, authorService, genreService);
         var editBookCommand = new EditBookCliCommandNode(bookService, authorService, genreService);
         var deleteBookCommand = new DeleteBookCliCommandNode(bookService);
         var listBookCommand = new ListBookCliCommandNode(bookService);
         var searchBookCommand = new SearchBookCliCommandNode(bookService);
+        var unborrowedBookCommand = new UnborrowedBookCliCommandeNode(bookService,loanService);
         var exportBooksCommand = new ExportBooksCliCommandNode(bookService);
         var importBooksCommand = new ImportBooksCliCommandNode(bookService,authorService,genreService);
 
@@ -37,7 +40,8 @@ public final class BookCliCommandFactory {
             listBookCommand,
             searchBookCommand,
             exportBooksCommand,
-            importBooksCommand
+            importBooksCommand,
+                unborrowedBookCommand
         );
     }
 }
