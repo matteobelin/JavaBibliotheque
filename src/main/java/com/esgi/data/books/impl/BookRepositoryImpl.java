@@ -103,6 +103,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         var genreContainsValue = new SQLWhereCondition<>(genreTableNameColumn, SQLComparator.LIKE, containsValue);
 
         var sql = SQLBuilder.selectAll()
+                .distinct()
                 .from(TABLE_NAME)
                 .join(authorTableName).on(authorIdColumn, authorTableIdColumn)
                 .join(genreBookTableName).on(idColumn, genreBookTableBookIdColumn)
