@@ -15,6 +15,6 @@ public class SearchBookItem implements MenuItem {
 
     @Override
     public boolean needsAdmin() {
-        return true;
+        return false;
     }
 }

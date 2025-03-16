@@ -2,9 +2,6 @@ package com.esgi.presentation.menus.items.Account;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.domain.AppContext;
-import com.esgi.domain.auth.AuthCredentials;
-import com.esgi.domain.auth.AuthService;
-import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.domain.users.UserService;
 import com.esgi.domain.users.UserServiceFactory;
@@ -41,6 +38,7 @@ public class SignInItem implements MenuItem {
         } catch (ConstraintViolationException e) {
             AppLogger.error("An user with this email address already exists!");
             execute();
+            return;
         }
 
         AppContext.getInstance().setLoggedInUser(newUser);

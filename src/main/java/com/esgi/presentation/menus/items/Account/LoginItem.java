@@ -21,7 +21,7 @@ public class LoginItem implements MenuItem {
 
     @Override
     public void execute() throws Exception {
-        UserEntity loggedUser = null;
+        UserEntity loggedUser;
         Scanner scanner = new Scanner(System.in);
 
         AppLogger.info("Enter your email");
