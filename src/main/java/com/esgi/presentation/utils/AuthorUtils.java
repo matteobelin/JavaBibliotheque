@@ -1,6 +1,7 @@
 package com.esgi.presentation.utils;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.authors.AuthorEntity;
 import com.esgi.domain.authors.AuthorService;
@@ -10,7 +11,7 @@ import java.util.Optional;
 
 public final class AuthorUtils {
 
-    public static Optional<AuthorEntity> getOrAskToCreateAuthorByName(String authorName, AuthorService authorService) throws ConstraintViolationException {
+    public static Optional<AuthorEntity> getOrAskToCreateAuthorByName(String authorName, AuthorService authorService) throws ConstraintViolationException, InternalErrorException {
         try {
             var author = authorService.getAuthorByName(authorName);
             return Optional.of(author);

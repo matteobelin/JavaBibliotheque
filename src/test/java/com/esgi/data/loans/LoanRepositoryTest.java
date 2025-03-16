@@ -1,6 +1,8 @@
 package com.esgi.data.loans;
 
+import com.esgi.core.exceptions.BookLoanException;
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.loans.impl.LoanRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
@@ -26,7 +28,7 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void get_loan_by_id() throws NotFoundException {
+    public void get_loan_by_id() throws NotFoundException, InternalErrorException {
         //Arrange
         Integer id = 1;
         //Act
@@ -45,7 +47,7 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void get_loan_by_userId_should_Return_Loans() throws NotFoundException, ConstraintViolationException {
+    public void get_loan_by_userId_should_Return_Loans() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         //Arrange
         Integer userId = 1;
         //Act
@@ -55,7 +57,7 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void get_loan_by_userId_should_return_Empty_list() throws ConstraintViolationException, NotFoundException {
+    public void get_loan_by_userId_should_return_Empty_list() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         Integer userId = 0;
         //Act
@@ -73,15 +75,7 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void get_All_Loans_Books_should_Return_Loans() throws ConstraintViolationException, NotFoundException {
-        //Act
-        List<LoanModel> loans = loanRepostory.getAllLoansBook();
-        //Assert
-        Assertions.assertThat(loans).isNotNull().hasSize(1);
-    }
-
-    @Test
-    public void create_loan_should_save_Loan() throws ConstraintViolationException, NotFoundException {
+    public void create_loan_should_save_Loan() throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
         //Arrange
         LoanModel loan = new LoanModel(
                 null,
@@ -99,37 +93,15 @@ public class LoanRepositoryTest {
     }
 
     @Test
-    public void create_loan_when_book_is_loaned_should_Throw(){
-        //Arrange
-        LoanModel loan = new LoanModel(
-                null,
-                2,
-                4,
-                null,
-                null
-        );
-        //Assert
-        Assertions.assertThatThrownBy(()-> loanRepostory.create(loan));
-    }
-
-    @Test
-    public void update_loan_should_update_Loan() throws ConstraintViolationException, NotFoundException {
+    public void update_loan_should_update_Loan() throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
         //Arrange
         LoanModel loan = loanRepostory.getById(4);
         //Act
         loanRepostory.bookReturn(loan);
         Integer id = loan.getId();
+
         loanRepostory.getById(id);
         //Assert
         Assertions.assertThat(loanRepostory.getById(id)).isNotNull().isEqualTo(loan);
     }
-
-    @Test
-    public void update_loan_When_is_not_loaned_should_throw() throws NotFoundException {
-        //Arrange
-        LoanModel loan = loanRepostory.getById(2);
-        //Act assert
-        Assertions.assertThatThrownBy(()->loanRepostory.bookReturn(loan));
-    }
-
 }

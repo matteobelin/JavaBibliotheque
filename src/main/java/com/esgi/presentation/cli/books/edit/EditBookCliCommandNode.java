@@ -1,6 +1,7 @@
 package com.esgi.presentation.cli.books.edit;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.domain.authors.AuthorEntity;
@@ -80,12 +81,15 @@ public class EditBookCliCommandNode extends CliCommandNode {
         } catch (NotFoundException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
+        } catch (InternalErrorException e) {
+            AppLogger.error(e.getMessage());
+            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;
     }
 
-    private BookEntity makeEditedBook(BookEntity currentBook, List<CliCommandNodeOption> options) throws ConstraintViolationException {
+    private BookEntity makeEditedBook(BookEntity currentBook, List<CliCommandNodeOption> options) throws ConstraintViolationException, InternalErrorException {
         var book = new BookEntity();
         book.setId(currentBook.getId());
 
@@ -117,7 +121,7 @@ public class EditBookCliCommandNode extends CliCommandNode {
         return  book;
     }
 
-    private Optional<AuthorEntity> getAuthorFromOptions(List<CliCommandNodeOption> options) throws ConstraintViolationException {
+    private Optional<AuthorEntity> getAuthorFromOptions(List<CliCommandNodeOption> options) throws ConstraintViolationException, InternalErrorException {
         var authorOption = options.stream().filter(this::isAuthorOption).findFirst();
         if (authorOption.isPresent()) {
             var authorName = authorOption.get().getValue();

@@ -1,6 +1,7 @@
 package com.esgi.data.users.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
@@ -43,7 +44,7 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
 
 
     @Override
-    public UserModel getByEmail(String email) throws NotFoundException {
+    public UserModel getByEmail(String email) throws InternalErrorException, NotFoundException {
         return super.getFirstByColumn(EMAIL_COLUMN, email);
     }
 

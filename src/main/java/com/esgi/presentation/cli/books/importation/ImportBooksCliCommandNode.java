@@ -14,6 +14,7 @@ import com.esgi.presentation.cli.ExitCode;
 import com.esgi.presentation.cli.imports.ImportCliCommandNode;
 import com.google.gson.reflect.TypeToken;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.nio.file.InvalidPathException;
 import java.nio.file.Paths;
@@ -58,10 +59,12 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
                 checkAndCreateGenre(book);
                 createBook(book);
             }
-        } catch (Exception e) {
-            var internalException = new InternalErrorException(e);
-            AppLogger.error(internalException.getMessage());
+        } catch (InternalErrorException | IOException e) {
+            AppLogger.error(e.getMessage());
             return ExitCode.INTERNAL_ERROR;
+        } catch (ConstraintViolationException e) {
+            AppLogger.error(e.getMessage());
+            return ExitCode.ARGUMENT_INVALID;
         }
         return ExitCode.OK;
     }
@@ -75,24 +78,19 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
         return true;
     }
 
-    private void checkAndCreateAuthor(BookEntity book) {
+    private void checkAndCreateAuthor(BookEntity book) throws InternalErrorException, ConstraintViolationException {
         try {
             book.setAuthor(authorService.getAuthorByName(book.getAuthor().getName()));
         } catch (NotFoundException e) {
             var author = new AuthorEntity();
             author.setName(book.getAuthor().getName());
 
-            try {
-                book.setAuthor(authorService.createAuthor(author));
-                AppLogger.success("The author '%s' has been created !".formatted(author.getName()));
-            } catch (ConstraintViolationException ex) {
-                AppLogger.error(ex.getMessage());
-                throw new RuntimeException("Author creation failed due to constraint violation.", ex);
-            }
+            book.setAuthor(authorService.createAuthor(author));
+            AppLogger.success("The author '%s' has been created !".formatted(author.getName()));
         }
     }
 
-    private void checkAndCreateGenre(BookEntity book) throws NotFoundException {
+    private void checkAndCreateGenre(BookEntity book) throws InternalErrorException, ConstraintViolationException {
         List<GenreEntity> genres = book.getGenres();
         List<GenreEntity> finalGenres = new ArrayList<>();
         for (GenreEntity genre : genres) {
@@ -101,19 +99,15 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
             }catch (NotFoundException e) {
                 var newGenre = new GenreEntity();
                 newGenre.setName(genre.getName());
-                try{
-                    finalGenres.add(genreService.createGenre(newGenre));
-                    AppLogger.success("The genre '%s' has been created !".formatted(genre.getName()));
-                } catch (ConstraintViolationException ex) {
-                    AppLogger.error(ex.getMessage());
-                    throw new RuntimeException("Genre creation failed due to constraint violation.", ex);
-                }
+
+                finalGenres.add(genreService.createGenre(newGenre));
+                AppLogger.success("The genre '%s' has been created !".formatted(genre.getName()));
             }
             book.setGenres(finalGenres);
         }
     }
 
-    public void createBook(BookEntity book) {
+    public void createBook(BookEntity book) throws InternalErrorException {
         try{
             bookService.createBook(book);
             AppLogger.success("%s by %s was created".formatted(book.getTitle(), book.getAuthor().getName()));

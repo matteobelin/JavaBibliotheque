@@ -63,7 +63,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_email_not_found() throws NotFoundException {
+    public void login_should_throw_when_email_not_found() throws NotFoundException, InternalErrorException {
         // Arrange
         AuthCredentials credentials = new AuthCredentials("test@test.com", "password", true);
 
@@ -75,7 +75,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_password_dont_match() throws NotFoundException {
+    public void login_should_throw_when_password_dont_match() throws NotFoundException, InternalErrorException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);

@@ -1,11 +1,13 @@
 package com.esgi.data.genreBook.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
 import com.esgi.data.SQLColumnValueBinder;
+import com.esgi.data.SQLWhereCondition;
 import com.esgi.data.genreBook.GenreBookModel;
 import com.esgi.data.genreBook.GenreBookRepository;
 
@@ -38,18 +40,21 @@ public class GenreBookRepositoryImpl extends Repository<GenreBookModel> implemen
     }
 
     @Override
-    public List<GenreBookModel> findAllByGenreId(Integer genreId) throws NotFoundException {
+    public List<GenreBookModel> findAllByGenreId(Integer genreId) throws InternalErrorException {
         return super.getAllByColumn(GENRE_ID_COLUMN, genreId);
     }
 
     @Override
-    public List<GenreBookModel> findAllByBookId(Integer bookId) throws NotFoundException {
+    public List<GenreBookModel> findAllByBookId(Integer bookId) throws InternalErrorException {
         return super.getAllByColumn(BOOK_ID_COLUMN, bookId);
     }
 
     @Override
     public void createGenreBook(GenreBookModel genreBook) throws ConstraintViolationException {
-        var columnValueBinders = this.makeColumnValueBinders(genreBook);
+        Map<String, SQLColumnValueBinder> columnValueBinders = Map.of(
+            GENRE_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getGenreId()),
+            BOOK_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getBookId())
+        );
 
         try {
             super.executeCreate(columnValueBinders, genreBook);
@@ -60,9 +65,9 @@ public class GenreBookRepositoryImpl extends Repository<GenreBookModel> implemen
 
     @Override
     public void deleteGenreBook(GenreBookModel genreBook) throws NotFoundException, ConstraintViolationException {
-        super.deleteWhere(Map.of(
-            GENRE_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getGenreId()),
-            BOOK_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getBookId())
+        super.deleteWhere(List.of(
+            SQLWhereCondition.makeEqualCondition(GENRE_ID_COLUMN, genreBook.getGenreId()),
+            SQLWhereCondition.makeEqualCondition(BOOK_ID_COLUMN, genreBook.getBookId())
         ));
     }
 
@@ -74,13 +79,6 @@ public class GenreBookRepositoryImpl extends Repository<GenreBookModel> implemen
     @Override
     public void deleteAllByBookId(Integer bookId) throws NotFoundException, ConstraintViolationException {
         super.deleteByColumn(BOOK_ID_COLUMN, bookId);
-       }
-
-    private Map<String, SQLColumnValueBinder> makeColumnValueBinders(GenreBookModel genreBook) {
-        return Map.of(
-                GENRE_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getGenreId()),
-                BOOK_ID_COLUMN, (statement, index) -> statement.setInt(index, genreBook.getBookId())
-        );
     }
 
     private void handleSQLException(SQLException e) throws ConstraintViolationException {

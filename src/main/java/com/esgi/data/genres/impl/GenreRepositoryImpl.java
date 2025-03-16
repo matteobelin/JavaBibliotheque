@@ -1,6 +1,7 @@
 package com.esgi.data.genres.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
 import com.esgi.core.exceptions.helpers.SQLExceptionParser;
@@ -45,7 +46,7 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         }
     }
 
-    public GenreModel getByName(String name) throws NotFoundException {
+    public GenreModel getByName(String name) throws NotFoundException, InternalErrorException {
         return this.getFirstByColumn("name",name);
     }
 

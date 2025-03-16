@@ -1,6 +1,7 @@
 package com.esgi.domain.genres.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.genres.GenreModel;
 import com.esgi.data.genres.GenreRepository;
@@ -19,13 +20,13 @@ public class GenreServiceImpl implements GenreService {
         this.genreMapper = genreMapper;
     }
 
-    public GenreEntity getGenreById(int id) throws NotFoundException {
+    public GenreEntity getGenreById(int id) throws NotFoundException, InternalErrorException {
         GenreModel genreModel = genreRepository.getById(id);
         return genreMapper.modelToEntity(genreModel);
     }
 
 
-    public GenreEntity getGenreByName(String name) throws NotFoundException {
+    public GenreEntity getGenreByName(String name) throws NotFoundException, InternalErrorException {
         GenreModel genreModel = genreRepository.getByName(name);
         return genreMapper.modelToEntity(genreModel);
     }

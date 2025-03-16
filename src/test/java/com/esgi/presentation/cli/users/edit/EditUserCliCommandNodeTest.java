@@ -1,6 +1,7 @@
 package com.esgi.presentation.cli.users.edit;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
@@ -30,7 +31,7 @@ public class EditUserCliCommandNodeTest {
     private UserService userService;
 
     @Test
-    public void should_return_OK() throws InvalidArgumentException, ConstraintViolationException, NotFoundException {
+    public void should_return_OK() throws InvalidArgumentException, ConstraintViolationException, NotFoundException, InternalErrorException {
         // Arrange
         String[] args = new String[] {"-n", "newName", "-e", "newEmail"};
         var user = new UserEntity();
@@ -52,7 +53,7 @@ public class EditUserCliCommandNodeTest {
     }
 
     @Test
-    public void update_other_user_should_return_OK_when_user_is_admin() throws InvalidArgumentException, ConstraintViolationException, NotFoundException {
+    public void update_other_user_should_return_OK_when_user_is_admin() throws InvalidArgumentException, ConstraintViolationException, NotFoundException, InternalErrorException {
         // Arrange
         String[] args = new String[] {"other.user@email.com", "-n", "newName", "-e", "newEmail"};
 
@@ -91,7 +92,7 @@ public class EditUserCliCommandNodeTest {
         var exitCode = this.editUserCliCommandNode.run(args);
 
         // Assert
-        Assertions.assertThat(exitCode).isEqualTo(ExitCode.ACCESS_DENIED);
+        Assertions.assertThat(exitCode).isEqualTo(ExitCode.ACTION_DENIED);
     }
 
     @Test
@@ -105,6 +106,6 @@ public class EditUserCliCommandNodeTest {
         var exitCode = this.editUserCliCommandNode.run(args);
 
         // Assert
-        Assertions.assertThat(exitCode).isEqualTo(ExitCode.ACCESS_DENIED);
+        Assertions.assertThat(exitCode).isEqualTo(ExitCode.ACTION_DENIED);
     }
 }

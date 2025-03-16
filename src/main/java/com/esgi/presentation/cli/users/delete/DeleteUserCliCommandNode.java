@@ -1,6 +1,7 @@
 package com.esgi.presentation.cli.users.delete;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.users.UserService;
@@ -26,7 +27,7 @@ public class DeleteUserCliCommandNode extends CliCommandNode {
         boolean isNotLoggedIn = !this.authService.isLoggedIn();
         if (isNotLoggedIn) {
             AppLogger.error("Only logged users can use this command.");
-            return ExitCode.ACCESS_DENIED;
+            return ExitCode.ACTION_DENIED;
         }
 
         var values = this.extractValuesFromArgs(args);
@@ -35,7 +36,7 @@ public class DeleteUserCliCommandNode extends CliCommandNode {
         boolean isNotAdmin = !this.authService.isLoggedInUserAdmin();
         if (valuesIsNotEmpty && isNotAdmin) {
             AppLogger.error("Only admins can delete other users");
-            return ExitCode.ACCESS_DENIED;
+            return ExitCode.ACTION_DENIED;
         }
 
         String email = valuesIsNotEmpty
@@ -51,6 +52,9 @@ public class DeleteUserCliCommandNode extends CliCommandNode {
         } catch (NotFoundException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
+        } catch (InternalErrorException e) {
+            AppLogger.error(e.getMessage());
+            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;

@@ -1,6 +1,7 @@
 package com.esgi.data.users;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.impl.UserRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
@@ -25,7 +26,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    public void get_User_By_Id_Should_Return_User() throws NotFoundException {
+    public void get_User_By_Id_Should_Return_User() throws NotFoundException, InternalErrorException {
         // Arrange
         Integer userId = 1;
 
@@ -49,7 +50,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void create_User_Should_Save_User() throws ConstraintViolationException, NotFoundException {
+    void create_User_Should_Save_User() throws ConstraintViolationException, NotFoundException, InternalErrorException {
         //Arrange
         UserModel user = new UserModel(
             null,
@@ -106,7 +107,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void update_should_update_the_user() throws NotFoundException, ConstraintViolationException {
+    void update_should_update_the_user() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         //Arrange
         UserModel editedUser = new UserModel(
             2,
@@ -129,7 +130,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void update_should_not_change_password() throws NotFoundException, ConstraintViolationException {
+    void update_should_not_change_password() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         String existingUserPassword = "test";
 
@@ -183,7 +184,7 @@ public class UserRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_user() throws NotFoundException, ConstraintViolationException {
+    void delete_should_delete_user() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         int id = 1;
 

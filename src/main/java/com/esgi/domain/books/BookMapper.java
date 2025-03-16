@@ -1,6 +1,7 @@
 package com.esgi.domain.books;
 
 
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
 import com.esgi.domain.authors.AuthorService;
@@ -20,23 +21,13 @@ public class BookMapper {
         this.genreService = genreService;
     }
 
-    public BookEntity modelToEntity(BookModel bookModel) throws NotFoundException {
+    public BookEntity modelToEntity(BookModel bookModel) throws NotFoundException, InternalErrorException {
         return new BookEntity(
                 bookModel.getId(),
                 bookModel.getTitle(),
                 authorService.getAuthorById(bookModel.getAuthorId()),
                 mapGenreIdsToEntities(bookModel.getGenreIds())
         );
-    }
-
-    public List<BookEntity> modelsToEntities(List<BookModel> bookModels) throws NotFoundException {
-        var bookEntities = new ArrayList<BookEntity>();
-
-        for (BookModel bookModel : bookModels) {
-            bookEntities.add(modelToEntity(bookModel));
-        }
-
-        return bookEntities;
     }
 
     public BookModel entityToModel(BookEntity bookEntity) {
@@ -51,16 +42,16 @@ public class BookMapper {
 
     }
 
-    private GenreEntity getGenreEntityById(int id) {
-        try {
-            return genreService.getGenreById(id);
-        } catch (NotFoundException e) {
-            throw new RuntimeException("Genre not found for ID: " + id, e);
-        }
+    private GenreEntity getGenreEntityById(int id) throws NotFoundException, InternalErrorException {
+        return genreService.getGenreById(id);
     }
 
-    private List<GenreEntity> mapGenreIdsToEntities(List<Integer> genreIds) {
-        return genreIds.stream()
-                .map(this::getGenreEntityById).collect(Collectors.toList());
+    private List<GenreEntity> mapGenreIdsToEntities(List<Integer> genreIds) throws NotFoundException, InternalErrorException {
+        var genreEntities = new ArrayList<GenreEntity>();
+        for (Integer genreId : genreIds) {
+            GenreEntity genreEntity = getGenreEntityById(genreId);
+            genreEntities.add(genreEntity);
+        }
+        return genreEntities;
     }
 }
