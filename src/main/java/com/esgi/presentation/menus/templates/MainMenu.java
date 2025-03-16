@@ -14,6 +14,6 @@ public class MainMenu extends Menu {
         addItem(new SearchBookItem());
         addItem(new LoginItem());
         addItem(new SignInItem());
-        addItem(new SubMenuItem("home", homeMenu));
+        addItem(new SubMenuItem("home", homeMenu, true));
     }
 }

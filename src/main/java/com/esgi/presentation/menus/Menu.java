@@ -1,5 +1,6 @@
 package com.esgi.presentation.menus;
 
+import com.esgi.domain.AppContext;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.menus.items.MenuItem;
@@ -42,6 +43,7 @@ public class Menu {
         StringBuilder subMenus = new StringBuilder();
         StringBuilder header = new StringBuilder();
         AtomicInteger counter = new AtomicInteger();
+        List<MenuItem> displayedList;
 
         header.append("-".repeat(30)).append("\n")
                 .append(title).append("\n")
@@ -50,11 +52,16 @@ public class Menu {
                 .append("-".repeat(30));
 
 
-        items.forEach(menuItem -> {
+        displayedList = items
+                .stream()
+                .filter(menuItem -> AppContext.getInstance().isAdmin() || !menuItem.needsAdmin()).toList();
+
+        displayedList.forEach(menuItem -> {
             int value = counter.incrementAndGet();
             String newLine = String.format("%s. %s\n", value, menuItem.getTitle());
             subMenus.append(newLine);
         });
+
         if (previousMenu != null) {
             subMenus.append("0. cancel");
         } else {
@@ -63,10 +70,10 @@ public class Menu {
 
         AppLogger.write(AppLoggerColorEnum.BLUE, header.toString());
         AppLogger.info(subMenus.toString());
-        handleUserInput();
+        handleUserInput(displayedList);
     }
 
-    private void handleUserInput() {
+    private void handleUserInput(List<MenuItem> displayedList) {
         int choice;
         Scanner scanner = new Scanner(System.in);
 
@@ -76,7 +83,7 @@ public class Menu {
             choice = Integer.parseInt(input);
         } catch (NumberFormatException e) {
             AppLogger.error("Invalid input. Please try again.");
-            handleUserInput();
+            handleUserInput(displayedList);
             return;
         }
 
@@ -89,13 +96,13 @@ public class Menu {
             return;
         }
 
-        if (choice < 1 || choice > items.size()) {
+        if (choice < 1 || choice > displayedList.size()) {
             AppLogger.error("Invalid choice. Please try again.");
-            handleUserInput();
+            handleUserInput(displayedList);
             return;
         }
 
-        items.get(choice - 1).execute();
+        displayedList.get(choice - 1).execute();
     }
 
     public void addItem(MenuItem item) {
