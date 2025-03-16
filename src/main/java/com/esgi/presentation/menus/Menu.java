@@ -6,7 +6,9 @@ import com.esgi.presentation.AppLoggerColorEnum;
 import com.esgi.presentation.menus.items.MenuItem;
 import lombok.Getter;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicInteger;
 
 public class Menu {
@@ -102,7 +104,12 @@ public class Menu {
             return;
         }
 
-        displayedList.get(choice - 1).execute();
+        try {
+            displayedList.get(choice - 1).execute(this);
+        } catch (Exception e) {
+            AppLogger.error("An error occurred. Please try again.");
+            display();
+        }
     }
 
     public void addItem(MenuItem item) {

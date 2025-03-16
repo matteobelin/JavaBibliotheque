@@ -1,15 +1,16 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.account;
 
 import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class LoanItem implements MenuItem {
+public class ChangeEmailItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "loan a book";
+        return "change email";
     }
 
     @Override
-    public void execute() {
+    public void execute(Menu menu) throws Exception {
         throw new RuntimeException("Not implemented");
     }
 

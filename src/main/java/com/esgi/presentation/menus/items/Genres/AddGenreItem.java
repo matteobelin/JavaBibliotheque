@@ -1,15 +1,16 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.Genres;
 
 import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class SearchBookItem implements MenuItem {
+public class AddGenreItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "search a book";
+        return "add a genre";
     }
 
     @Override
-    public void execute() {
+    public void execute(Menu menu) throws Exception {
         throw new RuntimeException("Not implemented");
     }
 

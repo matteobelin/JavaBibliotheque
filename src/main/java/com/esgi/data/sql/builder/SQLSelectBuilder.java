@@ -7,11 +7,13 @@ import java.util.stream.Collectors;
 public class SQLSelectBuilder extends SQLBuilder {
 
     public static final String SELECT = "SELECT";
+    public static final String DISTINCT = "DISTINCT";
     public static final String FROM = "FROM";
     public static final String ASTERISK = "*";
 
     private final List<String> columns;
     protected String tableName;
+    protected boolean selectDistinct = false;
 
     public SQLSelectBuilder(String... columns) {
         super();
@@ -23,10 +25,16 @@ public class SQLSelectBuilder extends SQLBuilder {
         this.columns = columns;
     }
 
+    public SQLSelectBuilder distinct() {
+        selectDistinct = true;
+        return this;
+    }
+
     public SQLSelectBuilder from(String table) {
         this.tableName = table;
         var columns = buildColumnsToSelect(table);
         super.append(SELECT)
+            .appendIf(selectDistinct, DISTINCT)
             .append(columns)
             .append(FROM)
             .append(table);
