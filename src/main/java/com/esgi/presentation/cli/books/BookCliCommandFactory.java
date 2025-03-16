@@ -14,6 +14,7 @@ import com.esgi.presentation.cli.books.list.ListBookCliCommandNode;
 import com.esgi.presentation.cli.books.search.SearchBookCliCommandNode;
 import com.esgi.presentation.cli.books.unborrowed.UnborrowedBookCliCommandeNode;
 
+
 public final class BookCliCommandFactory {
 
     public static BookCliCommandNode makeBookCliCommandNode() {
@@ -29,7 +30,9 @@ public final class BookCliCommandFactory {
         var deleteBookCommand = new DeleteBookCliCommandNode(bookService);
         var listBookCommand = new ListBookCliCommandNode(bookService);
         var searchBookCommand = new SearchBookCliCommandNode(bookService);
+
         var unborrowedBookCommand = new UnborrowedBookCliCommandeNode(bookService,loanService);
+
         var exportBooksCommand = new ExportBooksCliCommandNode(bookService);
         var importBooksCommand = new ImportBooksCliCommandNode(bookService,authorService,genreService);
 

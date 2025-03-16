@@ -152,6 +152,7 @@ public abstract class Repository<T extends Model> {
         var columns = columnValues.stream().map(SQLColumnValue::getColumnName).toList();
         var whereIdEqualsCondition = SQLWhereCondition.makeEqualCondition("id", whereId);
 
+
         String sql = SQLBuilder.update(tableName)
                 .columns(columns)
                 .where(whereIdEqualsCondition)
@@ -229,4 +230,6 @@ public abstract class Repository<T extends Model> {
 
         return optionalExceptionType.get();
     }
+
 }
+

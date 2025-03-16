@@ -2,7 +2,7 @@ package com.esgi.data.sql;
 
 import lombok.Getter;
 
-import java.sql.Types;
+
 import java.util.List;
 
 @Getter
