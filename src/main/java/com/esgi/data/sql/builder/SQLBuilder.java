@@ -52,6 +52,13 @@ public abstract class SQLBuilder {
         return this;
     }
 
+    protected SQLBuilder appendIf(boolean condition, String sql) {
+        if (condition) {
+            this.append(sql);
+        }
+        return this;
+    }
+
     public String build() {
         return statementBuilder.toString();
     }
