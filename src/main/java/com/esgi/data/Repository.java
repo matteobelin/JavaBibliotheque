@@ -87,6 +87,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
+
     protected List<T> resultSetToList(ResultSet result) throws SQLException {
         List<T> models = new ArrayList<>();
         while(result.next()) {
@@ -151,6 +152,7 @@ public abstract class Repository<T extends Model> {
         var columns = columnValues.stream().map(SQLColumnValue::getColumnName).toList();
         var whereIdEqualsCondition = SQLWhereCondition.makeEqualCondition("id", whereId);
 
+
         String sql = SQLBuilder.update(tableName)
                 .columns(columns)
                 .where(whereIdEqualsCondition)
@@ -171,7 +173,7 @@ public abstract class Repository<T extends Model> {
 
     protected void deleteByColumn(String column, Object value) throws NotFoundException, SQLException {
         this.deleteWhere(List.of(
-            SQLWhereCondition.makeEqualCondition(column, value)
+                SQLWhereCondition.makeEqualCondition(column, value)
         ));
     }
 
@@ -228,4 +230,6 @@ public abstract class Repository<T extends Model> {
 
         return optionalExceptionType.get();
     }
+
 }
+

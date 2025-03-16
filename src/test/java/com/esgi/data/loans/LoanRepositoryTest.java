@@ -104,4 +104,5 @@ public class LoanRepositoryTest {
         //Assert
         Assertions.assertThat(loanRepostory.getById(id)).isNotNull().isEqualTo(loan);
     }
+
 }

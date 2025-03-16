@@ -15,4 +15,5 @@ public interface LoanService {
     List<LoanEntity> getAll() throws NotFoundException, InternalErrorException;
     List<LoanEntity> getByUserId(int id) throws ConstraintViolationException, NotFoundException, InternalErrorException;
     List<LoanEntity> getCurrentLoanOfUser(int userId) throws NotFoundException, InternalErrorException;
+    List<LoanEntity> getCurrentLoan() throws NotFoundException, InternalErrorException;
 }

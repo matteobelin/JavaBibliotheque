@@ -16,4 +16,5 @@ public interface LoanRepository {
     void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;
     void bookReturn(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException;
     boolean isBookBorrowed(Integer bookId);
+    List<LoanModel> getCurrentLoan()throws InternalErrorException;
 }

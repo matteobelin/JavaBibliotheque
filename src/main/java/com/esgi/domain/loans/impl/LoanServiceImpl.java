@@ -61,6 +61,11 @@ public class LoanServiceImpl implements LoanService {
         return this.loanMapper.modelToEntity(loanModel);
     }
 
+    public List<LoanEntity> getCurrentLoan()throws NotFoundException, InternalErrorException {
+        var loanModel = loanRepository.getCurrentLoan();
+        return this.loanMapper.modelToEntity(loanModel);
+    }
+
     public List<LoanEntity> getByUserId(int userId) throws ConstraintViolationException, NotFoundException, InternalErrorException {
         var loanModel = loanRepository.getByUserId(userId);
         return this.loanMapper.modelToEntity(loanModel);
