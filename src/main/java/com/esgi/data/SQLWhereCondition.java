@@ -1,5 +1,6 @@
 package com.esgi.data;
 
+import java.sql.Types;
 import java.util.List;
 
 public record SQLWhereCondition(String columnName, SQLComparator comparator, Object value) {
@@ -7,6 +8,7 @@ public record SQLWhereCondition(String columnName, SQLComparator comparator, Obj
     public static SQLWhereCondition makeEqualCondition(String columnName, Object value) {
         return new SQLWhereCondition(columnName, SQLComparator.EQUALS, value);
     }
+
 
     public SQLColumnValueBinder makeValueBinder() {
         if (value instanceof SQLNullValue) {
@@ -21,10 +23,14 @@ public record SQLWhereCondition(String columnName, SQLComparator comparator, Obj
         if (value instanceof Boolean) {
             return (statement, index) -> statement.setBoolean(index, (Boolean) value);
         }
+
         return (statement, index) -> statement.setObject(index, value);
     }
 
     public String buildWithPlaceholder() {
+        if (this.value.equals(new SQLNullValue(Types.DATE))) {
+            return this.build("NULL");
+        }
         return this.build("?");
     }
 
@@ -35,4 +41,8 @@ public record SQLWhereCondition(String columnName, SQLComparator comparator, Obj
     public String build(String value) {
         return String.join(" ", List.of(this.columnName(), this.comparator().getValue(), value));
     }
+
+
+
+
 }

@@ -31,9 +31,9 @@ public final class SQLHelper {
 
     public static int bindValues(PreparedStatement statement, List<SQLColumnValueBinder> columnValueBinders) throws SQLException {
         int index = 1;
-        for (var binders : columnValueBinders) {
-            binders.bind(statement, index);
-            index++;
+        for (var binder : columnValueBinders) {
+                binder.bind(statement, index);
+                index++;
         }
         return index;
     }

@@ -104,4 +104,30 @@ public class LoanRepositoryTest {
         //Assert
         Assertions.assertThat(loanRepostory.getById(id)).isNotNull().isEqualTo(loan);
     }
+
+    @Test
+    public void get_active_loan_should_Return_Loans() throws InternalErrorException {
+        //Act
+        List<LoanModel> loans = loanRepostory.getCurrentLoan();
+        //Assert
+        Assertions.assertThat(loans).isNotNull().hasSize(1);
+    }
+
+    @Test
+    public void get_active_loan_User_should_Return_Loans() throws InternalErrorException {
+        //Act
+        List<LoanModel> loans = loanRepostory.getCurrentLoanOfUser(2);
+        //Assert
+        Assertions.assertThat(loans).isNotNull().hasSize(1);
+    }
+
+
+    @Test
+    public void get_active_loan_User_should_Return_Empty_Loan() throws InternalErrorException{
+        //Act
+        List<LoanModel> loans = loanRepostory.getCurrentLoanOfUser(1);
+        //Assert
+        Assertions.assertThat(loans).isNotNull().hasSize(0);
+
+    }
 }

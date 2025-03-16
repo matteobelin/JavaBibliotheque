@@ -91,10 +91,15 @@ public abstract class Repository<T extends Model> {
         String whereConditionsStatement = SQLHelper.buildWhereConditions(conditions);
         String sql = "SELECT * FROM " + tableName + " WHERE " + whereConditionsStatement;
 
+        var filteredConditions = conditions.stream()
+                .filter(condition -> !(condition.value() instanceof SQLNullValue))
+                .toList();
+
         var conn = DriverManager.getConnection(connectionString);
         var statement = conn.prepareStatement(sql);
 
-        var valueBinders = conditions.stream().map(SQLWhereCondition::makeValueBinder).toList();
+        var valueBinders = filteredConditions.stream().map(SQLWhereCondition::makeValueBinder).toList();
+
         SQLHelper.bindValues(statement, valueBinders);
 
         return statement;
