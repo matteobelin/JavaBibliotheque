@@ -44,7 +44,7 @@ public class GenreServiceTest {
 
 
     @Test
-    public void create_Genre_Should_Not_Throw() throws ConstraintViolationException {
+    public void create_Genre_Should_Not_Throw() throws ConstraintViolationException, InternalErrorException {
         //Arrange
         GenreEntity genre = new GenreEntity(1,"Science Fiction");
         GenreModel expectedGenre = new GenreModel(1,"Science Fiction");
@@ -61,7 +61,7 @@ public class GenreServiceTest {
     }
 
     @Test
-    public void updateGenre_should_not_throw() throws NotFoundException, ConstraintViolationException {
+    public void updateGenre_should_not_throw() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         GenreEntity genre = new GenreEntity(0, "test");
         GenreModel expectedGenre = new GenreModel(0, "test");

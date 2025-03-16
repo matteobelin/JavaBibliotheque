@@ -167,7 +167,7 @@ public class AuthorRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_author() throws NotFoundException, ConstraintViolationException {
+    void delete_should_delete_author() throws NotFoundException, ConstraintViolationException, InternalErrorException {
         // Arrange
         String name = "Mickey Mouse";
 

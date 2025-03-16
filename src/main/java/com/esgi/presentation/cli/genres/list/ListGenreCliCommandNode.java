@@ -1,5 +1,6 @@
 package com.esgi.presentation.cli.genres.list;
 
+import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import com.esgi.presentation.AppLogger;
@@ -23,7 +24,7 @@ public class ListGenreCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) {
+    public ExitCode run(String[] args) throws InternalErrorException {
         var tableHeader = List.of(
                 "#",
                 "Name"
@@ -31,7 +32,8 @@ public class ListGenreCliCommandNode extends CliCommandNode {
         var tableRows = new ArrayList<List<String>>();
         tableRows.add(tableHeader);
 
-        var genres = this.genreService.getAllGenres();
+        List<GenreEntity> genres = this.genreService.getAllGenres();
+
         for (int i = 0; i < genres.size(); i++) {
             var genre = genres.get(i);
             var tableRow = this.mapGenreToTableRow(i + 1, genre);

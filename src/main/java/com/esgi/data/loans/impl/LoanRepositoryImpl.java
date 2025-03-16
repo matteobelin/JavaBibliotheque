@@ -4,15 +4,13 @@ import com.esgi.core.exceptions.BookLoanException;
 import com.esgi.core.exceptions.ConstraintViolationException;
 import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
-import com.esgi.core.exceptions.helpers.SQLExceptionEnum;
-import com.esgi.core.exceptions.helpers.SQLExceptionParser;
 import com.esgi.data.Repository;
-import com.esgi.data.SQLColumnValueBinder;
-import com.esgi.data.SQLComparator;
-import com.esgi.data.SQLNullValue;
-import com.esgi.data.SQLWhereCondition;
 import com.esgi.data.loans.LoanModel;
 import com.esgi.data.loans.LoanRepository;
+import com.esgi.data.sql.SQLColumnValue;
+import com.esgi.data.sql.SQLComparator;
+import com.esgi.data.sql.SQLNullValue;
+import com.esgi.data.sql.SQLWhereCondition;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -20,8 +18,6 @@ import java.sql.Types;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
-import java.util.Map;
-import java.util.Optional;
 
 import static com.esgi.core.exceptions.helpers.SQLExceptionEnum.CONSTRAINT_NOTNULL;
 
@@ -48,34 +44,35 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     @Override
-    public void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException {
+    public void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
         loanModel.setStartDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         var columns = getColumnValueBinders(loanModel);
         try {
-            super.executeCreate(columns,loanModel);
+            var id = super.executeCreate(columns);
+            loanModel.setId(id);
         }catch (SQLException e){
             handleSQLException(e);
         }
     }
 
-    private Map<String, SQLColumnValueBinder> getColumnValueBinders(LoanModel loan) {
-        return Map.of(
-            USER_ID_COLUMN, (statement, index) -> statement.setInt(index, loan.getUserId()),
-            BOOK_ID_COLUMN,(statement, index) -> statement.setInt(index, loan.getBookId()),
-            START_DATE_COLUMN,(statement, index) -> statement.setDate(index,loan.getStartDate())
+    private List<SQLColumnValue<?>> getColumnValueBinders(LoanModel loan) {
+        return List.of(
+          new SQLColumnValue<>(USER_ID_COLUMN, loan.getUserId()),
+          new SQLColumnValue<>(BOOK_ID_COLUMN, loan.getBookId()),
+          new SQLColumnValue<>(START_DATE_COLUMN, loan.getStartDate())
         );
     }
 
     @Override
-    public void bookReturn(LoanModel loan) throws ConstraintViolationException, NotFoundException {
+    public void bookReturn(LoanModel loan) throws ConstraintViolationException, NotFoundException, InternalErrorException {
         loan.setEndDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
 
-        Map<String, SQLColumnValueBinder> columns = Map.of(
-            END_DATE_COLUMN, (statement, index) -> statement.setDate(index, loan.getEndDate())
+        List<SQLColumnValue<?>> conditions = List.of(
+            new SQLColumnValue<>(END_DATE_COLUMN, loan.getEndDate())
         );
 
         try{
-            super.executeUpdate(columns,loan.getId());
+            super.executeUpdate(conditions, loan.getId());
         }catch (SQLException e){
             handleSQLException(e);
         }
@@ -86,7 +83,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
         try {
             var conditions = List.of(
                 SQLWhereCondition.makeEqualCondition(BOOK_ID_COLUMN, bookId),
-                new SQLWhereCondition(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
+                SQLWhereCondition.makeIsNullCondition(END_DATE_COLUMN, Types.DATE)
             );
             super.findFirstWhere(conditions);
             return true;
@@ -95,13 +92,9 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
         }
     }
 
-    private void handleSQLException(SQLException e) throws ConstraintViolationException {
-        Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
-        boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();
-        if (exceptionTypeNotFound) {
-            throw new RuntimeException(e);
-        }
-        if (optionalExceptionType.get() == CONSTRAINT_NOTNULL) {
+    private void handleSQLException(SQLException e) throws ConstraintViolationException, InternalErrorException {
+        var exceptionType = super.parseSqlException(e);
+        if (exceptionType == CONSTRAINT_NOTNULL) {
             throw new ConstraintViolationException("A required field of the genre is missing.");
         }
     }
@@ -115,14 +108,14 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     public List<LoanModel> getByUserId(Integer userId) throws InternalErrorException {
-        return getAllByColumn(USER_ID_COLUMN, userId);
+        return getAllWhereColumnEquals(USER_ID_COLUMN, userId);
     }
 
     @Override
     public List<LoanModel> getCurrentLoanOfUser(Integer userId) throws InternalErrorException {
         var conditions = List.of(
             SQLWhereCondition.makeEqualCondition(USER_ID_COLUMN, userId),
-            new SQLWhereCondition(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
+            new SQLWhereCondition<>(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
         );
         return super.getAllWhere(conditions);
     }

@@ -39,7 +39,8 @@ public final class GenreUtils {
         }
     }
 
-    public static Optional<GenreEntity> askToCreateGenre(String genreName, GenreService genreService) throws ConstraintViolationException {
+    public static Optional<GenreEntity> askToCreateGenre(String genreName, GenreService genreService)
+            throws ConstraintViolationException, InternalErrorException {
         String confirmationMessage = "The genre '%s' does not exist in the system, do you wish to create it ? (y/n)".formatted(genreName);
         boolean create = AppLogger.askForConfirmation(confirmationMessage);
         if (create) {
