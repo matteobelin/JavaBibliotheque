@@ -1,12 +1,11 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.authors;
 
-import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class LoginItem implements MenuItem {
-
+public class AddAuthorItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "login";
+        return "add an author";
     }
 
     @Override
@@ -16,6 +15,6 @@ public class LoginItem implements MenuItem {
 
     @Override
     public boolean needsAdmin() {
-        return false;
+        return true;
     }
 }

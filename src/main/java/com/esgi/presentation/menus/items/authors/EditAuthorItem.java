@@ -1,11 +1,11 @@
-package com.esgi.presentation.menus.items;
+package com.esgi.presentation.menus.items.authors;
 
-import com.esgi.presentation.menus.Menu;
+import com.esgi.presentation.menus.items.MenuItem;
 
-public class SearchBookItem implements MenuItem {
+public class EditAuthorItem implements MenuItem {
     @Override
     public String getTitle() {
-        return "search a book";
+        return "edit an author";
     }
 
     @Override
