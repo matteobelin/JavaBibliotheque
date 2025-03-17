@@ -1,7 +1,6 @@
 package com.esgi.domain.users;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
@@ -31,7 +30,7 @@ public class UserServiceTest {
 
 
     @Test
-    public void get_User_By_Id_Should_Return_User() throws NotFoundException, InternalErrorException {
+    public void get_User_By_Id_Should_Return_User() throws NotFoundException {
         // Arrange
         Integer userId = 1;
         UserEntity expectedUser = new UserEntity(userId, "email", true, "name", "test");
@@ -50,7 +49,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void create_User_Should_Not_Throw() throws ConstraintViolationException, InvalidArgumentException, InternalErrorException {
+    public void create_User_Should_Not_Throw() throws ConstraintViolationException, InvalidArgumentException {
         //Arrange
         UserEntity user = new UserEntity(0, "email@gmail.com", true, "name", "test");
         UserModel expectedUser = new UserModel(0, "email@gmail.com", true, "name", "test");
@@ -62,7 +61,7 @@ public class UserServiceTest {
     }
 
     @Test
-    public void updateUser_should_not_throw() throws NotFoundException, ConstraintViolationException, InvalidArgumentException, InternalErrorException {
+    public void updateUser_should_not_throw() throws NotFoundException, ConstraintViolationException, InvalidArgumentException {
         // Arrange
         UserEntity user = new UserEntity(0, "email@gmail.com", true, "name", "test");
         UserModel expectedUser = new UserModel(0, "email@gmail.com", true, "name", "test");

@@ -1,6 +1,5 @@
 package com.esgi.presentation.cli.users.add;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.users.impl.UserServiceImpl;
 import com.esgi.presentation.cli.ExitCode;
 import org.assertj.core.api.Assertions;
@@ -20,7 +19,7 @@ public class AddUserCliCommandNodeTest {
     private UserServiceImpl userService;
 
     @Test
-    public void should_create_user() throws InternalErrorException {
+    public void should_create_user()  {
         // Arrange
         String[] args = {"email", "password"};
 
@@ -32,7 +31,7 @@ public class AddUserCliCommandNodeTest {
     }
 
     @Test
-    public void with_valid_option_should_create_user() throws InternalErrorException {
+    public void with_valid_option_should_create_user()  {
         // Arrange
         String[] args = {"-a", "email", "password"};
 
@@ -44,7 +43,7 @@ public class AddUserCliCommandNodeTest {
     }
 
     @Test
-    public void with_missing_args_should_not_create_user() throws InternalErrorException {
+    public void with_missing_args_should_not_create_user()  {
         // Arrange
         String[] args = {"email"};
 
@@ -56,7 +55,7 @@ public class AddUserCliCommandNodeTest {
     }
 
     @Test
-    public void with_unknown_option_should_create_user() throws InternalErrorException {
+    public void with_unknown_option_should_create_user()  {
         // Arrange
         String[] args = {"-option", "email", "password"};
 

@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.auth.login;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.users.UserEntity;
 import com.esgi.presentation.cli.ExitCode;
@@ -25,7 +24,7 @@ public class LoginCliCommandTest {
     AuthService authService;
 
     @Test
-    public void should_return_OK() throws IncorrectCredentialsException, InternalErrorException {
+    public void should_return_OK() throws IncorrectCredentialsException {
         // Arrange
         String[] args = { "email", "password", "-s" };
 
@@ -55,7 +54,7 @@ public class LoginCliCommandTest {
     }
 
     @Test
-    public void should_return_ARGUMENT_INVALID_when_authService_throw_IncorrectCredentialsException() throws IncorrectCredentialsException, InternalErrorException {
+    public void should_return_ARGUMENT_INVALID_when_authService_throw_IncorrectCredentialsException() throws IncorrectCredentialsException {
         // Arrange
         String[] args = { "email", "password" };
 

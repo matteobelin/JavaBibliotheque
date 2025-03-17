@@ -41,11 +41,11 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
 
 
     @Override
-    public UserModel getByEmail(String email) throws InternalErrorException, NotFoundException {
+    public UserModel getByEmail(String email) throws NotFoundException {
         return super.getFirstWhereColumnEquals(EMAIL_COLUMN, email);
     }
 
-    public void update(UserModel user) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void update(UserModel user) throws ConstraintViolationException, NotFoundException {
         var columnValueBinders = getColumnValueBinders(user);
 
         try {
@@ -55,7 +55,7 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
         }
     }
 
-    public void create(UserModel user) throws ConstraintViolationException, InternalErrorException {
+    public void create(UserModel user) throws ConstraintViolationException {
         var columnValueBinders = getColumnValueBindersCreation(user);
 
         try{
@@ -66,7 +66,7 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
         }
     }
 
-    public void delete(Integer id) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
         try {
             super.deleteById(id);
         } catch (SQLException e) {
@@ -93,7 +93,7 @@ public class UserRepositoryImpl extends Repository<UserModel> implements UserRep
     }
 
 
-    private void handleSQLException(SQLException e, String email) throws ConstraintViolationException, InternalErrorException {
+    private void handleSQLException(SQLException e, String email) throws ConstraintViolationException {
         var exceptionType = super.parseSqlException(e);
         switch (exceptionType) {
             case CONSTRAINT_UNIQUE:

@@ -1,6 +1,5 @@
 package com.esgi.domain.books;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
 import com.esgi.domain.authors.AuthorEntity;
@@ -34,7 +33,7 @@ public class BookMapperTest {
     }
 
     @Test
-    public void bookModel_to_bookEntity() throws NotFoundException, InternalErrorException {
+    public void bookModel_to_bookEntity() throws NotFoundException {
         // Arrange
         BookModel bookModel = makeBookModel();
 

@@ -44,7 +44,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     @Override
-    public void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException, InternalErrorException {
+    public void create(LoanModel loanModel) throws ConstraintViolationException, NotFoundException, BookLoanException {
         loanModel.setStartDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
         var columns = getColumnValueBinders(loanModel);
         try {
@@ -64,7 +64,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     @Override
-    public void bookReturn(LoanModel loan) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void bookReturn(LoanModel loan) throws ConstraintViolationException, NotFoundException {
         loan.setEndDate(java.sql.Date.valueOf(new SimpleDateFormat("yyyy-MM-dd").format(new Date())));
 
         List<SQLColumnValue<?>> conditions = List.of(
@@ -92,7 +92,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
         }
     }
 
-    private void handleSQLException(SQLException e) throws ConstraintViolationException, InternalErrorException {
+    private void handleSQLException(SQLException e) throws ConstraintViolationException {
         var exceptionType = super.parseSqlException(e);
         if (exceptionType == CONSTRAINT_NOTNULL) {
             throw new ConstraintViolationException("A required field of the genre is missing.");
@@ -100,19 +100,19 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
     }
 
     public LoanModel findLoanByUserIdAndBookId(Integer userId, Integer bookId)
-            throws NotFoundException, InternalErrorException {
+            throws NotFoundException {
         return super.findFirstWhere(List.of(
             SQLWhereCondition.makeEqualCondition(USER_ID_COLUMN, userId),
             SQLWhereCondition.makeEqualCondition(BOOK_ID_COLUMN, bookId)
         ));
     }
 
-    public List<LoanModel> getByUserId(Integer userId) throws InternalErrorException {
+    public List<LoanModel> getByUserId(Integer userId)  {
         return getAllWhereColumnEquals(USER_ID_COLUMN, userId);
     }
 
     @Override
-    public List<LoanModel> getCurrentLoanOfUser(Integer userId) throws InternalErrorException {
+    public List<LoanModel> getCurrentLoanOfUser(Integer userId)  {
         var conditions = List.of(
             SQLWhereCondition.makeEqualCondition(USER_ID_COLUMN, userId),
             new SQLWhereCondition<>(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
@@ -120,7 +120,7 @@ public class LoanRepositoryImpl extends Repository<LoanModel> implements LoanRep
         return super.getAllWhere(conditions);
     }
 
-    public List<LoanModel> getCurrentLoan() throws InternalErrorException {
+    public List<LoanModel> getCurrentLoan()  {
         List<SQLWhereCondition<?>> conditions  = List.of(
                 new SQLWhereCondition(END_DATE_COLUMN, SQLComparator.IS, new SQLNullValue(Types.DATE))
         );

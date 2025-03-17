@@ -1,7 +1,6 @@
 package com.esgi.data.authors.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.Repository;
 import com.esgi.data.authors.AuthorModel;
@@ -29,11 +28,11 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         );
     }
 
-    public AuthorModel getByName(String name) throws NotFoundException, InternalErrorException {
+    public AuthorModel getByName(String name) throws NotFoundException {
         return this.getFirstWhereColumnEquals(NAME_COLUMN,name);
     }
 
-    public void create(AuthorModel author) throws ConstraintViolationException, InternalErrorException {
+    public void create(AuthorModel author) throws ConstraintViolationException {
         var columnValues = getColumnValues(author);
 
         try{
@@ -44,7 +43,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
-    public void update(AuthorModel author) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void update(AuthorModel author) throws ConstraintViolationException, NotFoundException {
         var columnValueBinders = getColumnValues(author);
 
         try {
@@ -60,7 +59,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         );
     }
 
-    public void delete(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void delete(String name) throws NotFoundException, ConstraintViolationException {
         try {
             super.deleteByColumn(NAME_COLUMN, name);
         } catch (SQLException e) {
@@ -68,7 +67,7 @@ public class AuthorRepositoryImpl extends Repository<AuthorModel> implements Aut
         }
     }
 
-    private void handleSQLException(SQLException e, String name) throws ConstraintViolationException, InternalErrorException {
+    private void handleSQLException(SQLException e, String name) throws ConstraintViolationException {
         var exceptionType = super.parseSqlException(e);
         switch (exceptionType) {
             case CONSTRAINT_UNIQUE:

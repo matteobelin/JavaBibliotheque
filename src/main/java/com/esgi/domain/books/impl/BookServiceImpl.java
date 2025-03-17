@@ -1,7 +1,6 @@
 package com.esgi.domain.books.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
 import com.esgi.data.books.BookRepository;
@@ -22,25 +21,25 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookEntity getBookById(int id) throws NotFoundException, InternalErrorException {
+    public BookEntity getBookById(int id) throws NotFoundException {
         BookModel bookModel = bookRepository.getById(id);
         return bookMapper.modelToEntity(bookModel);
     }
 
 
     @Override
-    public List<BookEntity> searchBook(String searchValue) throws InternalErrorException, NotFoundException {
+    public List<BookEntity> searchBook(String searchValue) throws NotFoundException {
         var models = bookRepository.searchBook(searchValue);
         return convertToEntities(models);
     }
 
     @Override
-    public List<BookEntity> getAllBooks() throws NotFoundException, InternalErrorException {
+    public List<BookEntity> getAllBooks() throws NotFoundException {
         List<BookModel> books = bookRepository.getAllBook();
         return convertToEntities(books);
     }
 
-    private List<BookEntity> convertToEntities(List<BookModel> books) throws NotFoundException, InternalErrorException {
+    private List<BookEntity> convertToEntities(List<BookModel> books) throws NotFoundException {
         List<BookEntity> bookEntities = new ArrayList<>();
         for (BookModel bookModel : books) {
             bookEntities.add(bookMapper.modelToEntity(bookModel));
@@ -49,19 +48,19 @@ public class BookServiceImpl implements BookService {
     }
 
     @Override
-    public BookEntity createBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public BookEntity createBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException {
         BookModel bookModel = bookMapper.entityToModel(bookEntity);
         bookRepository.create(bookModel);
         return bookMapper.modelToEntity(bookModel);
     }
 
     @Override
-    public void updateBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void updateBook(BookEntity bookEntity) throws ConstraintViolationException, NotFoundException {
         BookModel bookModel = bookMapper.entityToModel(bookEntity);
         bookRepository.update(bookModel);
     }
 
-    public void deleteBook(int id) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void deleteBook(int id) throws NotFoundException, ConstraintViolationException {
         bookRepository.delete(id);
     }
     

@@ -1,7 +1,6 @@
 package com.esgi.domain.users.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.users.UserModel;
@@ -22,33 +21,33 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public UserEntity getUserById(int id) throws NotFoundException, InternalErrorException {
+    public UserEntity getUserById(int id) throws NotFoundException {
         UserModel userModel = userRepository.getById(id);
         return userMapper.modelToEntity(userModel);
     }
 
     @Override
-    public UserEntity getUserByEmail(String email) throws NotFoundException, InternalErrorException {
+    public UserEntity getUserByEmail(String email) throws NotFoundException {
         UserModel userModel = userRepository.getByEmail(email);
         return userMapper.modelToEntity(userModel);
     }
 
     @Override
-    public void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, InternalErrorException {
+    public void createUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException {
         UserUseCase.validateUserInformationIsValid(user);
 
         UserModel userModel = userMapper.entityToModel(user);
         userRepository.create(userModel);
     }
 
-    public void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException, InternalErrorException {
+    public void updateUser(UserEntity user) throws ConstraintViolationException, InvalidArgumentException, NotFoundException {
         UserUseCase.validateUserInformationIsValid(user);
 
         UserModel userModel = userMapper.entityToModel(user);
         userRepository.update(userModel);
     }
 
-    public void deleteUser(int id) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void deleteUser(int id) throws NotFoundException, ConstraintViolationException {
         this.userRepository.delete(id);
     }
 }

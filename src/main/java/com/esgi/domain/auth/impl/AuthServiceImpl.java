@@ -36,7 +36,7 @@ public class AuthServiceImpl implements AuthService {
         return connectedUser;
     }
 
-    public UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException, InternalErrorException {
+    public UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException {
         try {
             UserEntity foundUser = userService.getUserByEmail(credentials.email());
 
@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
         }
     }
 
-    public void logout() throws InternalErrorException {
+    public void logout()  {
         connectedUser = null;
 
         try {

@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.users.add;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.domain.users.UserEntity;
@@ -33,7 +32,7 @@ public class AddUserCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) throws InternalErrorException {
+    public ExitCode run(String[] args)  {
         List<String> values = ArgsParserUtils.extractValuesFromArgs(args, this.getCommandOptions());
         if (values.size() < 2) {
             AppLogger.error("The email and password are required : users add [OPTIONS] EMAIL PASSWORD");

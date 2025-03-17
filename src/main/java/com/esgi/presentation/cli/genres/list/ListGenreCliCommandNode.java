@@ -1,6 +1,5 @@
 package com.esgi.presentation.cli.genres.list;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import com.esgi.presentation.AppLogger;
@@ -24,7 +23,7 @@ public class ListGenreCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) throws InternalErrorException {
+    public ExitCode run(String[] args)  {
         var tableHeader = List.of(
                 "#",
                 "Name"

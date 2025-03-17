@@ -48,7 +48,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     @Override
-    public BookModel getById(Integer id) throws NotFoundException, InternalErrorException {
+    public BookModel getById(Integer id) throws NotFoundException {
         try {
             BookModel book = super.getById(id);
             List<Integer> genreIds = super.getListById(id, BOOK_ID_COLUMN, GENRE_ID_COLUMN, GENRE_BOOK_TABLE);
@@ -59,15 +59,15 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         }
     }
 
-    public List<BookModel> getByTitle(String title) throws InternalErrorException {
+    public List<BookModel> getByTitle(String title)  {
         return getBooksByColumn(TITLE_COLUMN, title);
     }
 
-    public List<BookModel> getByAuthor(Integer authorId) throws InternalErrorException {
+    public List<BookModel> getByAuthor(Integer authorId)  {
         return getBooksByColumn(AUTHOR_ID_COLUMN, authorId);
     }
 
-    private List<BookModel> getBooksByColumn(String column, Object value) throws InternalErrorException {
+    private List<BookModel> getBooksByColumn(String column, Object value)  {
         try {
             List<BookModel> books = this.getAllWhereColumnEquals(column, value);
             for (BookModel book : books) {
@@ -81,7 +81,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
     }
 
     @Override
-    public List<BookModel> searchBook(String searchValue) throws InternalErrorException {
+    public List<BookModel> searchBook(String searchValue)  {
         String containsValue = "%" + searchValue + "%";
         String titleColumn = TABLE_NAME + "." + TITLE_COLUMN;
         String idColumn = TABLE_NAME + ".id";
@@ -139,14 +139,14 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         return new BookModel(bookId, title, authorId, new ArrayList<>());
     }
 
-    public boolean existInDb(BookModel bookModel) throws InternalErrorException {
+    public boolean existInDb(BookModel bookModel)  {
         List<BookModel> books = getByTitle(bookModel.getTitle());
         return books.stream()
                 .anyMatch(book -> book.getTitle()
                         .equals(bookModel.getTitle()) && book.getAuthorId().equals(bookModel.getAuthorId()));
     }
 
-    public void create(BookModel book) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void create(BookModel book) throws ConstraintViolationException, NotFoundException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
         }
@@ -165,7 +165,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         }
     }
 
-    public void update(BookModel book) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void update(BookModel book) throws ConstraintViolationException, NotFoundException {
         if(existInDb(book)){
             throw new ConstraintViolationException("A book with this name and this author already exists.");
         }
@@ -186,7 +186,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         };
     }
 
-    public void delete(Integer id) throws NotFoundException, InternalErrorException, ConstraintViolationException {
+    public void delete(Integer id) throws NotFoundException, ConstraintViolationException {
         BookModel book = this.getById(id);
 
         boolean bookHasGenres = !book.getGenreIds().isEmpty();
@@ -208,7 +208,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
         );
     }
 
-    public List<BookModel> getAllBook() throws InternalErrorException {
+    public List<BookModel> getAllBook()  {
         List<BookModel> books = this.getAll();
         List<Integer> genreIds;
         for (BookModel book : books) {
@@ -223,7 +223,7 @@ public class BookRepositoryImpl extends Repository<BookModel> implements BookRep
 
     }
 
-    private void handleSQLException(SQLException e) throws ConstraintViolationException, InternalErrorException {
+    private void handleSQLException(SQLException e) throws ConstraintViolationException {
         var exceptionType = super.parseSqlException(e);
 
         if(exceptionType == CONSTRAINT_NOTNULL){
