@@ -21,7 +21,7 @@ public class DeleteGenreCliCommandNode extends CliCommandNode {
     }
 
     @Override
-    public ExitCode run(String[] args) throws InternalErrorException {
+    public ExitCode run(String[] args)  {
         var values = this.extractValuesFromArgs(args);
 
         if (values.isEmpty()) {

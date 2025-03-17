@@ -1,7 +1,6 @@
 package com.esgi.domain.auth;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.users.UserEntity;
 
 public interface AuthService {
@@ -11,9 +10,9 @@ public interface AuthService {
 
     UserEntity getLoggedInUser();
 
-    UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException, InternalErrorException;
+    UserEntity login(AuthCredentials credentials) throws IncorrectCredentialsException;
 
     boolean tryToLoginWithSavedCredentials() throws IncorrectCredentialsException;
 
-    void logout() throws InternalErrorException;
+    void logout() ;
 }

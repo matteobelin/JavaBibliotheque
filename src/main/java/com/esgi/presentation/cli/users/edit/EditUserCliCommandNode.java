@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.users.edit;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.core.exceptions.OptionRequiresValueException;
@@ -92,9 +91,6 @@ public class EditUserCliCommandNode extends CliCommandNode {
         } catch (NotFoundException | InvalidArgumentException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
-        } catch (InternalErrorException e) {
-            AppLogger.error(e.getMessage());
-            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;

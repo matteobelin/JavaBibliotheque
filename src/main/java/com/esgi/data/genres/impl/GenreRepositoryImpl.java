@@ -1,7 +1,6 @@
 package com.esgi.data.genres.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.Repository;
 import com.esgi.data.genres.GenreModel;
@@ -35,7 +34,7 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         );
     }
 
-    public void create(GenreModel genre) throws ConstraintViolationException, InternalErrorException {
+    public void create(GenreModel genre) throws ConstraintViolationException {
         var columnValueBinders = getColumnValueBinders(genre);
 
         try{
@@ -45,11 +44,11 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
             handleSQLException(e, genre.getName());
         }
     }
-    public GenreModel getByName(String name) throws NotFoundException, InternalErrorException {
+    public GenreModel getByName(String name) throws NotFoundException {
         return this.getFirstWhereColumnEquals(NAME_COLUMN,name);
     }
 
-    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void update(GenreModel genre) throws ConstraintViolationException, NotFoundException {
         var columnValueBinders = getColumnValueBinders(genre);
 
         try {
@@ -59,7 +58,7 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         }
     }
 
-    public void delete(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void delete(String name) throws NotFoundException, ConstraintViolationException {
         try {
             super.deleteByColumn(NAME_COLUMN, name);
         } catch (SQLException e) {
@@ -67,7 +66,7 @@ public class GenreRepositoryImpl extends Repository<GenreModel> implements Genre
         }
     }
 
-    protected void handleSQLException(SQLException e, String genreName) throws ConstraintViolationException, InternalErrorException {
+    protected void handleSQLException(SQLException e, String genreName) throws ConstraintViolationException {
         var exceptionType = super.parseSqlException(e);
 
         switch (exceptionType) {

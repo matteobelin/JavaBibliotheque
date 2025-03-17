@@ -1,7 +1,6 @@
 package com.esgi.data.genres;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.genres.impl.GenreRepositoryImpl;
 import com.esgi.helpers.DatabaseTestHelper;
@@ -74,7 +73,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    public void create_Genre_Should_Save_Genre() throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void create_Genre_Should_Save_Genre() throws ConstraintViolationException, NotFoundException {
         //Arrange
         GenreModel genre = new GenreModel(
                 null,
@@ -120,7 +119,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    void update_should_update_the_genre() throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    void update_should_update_the_genre() throws NotFoundException, ConstraintViolationException {
         //Arrange
         GenreModel editedGenre = new GenreModel(
                 2,
@@ -165,7 +164,7 @@ public class GenreRepositoryTest {
     }
 
     @Test
-    void delete_should_delete_genre() throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    void delete_should_delete_genre() throws NotFoundException, ConstraintViolationException {
         // Arrange
         String name = "Comics";
 

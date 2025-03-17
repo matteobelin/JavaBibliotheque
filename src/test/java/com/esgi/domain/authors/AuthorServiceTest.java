@@ -1,7 +1,6 @@
 package com.esgi.domain.authors;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
@@ -25,7 +24,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void get_Author_By_Id_Should_Return_Author() throws NotFoundException, InternalErrorException {
+    public void get_Author_By_Id_Should_Return_Author() throws NotFoundException {
         //Arrange
         Integer authorId = 2;
         AuthorEntity expectedAuthor = new AuthorEntity(authorId,"J.K. Rowling");
@@ -45,7 +44,7 @@ public class AuthorServiceTest {
 
 
     @Test
-    public void create_Author_Should_Not_Throw() throws ConstraintViolationException, InternalErrorException {
+    public void create_Author_Should_Not_Throw() throws ConstraintViolationException {
         //Arrange
         AuthorEntity author = new AuthorEntity(2,"J.K. Rowling");
         AuthorModel expectedAuthor = new AuthorModel(2,"J.K. Rowling");
@@ -62,7 +61,7 @@ public class AuthorServiceTest {
     }
 
     @Test
-    public void updateAuthor_should_not_throw() throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void updateAuthor_should_not_throw() throws NotFoundException, ConstraintViolationException {
         // Arrange
         AuthorEntity author = new AuthorEntity(0, "test");
         AuthorModel expectedAuthor = new AuthorModel(0, "test");

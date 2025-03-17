@@ -41,16 +41,16 @@ public abstract class Repository<T extends Model> {
     protected abstract T parseSQLResult(ResultSet result) throws SQLException;
 
 
-    public T getById(Integer id) throws NotFoundException, InternalErrorException {
+    public T getById(Integer id) throws NotFoundException {
         return this.getFirstWhereColumnEquals("id", id);
     }
 
-    protected T getFirstWhereColumnEquals(String columnName, Object value) throws NotFoundException, InternalErrorException {
+    protected T getFirstWhereColumnEquals(String columnName, Object value) throws NotFoundException {
         var condition = SQLWhereCondition.makeEqualCondition(columnName, value);
         return this.findFirstWhere(List.of(condition));
     }
 
-    protected T findFirstWhere(List<SQLWhereCondition<?>> conditions) throws NotFoundException, InternalErrorException {
+    protected T findFirstWhere(List<SQLWhereCondition<?>> conditions) throws NotFoundException {
         try(var result = this.executeWhereAllQuery(conditions)) {
             boolean noRecordFound = !result.getResultSet().next();
             if (noRecordFound) {
@@ -63,7 +63,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
-    public List<T> getAll() throws InternalErrorException {
+    public List<T> getAll()  {
         String sql = SQLBuilder.selectAll().from(tableName).build();
 
         try (var result = this.executeQuery(sql, List.of())) {
@@ -73,13 +73,13 @@ public abstract class Repository<T extends Model> {
         }
     }
 
-    protected List<T> getAllWhereColumnEquals(String columnName, Object value) throws InternalErrorException {
+    protected List<T> getAllWhereColumnEquals(String columnName, Object value)  {
         var condition = SQLWhereCondition.makeEqualCondition(columnName, value);
 
         return this.getAllWhere(List.of(condition));
     }
 
-    protected List<T> getAllWhere(List<SQLWhereCondition<?>> conditions) throws InternalErrorException {
+    protected List<T> getAllWhere(List<SQLWhereCondition<?>> conditions)  {
         try(var result = this.executeWhereAllQuery(conditions)) {
             return resultSetToList(result.getResultSet());
         } catch (SQLException e) {
@@ -220,7 +220,7 @@ public abstract class Repository<T extends Model> {
         }
     }
 
-    protected SQLExceptionEnum parseSqlException(SQLException e) throws InternalErrorException {
+    protected SQLExceptionEnum parseSqlException(SQLException e)  {
         Optional<SQLExceptionEnum> optionalExceptionType = SQLExceptionParser.parse(e);
 
         boolean exceptionTypeNotFound = optionalExceptionType.isEmpty();

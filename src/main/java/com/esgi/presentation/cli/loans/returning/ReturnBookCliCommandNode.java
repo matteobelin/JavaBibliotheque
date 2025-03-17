@@ -3,7 +3,6 @@ package com.esgi.presentation.cli.loans.returning;
 import com.esgi.core.exceptions.ActionDeniedException;
 import com.esgi.core.exceptions.BookLoanException;
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.loans.LoanEntity;
@@ -56,7 +55,7 @@ public class ReturnBookCliCommandNode extends CliCommandNode {
             AppLogger.error("This command requires a valid book ID (number)");
             return ExitCode.ARGUMENT_INVALID;
         } catch (ConstraintViolationException | NotFoundException |
-                 ActionDeniedException | BookLoanException | InternalErrorException e) {
+                 ActionDeniedException | BookLoanException e) {
             return LoanUtils.handleBookLoanCommandException(e);
         }
 
@@ -64,7 +63,7 @@ public class ReturnBookCliCommandNode extends CliCommandNode {
     }
 
     private LoanEntity getLoan(List<String> values)
-            throws NumberFormatException, NotFoundException, ActionDeniedException, InternalErrorException {
+            throws NumberFormatException, NotFoundException, ActionDeniedException {
         String bookStringId = values.get(0);
         var bookId = Integer.parseInt(bookStringId);
         var userId = this.getUserId(values);
@@ -72,7 +71,7 @@ public class ReturnBookCliCommandNode extends CliCommandNode {
         return this.loanService.findLoanByUserIdAndBookId(userId, bookId);
     }
 
-    private Integer getUserId(List<String> values) throws NotFoundException, ActionDeniedException, InternalErrorException {
+    private Integer getUserId(List<String> values) throws NotFoundException, ActionDeniedException {
         if (values.size() == 1) {
             return authService.getLoggedInUser().getId();
         }

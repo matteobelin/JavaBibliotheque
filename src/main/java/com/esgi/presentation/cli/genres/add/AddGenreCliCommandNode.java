@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.genres.add;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.genres.GenreEntity;
 import com.esgi.domain.genres.GenreService;
 import com.esgi.presentation.AppLogger;
@@ -43,9 +42,6 @@ public class AddGenreCliCommandNode extends CliCommandNode {
         } catch (ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
-        } catch (InternalErrorException e) {
-            AppLogger.error(e.getMessage());
-            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;

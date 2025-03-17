@@ -1,7 +1,6 @@
 package com.esgi.domain.books;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
 import com.esgi.data.books.BookRepository;
@@ -30,7 +29,7 @@ public class BookServiceTest {
 
 
     @Test
-    public void get_Book_By_Id_Should_Return_Book() throws NotFoundException, InternalErrorException {
+    public void get_Book_By_Id_Should_Return_Book() throws NotFoundException {
         //Arrange
         Integer bookId = 1;
         BookEntity expectedBook = makeBookEntity();
@@ -49,7 +48,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void create_Book_Should_Not_Throw() throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void create_Book_Should_Not_Throw() throws ConstraintViolationException, NotFoundException {
         //Arrange
         BookEntity book = makeBookEntity();
         BookModel expectedBook = makeBookModel();
@@ -66,7 +65,7 @@ public class BookServiceTest {
     }
 
     @Test
-    public void update_Book_Should_Not_Throw() throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void update_Book_Should_Not_Throw() throws ConstraintViolationException, NotFoundException {
         //Arrange
         BookEntity book = makeBookEntity();
         BookModel expectedBook = makeBookModel();

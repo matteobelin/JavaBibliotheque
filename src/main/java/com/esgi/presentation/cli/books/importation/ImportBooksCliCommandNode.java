@@ -78,7 +78,7 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
         return true;
     }
 
-    private void checkAndCreateAuthor(BookEntity book) throws InternalErrorException, ConstraintViolationException {
+    private void checkAndCreateAuthor(BookEntity book) throws ConstraintViolationException {
         try {
             book.setAuthor(authorService.getAuthorByName(book.getAuthor().getName()));
         } catch (NotFoundException e) {
@@ -90,7 +90,7 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
         }
     }
 
-    private void checkAndCreateGenre(BookEntity book) throws InternalErrorException, ConstraintViolationException {
+    private void checkAndCreateGenre(BookEntity book) throws ConstraintViolationException {
         List<GenreEntity> genres = book.getGenres();
         List<GenreEntity> finalGenres = new ArrayList<>();
         for (GenreEntity genre : genres) {
@@ -107,7 +107,7 @@ public class ImportBooksCliCommandNode extends ImportCliCommandNode<BookEntity> 
         }
     }
 
-    public void createBook(BookEntity book) throws InternalErrorException {
+    public void createBook(BookEntity book)  {
         try{
             bookService.createBook(book);
             AppLogger.success("%s by %s was created".formatted(book.getTitle(), book.getAuthor().getName()));

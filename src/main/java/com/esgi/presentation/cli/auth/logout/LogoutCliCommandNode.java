@@ -1,6 +1,5 @@
 package com.esgi.presentation.cli.auth.logout;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.cli.CliCommandNode;
@@ -29,12 +28,7 @@ public class LogoutCliCommandNode extends CliCommandNode {
             return ExitCode.OK;
         }
 
-        try {
-            this.authService.logout();
-        } catch (InternalErrorException e) {
-            AppLogger.error(e.getMessage());
-            return ExitCode.INTERNAL_ERROR;
-        }
+        this.authService.logout();
 
         return ExitCode.OK;
     }

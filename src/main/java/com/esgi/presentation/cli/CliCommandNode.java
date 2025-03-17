@@ -1,6 +1,5 @@
 package com.esgi.presentation.cli;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.OptionRequiresValueException;
 import com.esgi.presentation.AppLogger;
 import com.esgi.presentation.cli.utils.ArgsParserUtils;
@@ -27,7 +26,7 @@ public abstract class CliCommandNode {
         this.description = description;
     }
 
-    public ExitCode run(String[] args) throws InternalErrorException {
+    public ExitCode run(String[] args)  {
         if (args.length == 0) {
             AppLogger.error("The command '%s' requires an argument".formatted(this.getName()));
             return ExitCode.ARGUMENT_MISSING;

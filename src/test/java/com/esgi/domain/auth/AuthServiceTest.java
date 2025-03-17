@@ -1,7 +1,6 @@
 package com.esgi.domain.auth;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.impl.AuthServiceImpl;
 import com.esgi.domain.serialization.Serializer;
@@ -34,7 +33,7 @@ public class AuthServiceTest {
     private Serializer<AuthCredentials> serializer;
 
     @Test
-    public void login_should_connect_user() throws NotFoundException, IncorrectCredentialsException, IOException, InternalErrorException {
+    public void login_should_connect_user() throws NotFoundException, IncorrectCredentialsException, IOException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -63,7 +62,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_email_not_found() throws NotFoundException, InternalErrorException {
+    public void login_should_throw_when_email_not_found() throws NotFoundException {
         // Arrange
         AuthCredentials credentials = new AuthCredentials("test@test.com", "password", true);
 
@@ -75,7 +74,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void login_should_throw_when_password_dont_match() throws NotFoundException, InternalErrorException {
+    public void login_should_throw_when_password_dont_match() throws NotFoundException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -92,7 +91,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void logout_should_remove_connected_user() throws NoSuchFieldException, IllegalAccessException, InternalErrorException {
+    public void logout_should_remove_connected_user() throws NoSuchFieldException, IllegalAccessException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -118,7 +117,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void loginWithSavedCredentials_should_connect_user() throws IncorrectCredentialsException, IOException, NotFoundException, InternalErrorException {
+    public void loginWithSavedCredentials_should_connect_user() throws IncorrectCredentialsException, IOException, NotFoundException {
         // Arrange
         UserEntity user = new UserEntity();
         user.setId(1);
@@ -142,7 +141,7 @@ public class AuthServiceTest {
     }
 
     @Test
-    public void loginWithSavedCredentials_should_not_login_when_no_credentials_saved() throws IncorrectCredentialsException, IOException, InternalErrorException {
+    public void loginWithSavedCredentials_should_not_login_when_no_credentials_saved() throws IncorrectCredentialsException, IOException {
         // Arrange
         when(this.serializer.deserialize()).thenThrow(new IOException());
 
