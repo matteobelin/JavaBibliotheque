@@ -1,7 +1,6 @@
 package com.esgi.domain.authors.impl;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.authors.AuthorModel;
 import com.esgi.data.authors.AuthorRepository;
@@ -20,34 +19,34 @@ public class AuthorServiceImpl implements AuthorService {
         this.authorMapper = authorMapper;
     }
 
-    public AuthorEntity getAuthorById(int id) throws NotFoundException, InternalErrorException {
+    public AuthorEntity getAuthorById(int id) throws NotFoundException {
         AuthorModel authorModel = authorRepository.getById(id);
         return authorMapper.modelToEntity(authorModel);
     }
 
-    public AuthorEntity getAuthorByName(String name) throws NotFoundException, InternalErrorException {
+    public AuthorEntity getAuthorByName(String name) throws NotFoundException {
         AuthorModel authorModel = authorRepository.getByName(name);
         return authorMapper.modelToEntity(authorModel);
     }
 
     @Override
-    public AuthorEntity createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException, InternalErrorException {
+    public AuthorEntity createAuthor(AuthorEntity authorEntity) throws ConstraintViolationException {
         AuthorModel authorModel = authorMapper.entityToModel(authorEntity);
         authorRepository.create(authorModel);
         return authorMapper.modelToEntity(authorModel);
     }
 
-    public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException, InternalErrorException {
+    public void updateAuthor(AuthorEntity author) throws ConstraintViolationException, NotFoundException {
 
         AuthorModel authorModel = authorMapper.entityToModel(author);
         authorRepository.update(authorModel);
     }
 
-    public void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException, InternalErrorException {
+    public void deleteAuthor(String name) throws NotFoundException, ConstraintViolationException {
         this.authorRepository.delete(name);
     }
 
-    public List<AuthorEntity> getAllAuthors() throws InternalErrorException {
+    public List<AuthorEntity> getAllAuthors()  {
         List<AuthorModel> models = this.authorRepository.getAll();
         return authorMapper.modelsToEntities(models);
     }

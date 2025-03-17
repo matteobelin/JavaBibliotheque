@@ -3,7 +3,6 @@ package com.esgi.presentation.cli.loans.add;
 import com.esgi.core.exceptions.ActionDeniedException;
 import com.esgi.core.exceptions.BookLoanException;
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.books.BookEntity;
@@ -54,14 +53,14 @@ public class AddLoanCliCommandNode extends CliCommandNode {
         } catch (NumberFormatException e) {
             AppLogger.error("This command requires a valid book ID (number)");
             return ExitCode.ARGUMENT_INVALID;
-        } catch (ConstraintViolationException | NotFoundException | ActionDeniedException | BookLoanException | InternalErrorException e) {
+        } catch (ConstraintViolationException | NotFoundException | ActionDeniedException | BookLoanException e) {
             return LoanUtils.handleBookLoanCommandException(e);
         }
 
         return ExitCode.OK;
     }
 
-    private LoanEntity makeLoan(List<String> values) throws NumberFormatException, NotFoundException, ActionDeniedException, InternalErrorException {
+    private LoanEntity makeLoan(List<String> values) throws NumberFormatException, NotFoundException, ActionDeniedException {
         var loan = new LoanEntity();
 
         String bookStringId = values.get(0);

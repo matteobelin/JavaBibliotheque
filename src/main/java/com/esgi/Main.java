@@ -1,11 +1,8 @@
 package com.esgi;
 
 import com.esgi.core.exceptions.IncorrectCredentialsException;
-import com.esgi.domain.AppContext;
-
 import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.AppContext;
-
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.auth.AuthServiceFactory;
 import com.esgi.presentation.AppFolderConfig;

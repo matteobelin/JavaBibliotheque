@@ -2,7 +2,6 @@ package com.esgi.presentation.cli.loans.history;
 
 import com.esgi.core.exceptions.ActionDeniedException;
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.domain.loans.LoanService;
@@ -51,15 +50,12 @@ public class LoanHistoryCliCommandNode extends CliCommandNode {
         } catch (ActionDeniedException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ACTION_DENIED;
-        } catch (InternalErrorException e) {
-            AppLogger.error(e.getMessage());
-            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;
     }
 
-    private UserEntity getUser(List<String> values) throws NotFoundException, ActionDeniedException, InternalErrorException {
+    private UserEntity getUser(List<String> values) throws NotFoundException, ActionDeniedException {
         if (values.isEmpty()) {
             return this.authService.getLoggedInUser();
         }

@@ -1,6 +1,5 @@
 package com.esgi.presentation.cli.auth.logout;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.domain.auth.AuthService;
 import com.esgi.presentation.cli.ExitCode;
 import org.assertj.core.api.Assertions;
@@ -21,7 +20,7 @@ public class LogoutCliCommandTest {
     private AuthService authService;
 
     @Test
-    public void should_return_OK() throws InternalErrorException {
+    public void should_return_OK()  {
         // Arrange
         String[] args = new String[] {};
 
@@ -36,7 +35,7 @@ public class LogoutCliCommandTest {
     }
 
     @Test
-    public void should_return_OK_when_user_not_logged_in() throws InternalErrorException {
+    public void should_return_OK_when_user_not_logged_in()  {
         // Arrange
         String[] args = new String[] {};
 
@@ -47,20 +46,5 @@ public class LogoutCliCommandTest {
 
         // Assert
         Assertions.assertThat(exitCode).isEqualTo(ExitCode.OK);
-    }
-
-    @Test
-    public void should_return_INTERNAL_ERROR_when_logout_throw_InternalErrorException() throws InternalErrorException {
-        // Arrange
-        String[] args = new String[] {};
-
-        Mockito.when(authService.isLoggedIn()).thenReturn(true);
-        Mockito.doThrow(InternalErrorException.class).when(authService).logout();
-
-        // Act
-        var exitCode = this.logoutCliCommandNode.run(args);
-
-        // Assert
-        Assertions.assertThat(exitCode).isEqualTo(ExitCode.INTERNAL_ERROR);
     }
 }

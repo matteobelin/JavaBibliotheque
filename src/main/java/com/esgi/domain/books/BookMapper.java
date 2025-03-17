@@ -1,7 +1,6 @@
 package com.esgi.domain.books;
 
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.books.BookModel;
 import com.esgi.domain.authors.AuthorService;
@@ -21,7 +20,7 @@ public class BookMapper {
         this.genreService = genreService;
     }
 
-    public BookEntity modelToEntity(BookModel bookModel) throws NotFoundException, InternalErrorException {
+    public BookEntity modelToEntity(BookModel bookModel) throws NotFoundException {
         return new BookEntity(
                 bookModel.getId(),
                 bookModel.getTitle(),
@@ -42,11 +41,11 @@ public class BookMapper {
 
     }
 
-    private GenreEntity getGenreEntityById(int id) throws NotFoundException, InternalErrorException {
+    private GenreEntity getGenreEntityById(int id) throws NotFoundException {
         return genreService.getGenreById(id);
     }
 
-    private List<GenreEntity> mapGenreIdsToEntities(List<Integer> genreIds) throws NotFoundException, InternalErrorException {
+    private List<GenreEntity> mapGenreIdsToEntities(List<Integer> genreIds) throws NotFoundException {
         var genreEntities = new ArrayList<GenreEntity>();
         for (Integer genreId : genreIds) {
             GenreEntity genreEntity = getGenreEntityById(genreId);

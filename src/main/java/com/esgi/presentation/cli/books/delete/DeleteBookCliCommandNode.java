@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.books.delete;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.domain.books.BookService;
 import com.esgi.presentation.AppLogger;
@@ -41,9 +40,6 @@ public class DeleteBookCliCommandNode extends CliCommandNode {
         } catch (NotFoundException | ConstraintViolationException e) {
             AppLogger.error(e.getMessage());
             return ExitCode.ARGUMENT_INVALID;
-        } catch (InternalErrorException e) {
-            AppLogger.error(e.getMessage());
-            return ExitCode.INTERNAL_ERROR;
         }
 
         return ExitCode.OK;

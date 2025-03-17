@@ -1,7 +1,6 @@
 package com.esgi.presentation.cli.auth.signin;
 
 import com.esgi.core.exceptions.ConstraintViolationException;
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.InvalidArgumentException;
 import com.esgi.domain.users.UserService;
 import com.esgi.presentation.cli.ExitCode;
@@ -26,7 +25,7 @@ public class SigninCliCommandNodeTest {
 
 
     @Test
-    public void should_return_OK() throws InvalidArgumentException, ConstraintViolationException, InternalErrorException {
+    public void should_return_OK() throws InvalidArgumentException, ConstraintViolationException {
         // Arrange
         String[] args = new String[] {"email@email.com", "password"};
 
@@ -40,7 +39,7 @@ public class SigninCliCommandNodeTest {
     }
 
     @Test
-    public void should_return_ARGUMENT_MISSING_when_missing_argument() throws InternalErrorException {
+    public void should_return_ARGUMENT_MISSING_when_missing_argument()  {
         // Arrange
         String[] args = new String[] {"email@email.com"};
 

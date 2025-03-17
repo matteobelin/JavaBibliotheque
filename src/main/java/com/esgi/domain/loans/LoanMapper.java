@@ -1,6 +1,5 @@
 package com.esgi.domain.loans;
 
-import com.esgi.core.exceptions.InternalErrorException;
 import com.esgi.core.exceptions.NotFoundException;
 import com.esgi.data.loans.LoanModel;
 import com.esgi.domain.books.BookService;
@@ -16,7 +15,7 @@ public class LoanMapper {
         this.bookService = bookService;
     }
 
-    public LoanEntity modelToEntity(LoanModel loan) throws NotFoundException, InternalErrorException {
+    public LoanEntity modelToEntity(LoanModel loan) throws NotFoundException {
         var book = this.bookService.getBookById(loan.getBookId());
         return new LoanEntity(
                 loan.getId(),
@@ -37,7 +36,7 @@ public class LoanMapper {
         );
     }
 
-    public List<LoanEntity> modelToEntity(List<LoanModel> loans) throws NotFoundException, InternalErrorException {
+    public List<LoanEntity> modelToEntity(List<LoanModel> loans) throws NotFoundException {
         List<LoanEntity> loansEntity = new ArrayList<>();
         for(LoanModel loan : loans){
             loansEntity.add(this.modelToEntity(loan));
